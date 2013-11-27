@@ -1,0 +1,88 @@
+@charset "utf-8";
+/**
+*@author syq
+*@date 2013-11-06
+*@mail shenyanqiong@myhexin.com
+*/
+
+/*订阅*/
+.subs-return,.subs-head{font-size:14px;color:#565656;}
+.subs-return{margin-right:20px;}
+.subs-return span{vertical-align:middle;}
+.return-icon{background-position:-254px -34px;width:17px;height:17px;margin-right:5px;display:inline-block;}
+
+.left-col{float:left;}
+.right-col{float:right;}
+.subs-box{width:406px;height:590px;padding:10px;border:1px solid #bfbfbf;overflow:hidden;}
+.subs-title{padding-bottom:10px;color:#2565a6;font-size:14px;font-weight:bold;}
+.subs-cjlist{width:270px;}
+.subs-cjlist li{float:left;width:120px;height:24px;}
+.subs-cjlist input,.subs-cjlist span{vertical-align:middle;}
+.subs-list{height:524px;overflow:hidden;}
+.sli-w1,.sli-w2,.view-w1,.view-w2,.view-w3{display:inline-block;}
+.subs-list li{height:32px;line-height:32px;border-bottom:1px solid #e5e5e5;}
+.subs-list .sli-bg{background-position:0 -60px;height:24px;line-height:24px;border:1px solid #bfbfbf;}
+.subs-list .sli-box{height:36px;line-height:36px;position:relative;}
+.sli-w1{width:120px;padding-left:5px;}
+.sli-w2{width:220px;color:#453f3f;}
+a.sli-w2:hover{text-decoration:underline;}
+.sli-em{padding:0 5px 0 50px;}
+.sli-em2{padding-left:30px;}
+.sli-em3{padding:0 5px 0 40px;}
+.sli-blue{color:#2d80e6;}
+.sli-add{background-position:-162px -62px;width:90px;height:24px;line-height:24px;padding-left:36px;margin-top:6px;color:#fff;}
+/*page*/
+.page{background:#e7e7e7;height:28px;padding:5px 10px 0;text-align:right;border-top:1px solid #bfbfbf;}
+.page span,.page a,.page input{vertical-align:middle;}
+.jump-input{width:28px;height:20px;line-height:20px;margin-left:10px;border:1px solid #bfbfbf;text-align:center;}
+/*查看订阅*/
+.cks-box{width:864px;height:610px;border:1px solid #bfbfbf;overflow:hidden;}
+.cks-list{position:relative;border-bottom:5px solid #cdcdcd;}
+.cks-scroll{width:864px;height:199px;overflow-y:auto;overflow-x:hidden;}
+.cks-artical{width:864px;height:406px;}
+.cks-head{position:absolute;top:0;left:0;width:848px;background-position:0 -60px;}
+.cks-head li{float:left;height:24px;line-height:24px;padding-left:20px;}
+.cks-head .cks-li1{width:190px;padding-left:10px;}
+.cks-li2{width:510px;}
+.cks-table{width:100%;}
+.cks-head,.cks-table th,.cks-table td{border-bottom:1px solid #c5c5c5;}
+.cks-table th{height:24px;line-height:24px;background-position:0 -60px;}
+.cks-table td{height:28px;line-height:28px;text-align:left;padding-left:10px;cursor:pointer;}
+.cks-hover td{background:#d3e7ff;}
+.cks-td1{width:190px;}
+.cks-td2{width:530px;}
+/*设置范围弹窗*/
+.subs-extent{background:#5aa1c0;width:280px;height:120px;padding:3px;position:absolute;top:50%;left:50%;margin:-60px 0 0 -140px;}
+.sex-head{padding:3px 2px 4px 5px;}
+.sex-title{float:left;color:#fff;}
+.sex-close{background-position:-302px -28px;width:15px;height:15px;float:right;}
+.sex-bg{background:#fff;padding:10px 0 0 10px;height:85px;}
+.sex-list{padding:10px 0 0;}
+.sex-list li{float:left;margin-right:15px;height:28px;}
+.sex-list input,.sex-list span{float:left;}
+.sex-list span{margin:-2px 0 0 2px;*margin:2px 0 0 0;}
+.sex-btns{padding:10px 10px 0 0;text-align:center;}
+.sex-sure,.sex-del{width:56px;height:24px;line-height:24px;display:inline-block;}
+.sex-sure{background-position:-156px -91px;color:#fff;}
+.sex-del{background-position:-215px -91px;color:#453f3f;}
+.prompt-pop{padding:20px 30px;text-align:center;background:#abcdef;font-size:16px;font-weight:bold;position:absolute;top:50%;left:50%;margin:-20px 0 0 -20px;}
+/*按键精灵*/
+.sli-stock,.sli-plate{background:#fff;width:210px;padding:3px;border:1px solid #5aa1c0;position:absolute;top:5px;left:130px;}
+.sli-search{width:193px;height:20px;border:1px solid #bfbfbf;}
+.sli-search span{background-position:-310px 0;width:14px;height:14px;float:left;margin:2px 5px 0 4px;}
+.sli-search input{width:170px;height:20px;line-height:20px;float:left;border:none 0;}
+.sli-close{background-position:-275px -91px;width:11px;height:11px;position:absolute;top:5px;right:3px;}
+.sli-view{width:210px;margin-top:4px;}
+.sli-view dd{line-height:20px;}
+.sli-title{background:#eee;}
+.sli-ddhover{background:#aae5ff;cursor:pointer;}
+.sli-red{color:red;}
+.view-w1{width:70px;}
+.view-w2{width:140px;}
+.view-w3{width:60px;}
+.sli-yj{background:#aae5ff;line-height:20px;width:210px;margin-top:3px;cursor:pointer;}
+
+
+
+
+

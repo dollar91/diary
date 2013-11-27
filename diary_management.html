@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8" />
+<title>记事管理</title>
+<meta content="width=890&height=685" name="window-size" />
+<link href="http://s.thsi.cn/combo?&css/blog/diary/1.0.0/&base.min.css&note.min.css&pop.min.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="/zscript/ueditor/themes/default/css/ueditor.css"/>
+</head>
+<body>
+<div class="box">
+    <div class="top">
+        <a class="subs-return" href="http://blog.10jqka.com.cn/diary/index.html"><span class="return-icon"></span><span>返回日记</span></a>
+        <strong class="subs-head">记事管理</strong>
+    </div>
+    <div class="content">
+        <div class="notelist-box">
+            <div class="note-manage-search">
+                <div class="note-manage-fl">
+                    <input id="dateFilter" class="npop-time clock_edite" value="所有日期" type="text">
+                    <button id="dateAll">所有日期</button>
+                    <select id="gpSelect">
+                        <option>全部股票</option>
+                    </select>
+                    <select id="clockSelect">
+                        <option>全部提醒</option>
+                        <option>无提醒</option>
+                        <option>有提醒</option>
+                    </select>
+                </div>
+                <div class="note-manage-fr">
+                    <input type="text" class="search-input" id="searchStr"/>
+                    <a href="###" class="search-bt" id="searchBtn">搜索</a>
+                </div>
+            </div>
+            <div class="manage-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="50px">选择</th><th width="70px">时间</th><th width="120px">标题</th><th width="70px">相关股票</th><th>内容</th><th width="80px">提醒</th><th width="110px">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="noteList">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<iframe id="mask_iframe"></iframe>
+<!--查看记事窗口-->
+<div class="note-pop" id="show_box">
+    <p class="npop-head clearfix">
+        <span class="npop-title"><em class="npop-icon"></em><strong>查看记事</strong></span>
+        <a class="npop-close" href="###"></a>
+    </p>
+    <div class="cnpop-content">
+        <input type="hidden" id="pidVal"/>
+        <p class="cnpop-title"><strong id="subtitle"></strong></p>
+        <p><span id="js_date"></span>&nbsp;<span id="js_time"></span></p>
+        <p class="npop-a">
+            <span>相关股票：</span>
+            <a href="###" id="codename"></a>
+        </p>
+        <div class="textarea-box">
+            <div class="cnpop-textarea lineb" id="news_content"></div>
+        </div>
+        <p>
+            <span class="cnpop-icon1"></span>
+            <span class="cnpop-span">提醒</span>
+            <span id="clock"></span>
+        </p>
+        <p class="cnpop-btns2">
+            <a href="###"><span class="cnpop-prev"></span><span id="lastNews">上一条</span></a>
+            <a href="###"><span id="nextNews">下一条</span><span class="cnpop-next"></span></a>
+        </p>
+    </div>
+</div>
+<!--编辑记事-->
+<div class="note-pop" id="edit_box">
+    <p class="npop-head clearfix">
+        <span class="npop-title"><em class="npop-icon"></em><strong>记事</strong></span>
+        <a class="npop-close" href="###"></a>
+    </p>
+    <div class="cnpop-content">
+        <input type="hidden" class="pidVal"/>
+        <p>
+            <span class="npop-span">标题</span>
+            <input class="npop-input subtitle_edit" type="text"/>
+        </p>
+        <p>
+            <span class="npop-span">时间</span>
+            <select class="select_ctime">
+                <option>有</option>
+                <option>无</option>
+            </select>
+            <input class="npop-time ctime_edit wdate_picker_date" type="text">
+            <label id="time_tip">（无指定时间默认添加到当天）</label>
+        </p>
+        <p class="npop-p edit_title_a">
+            <a href="###">交易记录</a>
+            <a href="###">股票分析</a>
+            <a href="###">方法计划</a>
+            <a href="###">消息记录</a>
+            <a href="###">我要吐槽</a>
+        </p>  
+        <div class="npop-searchbox">
+            <span class="npop-span">相关股票</span>
+            <input id="npopSearch" class="npop-input codename_edit" type="text" code=""/>
+            <div id="npopSearchList" class="npop-view" style="display:none;">
+                <dl>
+                </dl>
+            </div>
+        </div>      
+        <div class="textarea-box clearfix">
+            <span class="npop-span npop-vt fl">内容</span>
+            <div id="newscontent" class="npop-textarea npop-vt news_content_edit fl"></div>
+        </div>
+        <p>
+            <span class="npop-span">提醒</span>
+            <select class="select_clock">
+                <option>有</option>
+                <option>无</option>
+            </select>
+            <input class="npop-time clock_edit wdate_picker_time" type="text">
+        </p>
+        <p class="npop-btns">
+            <a class="npop-save" href="###" id="edit_saveBtn">保存</a>
+            <a class="npop-cancel" href="###" id="edit_resumeBtn">取消</a>
+        </p>
+    </div>
+</div>
+<!--删除记事-->
+<div class="delete-box" id="delete_box">
+    <p class="npop-head clearfix">
+        <span class="npop-title"><em class="npop-icon"></em><strong>删除记事</strong></span>
+        <a class="npop-close" href="###"></a>
+    </p>
+    <div class="clock-content">
+        <p class="delete-text">确定删除记事吗？</p>
+        <a href="###" class="konwBt" id="deleteYes">确定</a><a href="###" style="margin-left:20px;" id="deleteNo" class="konwBt">取消</a>
+    </div>
+</div>
+<!--修改或者删除记事成功的时候-->
+<div class="success-box" id="success_box">
+    <p class="npop-head clearfix">
+        <a class="npop-close" href="###"></a>
+    </p>
+    <div class="clock-content">
+        <p class="delete-text">确定删除记事吗？</p>
+        <a href="###" class="konwBt">我知道了</a>
+    </div>
+</div>
+<div id="promptPop" class="prompt-pop" style="display:none">
+    <p></p>
+</div>
+<script type="text/javascript">
+    var klinecode = 0;
+</script>
+<script type="text/javascript" src="http://www.10jqka.com.cn/ad_mar/jstime.php"></script>
+<script src="http://blog.10jqka.com.cn/zscript/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="http://s.thsi.cn/combo?&js/jquery-1.7.2.min.js&js/blog/diary/1.0.0/&base.min.js&form.min.js&noteDo.min.js&noteManage.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/zscript/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/zscript/ueditor/ueditor.all.js"></script>
+<script type="text/javascript">
+    var editor = new UE.ui.Editor();
+    editor.render('newscontent');
+</script>
+</body>
+</html>

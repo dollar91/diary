@@ -1,0 +1,71 @@
+@charset "utf-8";
+html,body{height:100%;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {margin:0;padding:0}
+body{ background:#ccc; font:12px/1.5 'simsun',Arial, Helvetica, sans-serif;color:#453f3f;}
+a{color:#453f3f;}
+table {border-collapse:collapse;border-spacing:0}
+a{text-decoration:none}
+img {border:0;vertical-align:middle;}
+select,input{vertical-align:middle;}
+em{font-style:normal}
+ol,ul {list-style:none}
+h1,h2,h3,h4,h5,h6 {font-size:100%;font-weight:normal}
+.fl{float:left;display:inline}
+.fr{float:right;display:inline}
+.clearfix:before,.clearfix:after {content:"";display:table}
+.clearfix:after {clear:both;}
+.clearfix {zoom:1; /* IE < 8 */clear:both}
+.vm{vertical-align:middle}
+.pr{position:relative}
+.pa{position:absolute}
+.zoom{zoom:1}
+.center{text-align:center;}
+/*字母数字等强制换行*/
+.lineb{word-break: break-all;}
+/*拼图*/
+.note-bt,.dy-bt,.set-icon,.date-pre,.date-next,.note-icon,.today-bt,.set-bt,.dz-icon,.clock-icon,.add-icon,.search-bt,.yes-icon,.konwBt{background:url(http://i.thsi.cn/images/blog/diary/sprite.png) no-repeat;}
+.sli-add,.return-icon,.sex-close,.sli-search span,.sli-nav a,.npop-icon,.npop-close,.npop-save,.npop-cancel,.npop-del,.npop-edit,.cnpop-icon1,.cnpop-icon2,.cnpop-prev,.cnpop-next,.sex-sure,.sex-del,.sli-close{background:url(http://i.thsi.cn/images/blog/diary/sprite.png) no-repeat;}
+.gray-c,.note-th li,.notelist-title,.manage-table th,.sli-bg,.cks-head,.cks-table th,.clock-content{background:url(http://i.thsi.cn/images/blog/diary/repeat.png) repeat-x;}
+.note-bt,.dy-bt,.gray-c,.date-box,.date-pre,.date-next,.notelist-tip,.notelist-text,.note-manage-fl,.subs-head,.subs-return{float:left;display:inline;}
+.set-bt,.today-bt,.note-manage-fr{float:right;display:inline;}
+.box{background-color:#fff;width:890px;height:685px;overflow:hidden;margin:0 auto;position:relative;}
+/*top*/
+.top{height:45px;padding:15px 15px 0;z-index:101;}
+.content{padding:0 12px 12px;margin:0 auto;height:613px;overflow:hidden;}
+.note-bt,.dy-bt{position:relative;width:43px;height:28px;line-height:28px;color:#fff;font-size:14px;font-weight:bold;padding-left:28px;}
+.note-bt{margin-left:15px;background-position:0 -57px;}
+.note-icon{position:absolute;width:13px;height:16px;background-position:-7px -6px;top:6px;left:8px;}
+.dy-bt{margin-left:10px;background-position:-82px -57px;}
+.set-bt,.today-bt{background-position:0 -87px;}
+.set-bt,.today-bt{height:28px;overflow:hidden;position:relative;margin-right:10px;color:#453f3f;font-size:14px;font-weight:bold;line-height:28px;}
+.gray-c{height:28px;background-position:0 -27px;font-size:14px;font-weight:bold;line-height:28px;}
+.today-bt{width:71px;text-align:center;}
+.set-bt{padding-left:30px;width:41px;}
+.set-bt .gray-c{width:35px;padding-left:25px;}
+.set-icon{position:absolute;width:20px;height:20px;top:5px;left:7px;background-position:-224px -32px;}
+/*日期框*/
+.date-box{margin-left:165px;width:190px;height:28px;position:relative;z-index:101;}
+.date-pre{width:24px;height:28px;background-position:-71px 0;}
+.date-next{width:23px;height:28px;background-position:-102px 0;}
+.date-box .gray-c{width:70px;text-align:center;border-right:1px solid #b6b6b6;}
+.date-select{width:80px;position:absolute;top:27px;left:23px;border:1px solid #ababab;background-color:#fff;z-index:101;display:none;}
+.date-select ul{height:180px;overflow-y:auto;overflow-x:hidden;}
+.date-select ul li{height:28px;line-height:28px;padding:0 5px;}
+.date-select ul li a{display:block;font-size:14px;font-weight:bold;text-align:center;color:#453f3f;}
+.date-select ul .cur a,.date-select ul li a:hover{background-color:#e0e0e0;}
+/*subscribe返回头部*/
+.subs-return,.subs-head{font-size:14px;color:#565656;}
+.subs-return{margin-right:20px;margin-top:5px;}
+.subs-head{margin-top:7px;}
+.subs-return span{vertical-align:middle;}
+.return-icon{background-position:-254px -34px;width:17px;height:17px;margin-right:5px;display:inline-block;}
+/*page*/
+.page{background:#e7e7e7;height:28px;padding:5px 10px 0;text-align:right;}
+.page span,.page a,.page input{vertical-align:middle;}
+.jump-input{width:28px;height:20px;line-height:20px;margin-left:10px;border:1px solid #bfbfbf;}
+
+
+
+
+
+

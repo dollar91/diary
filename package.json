@@ -1,0 +1,13 @@
+{
+    "family": "circle",
+    "name": "release",
+    "version": "1.0.0", 
+    "cssVersion":"1.0.0", 
+    "images":"",
+    "username": "余振帆 ",
+    "password": "yzf123",
+    "cssThsiPath":"/html/s/css/blog/diary",
+    "jsThsiPath":"/html/s/js/blog/diary",
+    "imagesThsiPath":"/html/i/sns/circle",
+    "homepage": "http://huixisheng.github.io"
+}
