@@ -38,7 +38,7 @@
 .npop-input,.npop-time,.npop-minute,.cnpop-textarea{height:20px;line-height:20px;padding:0 2px;border:1px solid #bfbfbf;}
 .npop-input,.npop-textarea{width:400px;}
 .npop-time{width:80px;}
-.wdate_picker_time,.wdate_picker_date{width:120px;}
+.wdate_picker_time{width:120px;}
 .npop-minute{width:40px;margin-left:-7px;}
 .textarea-box{margin-bottom:5px;height:315px;}
 .cnpop-textarea{width:453px;height:315px;overflow-x:hidden;overflow-y:auto;font-size:14px;}
@@ -71,6 +71,7 @@
 .cnpop-prev,.cnpop-next{width:6px;height:10px;display:inline-block;}
 .cnpop-prev{background-position:-275px -4px;margin-right:5px;}
 .cnpop-next{background-position:-291px -4px;margin-left:5px;}
+.select_ctime{display:none;}/*隐藏掉显示时间的有无*/
 /*按键精灵*/
 .npop-searchbox{position:relative;margin-bottom:5px;z-index:1000;}
 .npop-view{background:#fff;width:324px;position:absolute;top:24px;left:56px;border:1px solid #cf867e;z-index:1000;}

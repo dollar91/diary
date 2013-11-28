@@ -1,7 +1,7 @@
 @charset "utf-8";
-html,body{height:100%;}
+html,body{height:100%;overflow:hidden;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {margin:0;padding:0}
-body{ background:#ccc; font:12px/1.5 'simsun',Arial, Helvetica, sans-serif;color:#453f3f;}
+body{ background:#fff; font:12px/1.5 'simsun',Arial, Helvetica, sans-serif;color:#453f3f;}
 a{color:#453f3f;}
 table {border-collapse:collapse;border-spacing:0}
 a{text-decoration:none}
@@ -20,6 +20,7 @@ h1,h2,h3,h4,h5,h6 {font-size:100%;font-weight:normal}
 .pa{position:absolute}
 .zoom{zoom:1}
 .center{text-align:center;}
+input,textarea,select,option{background-color:#fff;}
 /*字母数字等强制换行*/
 .lineb{word-break: break-all;}
 /*拼图*/
@@ -44,7 +45,7 @@ h1,h2,h3,h4,h5,h6 {font-size:100%;font-weight:normal}
 .set-bt .gray-c{width:35px;padding-left:25px;}
 .set-icon{position:absolute;width:20px;height:20px;top:5px;left:7px;background-position:-224px -32px;}
 /*日期框*/
-.date-box{margin-left:165px;width:190px;height:28px;position:relative;z-index:101;}
+.date-box{width:190px;height:28px;position:absolute;z-index:101;left:50%;margin-left:-95px;top:15px;}
 .date-pre{width:24px;height:28px;background-position:-71px 0;}
 .date-next{width:23px;height:28px;background-position:-102px 0;}
 .date-box .gray-c{width:70px;text-align:center;border-right:1px solid #b6b6b6;}
@@ -56,7 +57,7 @@ h1,h2,h3,h4,h5,h6 {font-size:100%;font-weight:normal}
 /*subscribe返回头部*/
 .subs-return,.subs-head{font-size:14px;color:#565656;}
 .subs-return{margin-right:20px;margin-top:5px;}
-.subs-head{margin-top:7px;}
+.subs-head{margin-top:5px;}
 .subs-return span{vertical-align:middle;}
 .return-icon{background-position:-254px -34px;width:17px;height:17px;margin-right:5px;display:inline-block;}
 /*page*/
