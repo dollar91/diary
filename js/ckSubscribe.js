@@ -56,9 +56,9 @@ $(function () {
                         '</tr>'].join("")
                     );
                 }
-                $newsContent.attr('src', htmlData[0].url);
                 $newsList.append(html.join(''));
                 $newsList.find('tr:eq(1)').addClass('cks-hover');
+                $newsContent.attr('src', htmlData[0].url);
             });
         };
         /**
