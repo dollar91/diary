@@ -46,15 +46,19 @@ $('#npopSearch').live('keyup', function(event){
         }else{
             $.getJSON('http://news.10jqka.com.cn/public/index_keyboard.php?search-text='+searchText+'&type=stock&jsoncallback=?',function(data){
                 var html='',dataArray=[];
-                for(var i=0; i<data.length; i++)
-                {
-                    dataArray = data[i].split(' ');
-                    html+='<dd><span class="view-w1">'+dataArray[0].substr(3)+'</span><span class="view-w2">'+dataArray[1]+'</span></dd>';
-                }
-                $('#npopSearchList dl').empty();
-                $('#npopSearchList dl').append(html);
-                $('#npopSearchList dd:first-child').addClass('npop-ddhover');
-                $('#npopSearchList').show();
+				if(data.length == 0){
+					return ;	
+				}else{
+					for(var i=0; i<data.length; i++)
+					{
+						dataArray = data[i].split(' ');
+						html+='<dd><span class="view-w1">'+dataArray[0].substr(3)+'</span><span class="view-w2">'+dataArray[1]+'</span></dd>';
+					}
+					$('#npopSearchList dl').empty();
+					$('#npopSearchList dl').append(html);
+					$('#npopSearchList dd:first-child').addClass('npop-ddhover');
+					$('#npopSearchList').show();
+				}
             });
         }
     }else if(event.keyCode == 38 ){
@@ -108,15 +112,19 @@ $('#npopSearchAdd').live('keyup', function(event){
         }else{
             $.getJSON('http://news.10jqka.com.cn/public/index_keyboard.php?search-text='+searchText+'&type=stock&jsoncallback=?',function(data){
                 var html='',dataArray=[];
-                for(var i=0; i<data.length; i++)
-                {
-                    dataArray = data[i].split(' ');
-                    html+='<dd><span class="view-w1">'+dataArray[0].substr(3)+'</span><span class="view-w2">'+dataArray[1]+'</span></dd>';
-                }
-                $('#npopSearchListAdd dl').empty();
-                $('#npopSearchListAdd dl').append(html);
-                $('#npopSearchListAdd dd:first-child').addClass('npop-ddhover');
-                $('#npopSearchListAdd').show();
+				if(data.length == 0){
+					return ;	
+				}else{
+					for(var i=0; i<data.length; i++)
+					{
+						dataArray = data[i].split(' ');
+						html+='<dd><span class="view-w1">'+dataArray[0].substr(3)+'</span><span class="view-w2">'+dataArray[1]+'</span></dd>';
+					}
+					$('#npopSearchListAdd dl').empty();
+					$('#npopSearchListAdd dl').append(html);
+					$('#npopSearchListAdd dd:first-child').addClass('npop-ddhover');
+					$('#npopSearchListAdd').show();
+				}
             });
         }
     }else if(event.keyCode == 38 ){
@@ -163,7 +171,7 @@ $('#npopSearchListAdd dd').live('dblclick',function(){
 $('.subtitle_edit').live('blur', function(){
     var npopTitle = $(this).val();
     if(npopTitle == ''){
-        promptFun('内容不能为空');
+        promptFun('标题不能为空');
         setTimeout(function(){
             $('.subtitle_edit').focus();
         },100);
@@ -197,7 +205,7 @@ $(".edit_title_a a").click(function(){
  * 检测函数
  */
 var testFun = function(){
-    promptFun('内容不能超过25个字');
+    promptFun('标题不能超过25个字');
     setTimeout(function(){
         $('.subtitle_edit').focus();
     },100);
