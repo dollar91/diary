@@ -25,16 +25,14 @@ $(".select_ctime").change(function(){
 	}
 });
 
-//将闹钟时间转换为时间戳
+//将闹钟和显示时间转换为时间戳
 function getClockTime(clock_val){
 	var date = clock_val.slice(0,10);
-	var time;
-	if(clock_val.length>10){
-		time = clock_val.slice(11);
-	}else{
-		time = 0;
-	}
-	return getSeconds2(date,time);
+	var time = clock_val.slice(11);
+    var s='2012-08-22 12:12:12';
+    var a=clock_val.split(/[^0-9]/);
+    var d=new Date(a[0],a[1]-1,a[2],a[3],a[4],a[5]);
+	return d.getTime()/1000;
 }
 /**
  * 按键精灵

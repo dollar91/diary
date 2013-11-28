@@ -51,7 +51,6 @@
             }else{         
                 if(lastId == 0){
                     tipBox('已经是第一篇了');
-                    setTimeout(function(){$("#mask_iframe").show();},2000);
                     onlyIS = true;
                 }else{
                     onlyIS = false;
@@ -70,7 +69,6 @@
             }else{ 
                 if(nextId == 0){
                     tipBox('已经是最后篇了');
-                    setTimeout(function(){$("#mask_iframe").show();},2000);
                     onlyIS = true;
                 }else{        
                     onlyIS = false;      
@@ -151,10 +149,14 @@ function addData(saveBt){
     var pcate = -1;
     var display_date;
     var display_date2 = boxOuter.find('.ctime_edit').val();
+    var nowHour = getDomainTime().nowHour;//获取服务器小时
+    var nowMin = getDomainTime().nowMin;//获取服务器分钟
+    var nowSec= getDomainTime().nowSec;//获取服务器秒数
     //显示日记的时间
-    if(boxOuter.find('.select_ctime').val()=='无' || display_date2 == ''){
+    if(display_date2 == ''){
         display_date = 0;
     }else{
+        display_date2 +=' '+(nowHour<10?'0'+nowHour:nowHour)+':'+(nowMin<10?'0'+nowMin:nowMin)+':'+(nowSec<10?'0'+nowSec:nowSec);
         display_date = getClockTime(display_date2);
     }
     var clock;
@@ -189,15 +191,11 @@ function setDispaly_date(date){
     var nowYear = getDomainTime().nowYear;
     var nowMonth = getDomainTime().nowMonth;
     var nowDay = getDomainTime().nowDay;
-    var nowHour = getDomainTime().nowHour;//获取服务器小时
-    var nowMin = getDomainTime().nowMin;//获取服务器分钟
-    var nowSec= getDomainTime().nowSec;//获取服务器秒数
-    var display_time = ''+(nowHour<10?'0'+nowHour:nowHour)+':'+(nowMin<10?'0'+nowMin:nowMin)+':'+(nowSec<10?'0'+nowSec:nowSec); 
     if(date==0){//0的时候write入口，1的时候.add-note入口
-        display_date=nowYear+'-'+nowMonth+'-'+nowDay+' '+display_time;
+        display_date=nowYear+'-'+nowMonth+'-'+nowDay;
     }else{
         var datechange = dateChange(date);
-        display_date=datechange+' '+display_time;
+        display_date=datechange;
     }
     return display_date;
 }
@@ -224,12 +222,21 @@ $(".npop-close").click(function(){
 function tipBox(text){
     $("#success_box .delete-text").text(text);
     $("#success_box,#mask_iframe").show();
-    $(".konwBt").click(function(){
-        $("#success_box,#mask_iframe").hide();
-    });
-    setTimeout(function hide(){
-        $("#success_box,#mask_iframe").hide();
-    },2000);
+    if($("#show_box").is(":visible") == false){//有显示记事框存在的情况下
+        $(".konwBt").click(function(){
+            $("#success_box,#mask_iframe").hide();
+        });
+        setTimeout(function hide(){
+            $("#success_box,#mask_iframe").hide();
+        },2000);
+    }else{
+        $(".konwBt").click(function(){
+            $("#success_box").hide();
+        });
+        setTimeout(function hide(){
+            $("#success_box").hide();
+        },2000);
+    }
 }
 //设置
 $(".set-bt").click(function(){

@@ -404,12 +404,12 @@ $(function() {
                         filterDate(noteList);
                     });
                 } else {
-                    alert(errmsg);
+                    //alert(errmsg);
                     tipBox("修改记事失败！");
                 }
             },
             error: function(x, status) {
-                alert('error' + ' :' + status);
+                //alert('error' + ' :' + status);
             }
         });
     });
