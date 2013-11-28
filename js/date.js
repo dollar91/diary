@@ -132,7 +132,10 @@ $(function () {
       $("#noteBody tr").each(function(){
         $(this).find("td").eq(0).addClass('bg-date');
         $(this).find("td").eq(6).addClass('bg-date');
-      })
+      });
+      // if($("#jsShow").hasClass('cur')){
+      //   $(".tip-zx").parents('li').hide();
+      // }
   }
 
 //处理请求到的数据
@@ -161,8 +164,11 @@ function treatData(js,dy){
   if($(dy)[0].status == 0 && $(dy)[0].data.length != 0){
     var dyArr = $(dy)[0].data;
     var dyKeys = [];//用于存储订阅的关键字
-    var dytime = getFullDate(dyArr[0].ctime*1000).slice(0,8)+'0000';//当日的时间 
     var dylength = dyArr.length;
+    var nowYear = getDomainTime().nowYear;
+    var nowMonth = getDomainTime().nowMonth;
+    var nowDay = getDomainTime().nowDay;
+    var ctime = ''+nowYear+nowMonth+nowDay+'000000';
     for(var i=0 ; i<dyArr.length ; i++){
         var codename = dyArr[i].codename;
         for(var k=0 ; k<codename.length ; k++){
@@ -170,7 +176,7 @@ function treatData(js,dy){
         }
     }
     dyKeys = getTop(dyKeys,2).join(',');
-    diaryList.push({flag:2,ctime:dytime,keys:dyKeys,length:dylength});
+    diaryList.push({flag:2,ctime:ctime,keys:dyKeys,length:dylength});
   }
   dateSort(diaryList);
   return diaryList;
@@ -187,15 +193,45 @@ function render(nowYear,nowMonth){
     IS = false;
     setSelectYear(nowYear);
     setSelectMonth(nowMonth);
-    $.getJSON(jsUrl,{order: 'display_date desc'},function(js){   
-      $.getJSON(dyUrl,function(dy){
-        //初始化列表
-        var diaryList = treatData(js,dy);
-        createDiary(nowYear,nowMonth,diaryList); 
-        IS = true;
+    var jsKey = false, dyKey = false, js = {}, dy = {};    
+    $.ajax({
+          url: jsUrl,
+          data: {order: 'display_date desc'},             
+          type: 'get',               
+          dataType: 'json',
+          success: function(data){
+            js = data;
+            jsKey = true;
+            if (dyKey) {
+              var diaryList = treatData(js,dy);
+              createDiary(nowYear,nowMonth,diaryList); 
+              IS = true;
+            }
+          },
+          error: function(x, status) {
+            jsKey = true;
+            IS = true;
+          }
+      });    
+      $.ajax({
+            url: dyUrl,             
+            type: 'get',        
+            dataType: 'json',
+            success: function(data){
+              dy = data;
+              dyKey = true;
+              if (jsKey) {
+                var diaryList = treatData(js,dy);
+                createDiary(nowYear,nowMonth,diaryList); 
+                IS = true;
+              }
+            },
+            error: function(x, status) {
+                dyKey = true;
+                IS = true;
+            }
       });
-    });
-  }
+    }
 }
 
   //页面初始化
@@ -271,8 +307,12 @@ function render(nowYear,nowMonth){
       var nowYear = getDomainTime().nowYear;
       if(IS == false){
         return;
-      }else{
-      render(nowYear,nowMonth);
+      }else {
+        if(getMonth() == nowMonth && getYear()== nowYear){
+          return;
+        }else{
+        render(nowYear,nowMonth);
+        }
       }
   });
 

@@ -393,7 +393,7 @@ $(document).ready(function() {
     WdatePicker();
   });
   //处理顶部点击空白的时候
-  $(".top").click(function(){
+  $("body").click(function(){
     $("#year-select").hide();
     $("#month-select").hide();
     $(".set-ul").hide();
@@ -405,4 +405,5 @@ $(document).ready(function() {
   $(".set-ul li").click(function(){
     $(".set-ul").hide();
   });
+  
 });

@@ -91,6 +91,9 @@ $(function(){
             }
         }
         $("#noteListBox").html(noteListInner);
+        // if($("#jsShow").hasClass('cur')){
+        //   $(".tip-zx").parents('li').hide();
+        // }
     }
 
     //处理请求到的数据
@@ -121,6 +124,10 @@ $(function(){
           var dyArr = $(dy)[0].data;
           var dyKeys = [];//用于存储订阅的关键字
           var dylength = dyArr.length;
+          var nowYear = getDomainTime().nowYear;
+          var nowMonth = getDomainTime().nowMonth;
+          var nowDay = getDomainTime().nowDay;
+          var ctime = ''+nowYear+nowMonth+nowDay+'000000';
           for(var i=0 ; i<dyArr.length ; i++){
               var codename = dyArr[i].codename;
               for(var k=0 ; k<codename.length ; k++){
@@ -128,7 +135,7 @@ $(function(){
               }
           }
           dyKeys = getTop(dyKeys,3).join(',');
-          diaryList.push({flag:2,ctime:'20131118',keys:dyKeys,length:dylength});
+          diaryList.push({flag:2,ctime:ctime,keys:dyKeys,length:dylength});
         }
         dateSort(diaryList);
         return diaryList;
@@ -140,19 +147,55 @@ $(function(){
         IS = false;
         setSelectYear(nowYear);
         setSelectMonth(nowMonth);
-        $.getJSON(jsUrl,{order: 'display_date desc'},function(js){   
-          $.getJSON(dyUrl,function(dy){
-            var diaryList = treatData(js,dy);    
-            //默认列表
-            var NowDayList = countNoneList(nowYear,nowMonth,diaryList);
-            genDateList (nowYear,nowMonth,NowDayList);
-            IS = true;
-          });
-        }); 
+        var jsKey = false, dyKey = false, js = {}, dy = {};
+    
+      $.ajax({
+            url: jsUrl,
+            data: {order: 'display_date desc'},             
+            type: 'get',               
+            dataType: 'json',
+            success: function(data){
+              js = data;
+              jsKey = true;
+              if (dyKey) {
+                var diaryList = treatData(js,dy);    
+                //默认列表
+                var NowDayList = countNoneList(nowYear,nowMonth,diaryList);
+                genDateList (nowYear,nowMonth,NowDayList);
+                IS = true;
+              }
+            },
+            error: function(x, status) {
+              jsKey = true;
+              IS = true;
+            }
+        });
+      
+      $.ajax({
+            url: dyUrl,            
+            type: 'get',        
+            dataType: 'json',
+            success: function(data){
+              dy = data;
+              dyKey = true;
+              if (jsKey) {
+                var diaryList = treatData(js,dy);    
+                var NowDayList = countNoneList(nowYear,nowMonth,diaryList);
+                genDateList (nowYear,nowMonth,NowDayList);
+                IS = true;
+              }
+            },
+            error: function(x, status) {
+                dyKey = true;
+                IS = true;
+            }
+        });
       } 
     }
 
     //初始化的时候
+    setSelectYear(getDomainTime().nowYear);
+    setSelectMonth(getDomainTime().nowMonth);
     var IS = true;
     render(getDomainTime().nowYear,getDomainTime().nowMonth);
 
@@ -210,10 +253,16 @@ $(function(){
     }
   });
   $("#todayBt").live('click',function(){
+    var nowYear = getDomainTime().nowYear;
+    var nowMonth = getDomainTime().nowMonth;
     if(IS == false){
       return;
     }else{
-      render(getDomainTime().nowYear,getDomainTime().nowMonth);
+      if(getYear() == nowYear && getMonth()== nowMonth){
+        return;
+      }else{
+        render(nowYear,nowMonth);
+      }      
     }
   });
 
