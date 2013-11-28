@@ -192,7 +192,7 @@ function setDispaly_date(date){
     var nowMonth = getDomainTime().nowMonth;
     var nowDay = getDomainTime().nowDay;
     if(date==0){//0的时候write入口，1的时候.add-note入口
-        display_date=nowYear+'-'+nowMonth+'-'+nowDay;
+        display_date=nowYear+'-'+(nowMonth<10?'0'+nowMonth:nowMonth)+'-'+(nowDay<10?'0'+nowDay:nowDay);
     }else{
         var datechange = dateChange(date);
         display_date=datechange;
