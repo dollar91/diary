@@ -138,6 +138,15 @@ function editData(saveBt){
         clock_date:clock_date
     }
 }
+//点击添加记事按钮
+//添加记事框内容置为0
+function setAddData(){
+    $("#add_box .subtitle_edit").val('');//标题为空
+    $("#add_box .codename_edit").val('');//代码为空
+    $("#add_box .select_clock").val('有');//有闹钟
+    $("#add_box .clock_edit").val('');//闹钟为空
+    editor2.setContent('');//内容为空
+}
 //添加记事保存需要提交的数据
 function addData(saveBt){
 	var boxOuter = saveBt.parents(".note-pop");
@@ -201,6 +210,7 @@ function setDispaly_date(date){
 }
 //写记事
 $("#writeBtn").click(function(){  
+    setAddData();//填充内容设置为0
   $("#mask_iframe,#add_box").show();
   var display_date = setDispaly_date(0);
   $('#add_box .wdate_picker_date').val(display_date);
@@ -238,10 +248,3 @@ function tipBox(text){
         },2000);
     }
 }
-//设置
-$(".set-bt").click(function(){
-    $(".set-ul").show();
-});
-$(".set-ul li").click(function(){
-    $(".set-ul").hide();
-});

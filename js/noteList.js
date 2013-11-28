@@ -272,6 +272,14 @@ $(function(){
       });
     });
 
+  //通过列表去添加记事
+  $('.add-note').live('click',function(){
+    setAddData();//填充内容设置为0
+      $("#add_box,#mask_iframe").show();
+      var add_date = $(this).siblings(".notelist-date").text().slice(0,10).replace(/-/g,'');
+      var display_date = setDispaly_date(add_date);
+      $("#add_box .wdate_picker_date").val(display_date);
+    });
   //保存添加记事
   $("#add_saveBtn").click(function(){
     var adddata = addData($(this));

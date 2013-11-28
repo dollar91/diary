@@ -366,12 +366,6 @@ $(".note-day").live('mouseover',function(){
 $(".note-day").live('mouseout',function(){
   $(this).find('.add-note').hide();
 });
-$('.add-note').live('click',function(){
-    $("#add_box,#mask_iframe").show();
-    var add_date = $(this).siblings(".notelist-date").text().slice(0,10).replace(/-/g,'');
-    var display_date = setDispaly_date(add_date);
-    $("#add_box .wdate_picker_date").val(display_date);
-  });
 
 //获取当前的年份
 function getYear(){
@@ -397,5 +391,18 @@ $(document).ready(function() {
   });
   $('.wdate_picker_date').click(function() {
     WdatePicker();
+  });
+  //处理顶部点击空白的时候
+  $(".top").click(function(){
+    $("#year-select").hide();
+    $("#month-select").hide();
+    $(".set-ul").hide();
+  });
+  //设置
+  $(".set-bt").live('click',function(){
+    $(".set-ul").show();
+  });
+  $(".set-ul li").click(function(){
+    $(".set-ul").hide();
   });
 });

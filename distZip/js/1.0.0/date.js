@@ -346,6 +346,7 @@ function render(nowYear,nowMonth){
 
   //通过单元格去添加记事
   $('.add-note').live('click',function(){
+    setAddData();//填充内容设置为0
     $("#add_box,#mask_iframe").show();
     var date = $(this).parents('td').attr('date');
     var display_date = setDispaly_date(date);
