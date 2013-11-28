@@ -85,4 +85,7 @@
 .clock-content{width:260px;height:144px;background-position:0 -85px;margin:0 auto;}
 .clock-inner{padding:15px;}
 .clock-inner p{text-indent:2em;height:70px;overflow:hidden;}
-.konwBt{display:block;width:71px;text-align:center;background-position:0 -87px;height:28px;line-height:28px;margin-top:10px;margin-left:90px;}
+.konwBt{display:block;width:71px;text-align:center;background-position:0 -87px;height:28px;line-height:28px;margin-top:9px;margin-left:90px;}
+/*闹钟页面*/
+.clock-box{width:250px;height:135px;background-position:0 -85px;margin:0 auto;}
+.clock-box .konwBt{margin-left:75px;margin-top:8px;}

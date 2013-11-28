@@ -228,16 +228,18 @@ function render(nowYear,nowMonth){
     }      
   });
 
-  $("#year-bt").live('click', function () {
+   $("#year-bt").live('click', function () {
       var currentYear = parseInt($(this).attr('year'));
       genSelectYear(currentYear);
       yearSelect.show();
+      monthSelect.hide();
   });
 
   $("#month-bt").live('click', function () {
       var currentMonth = parseInt($(this).attr('month'));
       genSelectMonth(currentMonth);
       monthSelect.show();
+      yearSelect.hide();
   });
 
   $("#month-select ul li").live('click', function () {
