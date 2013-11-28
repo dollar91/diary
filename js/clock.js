@@ -10,4 +10,7 @@ $(function(){
         var content = removeHTMLTag($(data)[0].data.content);
         $("#clockContent").text(mCutStr(content,80));
     });
+    $("#konwBt").click(function(){
+    	external.closeWindow();
+    });
 })

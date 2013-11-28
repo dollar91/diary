@@ -331,12 +331,12 @@ function render(nowYear,nowMonth){
                   tipBox('修改成功！');
                   render(getYear(),getMonth());
               } else {
-                  alert(errmsg);
+                  //alert(errmsg);
                   tipBox("修改失败！");
               }
           },
           error: function(x, status) {
-              alert('error' + ' :' + status);
+              //alert('error' + ' :' + status);
               tipBox("修改失败！");
           }
       });
@@ -376,12 +376,12 @@ function render(nowYear,nowMonth){
                 tipBox('添加记事成功！');
                 render(getYear(),getMonth());
             } else {
-                alert(errmsg);
+                //alert(errmsg);
                 tipBox("添加记事失败！")
             }
         },
         error: function(x, status) {
-            alert('error' + ' :' + status);
+            //alert('error' + ' :' + status);
             tipBox("添加记事失败！");
         }
     });

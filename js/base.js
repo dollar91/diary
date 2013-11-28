@@ -6,20 +6,22 @@ window.UEDITOR_HOME_URL = "/zscript/ueditor/";
 var info = external.createObject("Passport");
 var userid = info.get("userid");
 var uname  = info.get("account");
+// alert(userid);
 // var userid = 110477887;
 // var uname = 'luck_dlp';
 // var userid = 137561046;
 // var uname = 'xiaonigu123';
 // var userid = 178072724;
 // var uname = '969988aaaaaa';
-//  alert(userid);
+// var userid = 127530836;
+// var uname = 'syqiong';
 var urlMap = {
   'diary': "http://sapi.10jqka.com.cn&controller=api&action=getStockDiary", // 获取所有记事
   'subscribe': "http://comment.10jqka.com.cn/api/subscribe.php", // 订阅
   'save': "http://blog.10jqka.com.cn/sapigsrj/index.php?module=blog&controller=api&action=post"
 };
 var jsUrl = "http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiary&userid="+userid+"&type=jsonp&charset=utf8&callback=?";
-var dyUrl = "http://flashcms.10jqka.com.cn/subscribe.php?act=getNews&userid="+userid+"&offset=0&num=14&jsoncallback=?";
+var dyUrl = "http://comment.10jqka.com.cn/api/subscribe.php?act=getNews&userid="+userid+"&jsoncallback=?";
 
 //以下用于日记列表和表格日历的共用部分
 //获取服务器时间
@@ -88,7 +90,7 @@ function genSelectMonth(currentMonth) {
 
 //计算上一个月的年份和月份
 function countLastDate(currentYear,currentMonth){
-  if (currentMonth > 2){
+  if (currentMonth >= 2){
     currentMonth--;
   }else{
     currentYear--;
@@ -386,28 +388,14 @@ function getCurrentPage(){
     return parseInt($("#currentPage").text(), 10);
 }
 
-//根据年-月-日获取时间戳
-function getSeconds2(date,time){
-  var dateStr = date.replace(/-/g,',');
-  var dateObj = new Date(dateStr);
-  var hour,min,sec;
-  if(time == 0){
-    hour = 0;
-    min = 0;
-    sec = 0;
-  }else{
-    hour = time.split(':')[0];
-    min = time.split(':')[1];
-    sec = time.split(':')[2];
-  }
-  var milliseconds = dateObj.getTime()+hour*60*60*1000+min*60*1000+sec*1000;
-  return milliseconds/1000;
-}
 $(document).ready(function() {
   // 日历控件初始化
-  $('.wdate_picker_time,.wdate_picker_date').click(function() {
+  $('.wdate_picker_time').click(function() {
     WdatePicker({
       dateFmt:'yyyy-MM-dd HH:mm:ss'
     });
+  });
+  $('.wdate_picker_date').click(function() {
+    WdatePicker();
   });
 });
