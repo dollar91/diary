@@ -36,6 +36,7 @@ $(function () {
             $stockExtentClose = $('#stockExtentClose'),
             $stockExtentcancel = $('#stockExtentcancel'),
             $stockExtentSure = $('#stockExtentSure'),
+			$stockExtentEm = $('#stockExtentEm'),
             $platePageCurNum = $('#platePageCurNum'),
             $platePageJumpNum = $('#platePageJumpNum'),
             $plateSearch = $('#plateSearch'),
@@ -196,6 +197,7 @@ $(function () {
         $stockSet.click(function () {
             $stockExtent.show();
             $stockExtentListInput.attr('checked', true);
+			$stockExtentEm.text('(适用全部股票)');
             updateStockCode = 'all';
         });
         /**
@@ -253,6 +255,7 @@ $(function () {
                     $stockExtentList.find('input:checkbox:eq(1)').attr('checked', true);
                 }
             }
+			$stockExtentEm.text('(适用单个股票)');
             $stockExtent.show();
         });
         /**

@@ -52,7 +52,7 @@ $(function () {
                         '<tr url="' , htmlData[i].url , '">' ,
                             '<td class="cks-td1">' , date , '</td>' ,
                             '<td class="cks-td2">' , htmlData[i].title , '</td>' ,
-                            '<td>' , source , '</td>' +
+                            '<td>' , source , '订阅</td>' +
                         '</tr>'].join("")
                     );
                 }
