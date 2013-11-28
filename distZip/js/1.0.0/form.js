@@ -47,7 +47,7 @@ $('#npopSearch').live('keyup', function(event){
             $.getJSON('http://news.10jqka.com.cn/public/index_keyboard.php?search-text='+searchText+'&type=stock&jsoncallback=?',function(data){
                 var html='',dataArray=[];
 				if(data.length == 0){
-					return ;	
+                    $('#npopSearchList').hide();
 				}else{
 					for(var i=0; i<data.length; i++)
 					{
@@ -113,7 +113,7 @@ $('#npopSearchAdd').live('keyup', function(event){
             $.getJSON('http://news.10jqka.com.cn/public/index_keyboard.php?search-text='+searchText+'&type=stock&jsoncallback=?',function(data){
                 var html='',dataArray=[];
 				if(data.length == 0){
-					return ;	
+                    $('#npopSearchListAdd').hide();
 				}else{
 					for(var i=0; i<data.length; i++)
 					{
