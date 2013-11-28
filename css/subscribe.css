@@ -24,11 +24,11 @@
 .subs-list .sli-bg{background-position:0 -60px;height:24px;line-height:24px;border:1px solid #bfbfbf;}
 .subs-list .sli-box{height:36px;line-height:36px;position:relative;}
 .sli-w1{width:120px;padding-left:5px;}
-.sli-w2{width:220px;color:#453f3f;}
+.sli-w2{width:180px;color:#453f3f;text-align:center;}
 a.sli-w2:hover{text-decoration:underline;}
-.sli-em{padding:0 5px 0 50px;}
-.sli-em2{padding-left:30px;}
-.sli-em3{padding:0 5px 0 40px;}
+.sli-em{padding-left:40px;}
+.sli-em2{padding:0 5px 0 0;}
+.sli-em3{padding-left:10px;}
 .sli-blue{color:#2d80e6;}
 .sli-add{background-position:-162px -62px;width:90px;height:24px;line-height:24px;padding-left:36px;margin-top:6px;color:#fff;}
 /*page*/

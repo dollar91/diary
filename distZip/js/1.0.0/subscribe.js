@@ -2,8 +2,10 @@
 $(function () {
     (function (jQuery) {
         "use strict";
+        window.UEDITOR_HOME_URL = "/zscript/ueditor/";
         var $=jQuery,
-            userId = encodeURIComponent('syqiong'),
+            info = external.createObject("Passport"),
+            userId = info.get("userid"),
             stockCurPage = 1,
             stockTotalPage,
             deleteStockCode,
@@ -74,9 +76,9 @@ $(function () {
                                 '<li>',
                                     '<span class="sli-w1">' , htmlData[i].code , htmlData[i].name , '</span>' ,
                                     '<a class="sli-w2" href="###">' ,
-                                        '<em class="sli-em2">' , list , '</em>' ,
+                                        '<em>' , list , '</em>' ,
                                     '</a>' ,
-                                    '<a class="sli-blue" href="###">取消订阅</a>' ,
+                                    '<a class="sli-blue sli-em" href="###">取消订阅</a>' ,
                                 '</li>'].join(''));
                         }
                         $subStockList.find('li:gt(1)').remove();
@@ -98,8 +100,8 @@ $(function () {
                                     '<span class="sli-w1" code="' , htmlData[i].code , '" type="' , htmlData[i].type , '">',
                                         htmlData[i].name , 
                                     '</span>' ,
-                                    '<span class="sli-w2"><em class="sli-em">每日新闻</em></span>' ,
-                                    '<a class="sli-blue" href="###">取消订阅</a>' ,
+                                    '<span class="sli-w2"><em class="sli-em3">每日新闻</em></span>' ,
+                                    '<a class="sli-blue sli-em" href="###">取消订阅</a>' ,
                                 '</li>'].join(''));
                         }
                         $subPlateList.find('li:gt(1)').remove();
@@ -515,11 +517,5 @@ $(function () {
                 $('#promptPop').fadeIn('3000').fadeOut('3000');
             }
         }
-        /**
-         * 返回日记
-         */
-        $('#return').live('click', function(){
-
-        });
     })($ || jQuery);
 });
