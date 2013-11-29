@@ -22,6 +22,7 @@
 .notelist-box{height:611px;overflow-y:auto;overflow-x:hidden;border:1px solid #bfbfbf;position:relative;}
 .notelist-title{height:24px;line-height:24px;background-position:0 -60px;position:relative;border-bottom:1px solid #bfbfbf;}
 .notelist-date{font-weight:bold;margin-left:20px;}
+.notelist-date-noli{margin-left:20px;}
 .notelist-box ul{border-bottom:1px solid #bfbfbf;}
 .notelist-box ul li{height:33px;line-height:33px;border-top:1px solid #e5e5e5;*height:31px;position:relative;_margin-bottom:-3px;cursor:pointer;}
 .notelist-box ul .bt0{border-top:0 none;}
@@ -60,6 +61,8 @@
 .color-js{color:#f9abab;}
 .color-zx{color:#7bd4fc;}
 .xq-time{margin-top:5px;}
+.tip-title{font-weight:bold;}
+.tip-codename span{color:#2d80e6}
 .xq-bt a{float:right;display:inline;margin-right:20px;color:#2d80e6;}
 .point{position:absolute;width:9px;height:16px;background:url(http://i.thsi.cn/images/blog/diary/point.png) no-repeat;top:50%;margin-top:-8px;left:-9px;}
 /*记事管理*/

@@ -53,14 +53,14 @@ $(function() {
             noteBody += '<tr pid=' + pageList[page - 1][i].pid + '>';
             noteBody += '<td><input class="delete-input" type="checkbox"></td>';
             noteBody += '<td>' + getFullTime(pageList[page - 1][i].ctime).timeDate + '</td>';
-            noteBody += '<td>' + mCutStr(pageList[page - 1][i].subtitle, 10) + '</td>';
+            noteBody += '<td style="text-align:left;padding-left:20px;">' + mCutStr(pageList[page - 1][i].subtitle, 14) + '</td>';
             noteBody += '<td>' + pageList[page - 1][i].codename + '</td>';
-            noteBody += '<td>' + mCutStr(pageList[page - 1][i].subcontent, 50) + '</td>';
+            noteBody += '<td style="text-align:left;padding-left:20px;">' + mCutStr(pageList[page - 1][i].subcontent, 50) + '</td>';
             noteBody += '<td>' + clock + '</td>';
             noteBody += '<td><a href="###" class="show_note">查看</a><a href="###" class="edit_note">编辑</a><a href="###" class="delete_note">删除</a></td>';
             noteBody += '</tr>';
         }
-        noteBody += '<tr class="tr-manage"><td><input type="checkbox" id="deleteAllInput"/></td><td colspan="3" style="text-align:left"><a href="###" id="deleteAll">删除所有</a></td><td colspan="3" style="text-align:right"><div class="page"><span class="currentpage"><span id="currentPage">' + page + '</span>/<span id="pageCount">' + pageCount + '</span>页</span><a class="sli-blue" href="###" id="prePage">上一页</a><a class="sli-blue" href="###" id="nextPage">下一页</a><input id="jumpTo" class="jump-input" type="text" /><a class="sli-blue" href="###" id="jumpBt">跳转</a></div></td></tr>';
+        noteBody += '<tr class="tr-manage"><td><input type="checkbox" id="deleteAllInput"/></td><td colspan="3" style="text-align:left"><a href="###" id="deleteAll">删除所选</a></td><td colspan="3" style="text-align:right"><div class="page"><span class="currentpage"><span id="currentPage">' + page + '</span>/<span id="pageCount">' + pageCount + '</span>页</span><a class="sli-blue" href="###" id="prePage">上一页</a><a class="sli-blue" href="###" id="nextPage">下一页</a><input id="jumpTo" class="jump-input" type="text" /><a class="sli-blue" href="###" id="jumpBt">跳转</a></div></td></tr>';
         $("#noteList").html(noteBody);
     }
 
@@ -182,23 +182,21 @@ $(function() {
         $("#dateFilter").live('click',function() {
             WdatePicker({
                 onpicking: function(dp) {
-                    var newDate = dp.cal.getNewDateStr().replace(/-/g, '');
+                    var date = dp.cal.getNewDateStr();
+                    var newDate = dp.cal.getNewDateStr().replace(/-/g, '');                  
                     var codenow = $("#gpSelect").val();
                     var clocknow = $("#clockSelect").val();
                     var searchStr = $("#searchStr").val();
                     treatFilter(newDate,codenow,clocknow,searchStr,noteList);
-                    $("#dateAll").show();
-                }    
+                },
+                onclearing:function(){//清空的时候
+                    var newDate = '';
+                    var codenow = $("#gpSelect").val();
+                    var clocknow = $("#clockSelect").val();
+                    var searchStr = $("#searchStr").val();
+                    treatFilter(newDate,codenow,clocknow,searchStr,noteList);
+                }           
             });
-        });
-        //所有日期
-        $("#dateAll").live('click',function(){
-            $("#dateFilter").val('');
-            var newDate = '所有日期';
-            var codenow = $("#gpSelect").val();
-            var clocknow = $("#clockSelect").val();
-            var searchStr = $("#searchStr").val();
-            treatFilter(newDate,codenow,clocknow,searchStr,noteList);
         });
         //股票
         $("#gpSelect").live('change',function() {

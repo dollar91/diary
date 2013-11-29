@@ -57,13 +57,13 @@ $(function(){
             if(DayList[i].length == 0) {
                 //为空
                 noteListInner += '<div class="note-day">';
-                noteListInner += '<div class="notelist-title"><p class="notelist-date">'+ timeDate + ''+weekDay+'</p><a class="add-note" href="###">添加记事<s class="add-icon"></s></a></div>';
+                noteListInner += '<div class="notelist-title"><p class="notelist-date-noli">'+ timeDate + ''+weekDay+'</p><a class="add-note" href="###">添加记事<s class="add-icon"></s></a></div>';
                 noteListInner += '</div>';
             } else if (DayList[i].length == 1 && DayList[i][0] == 'isempty') {
                 //添加连续的
                 if (i - 1 < 0 || !DayList[i-1] || !(DayList[i-1].length == 1 && DayList[i-1][0] == 'isempty')) {
                     noteListInner += '<div class="note-day">';
-                    noteListInner += '<div class="notelist-title"><p class="notelist-date">'+ timeDate + ''+weekDay;
+                    noteListInner += '<div class="notelist-date-noli"><p class="notelist-date">'+ timeDate + ''+weekDay;
                     continue;
                 };
                 if (DayList[i-1].length == 1 && DayList[i-1][0] == 'isempty') {
@@ -77,16 +77,17 @@ $(function(){
                 noteListInner += '<div class="note-day">';
                 noteListInner += '<div class="notelist-title"><p class="notelist-date">'+ timeDate + ''+weekDay+'</p><a class="add-note" href="###">添加记事<s class="add-icon"></s></a></div>';
                 noteListInner += '<ul>';
+                var clockList ='',jsList='',dyList='';
                 for(var j=0 ; j<DayList[i].length ; j++){
                     if(DayList[i][j].flag == 1){
-                        noteListInner += '<li class="js" pid=' + DayList[i][j].pid +'><i class="notelist-tip tip-js"></i><a href="###" class="notelist-text">'+mCutStr(DayList[i][j].subtitle,110)+'</a></li>'
+                        jsList += '<li class="js" pid=' + DayList[i][j].pid +'><i class="notelist-tip tip-js"></i><a href="###" class="notelist-text">'+mCutStr(DayList[i][j].subtitle,110)+'</a></li>'
                     }else if(DayList[i][j].flag == 3){
-                        noteListInner += '<li class="js" pid=' + DayList[i][j].pid +'><i class="notelist-tip tip-warning"><i class="clock-icon"></i></i><a href="###" class="notelist-text">'+mCutStr(DayList[i][j].subtitle,110)+'</a></li>'
+                        clockList += '<li class="js" pid=' + DayList[i][j].pid +'><i class="notelist-tip tip-warning"><i class="clock-icon"></i></i><a href="###" class="notelist-text">'+mCutStr(DayList[i][j].subtitle,110)+'</a></li>'
                     }else if(DayList[i][j].flag == 2){
-                        noteListInner += '<li><i class="notelist-tip tip-zx"></i><a target="_blank" href="http://blog.10jqka.com.cn/diary/ck-subscribe.html" class="notelist-text">'+DayList[i][j].keys+'等共'+DayList[i][j].length+'条'+'</a></li>'                    
+                        dyList += '<li><i class="notelist-tip tip-zx"></i><a target="_blank" href="http://blog.10jqka.com.cn/diary/ck-subscribe.html" class="notelist-text">'+DayList[i][j].keys+'等共'+DayList[i][j].length+'条'+'</a></li>'                    
                     }
                 }
-                noteListInner += '</ul>';
+                noteListInner += clockList+jsList+dyList+'</ul>';
                 noteListInner += '</div>';
             }
         }

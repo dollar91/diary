@@ -85,17 +85,18 @@ $(function () {
       if(diaryContent.length != 0){//有请求道数据的时候填充数据否则只填充td
         if(diaryContent[i].length != 0){//有内容
           tdHtml+='<ul>';
+          var clockList ='',jsList='',dyList='';
           for(var k=0 ; k<diaryContent[i].length;k++){
             if(diaryContent[i][k].flag == 1){
-              tdHtml+='<li pid="' + diaryContent[i][k].pid + '" flag="'+diaryContent[i][k].flag+'"><p class="tip-js"><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle,30)+'</a></p></li>';
+              jsList += '<li pid="' + diaryContent[i][k].pid + '" flag="'+diaryContent[i][k].flag+'"><p class="tip-js"><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle,30)+'</a></p></li>';
             }else if(diaryContent[i][k].flag == 3){
-              tdHtml+='<li pid="'+diaryContent[i][k].pid+'" flag="'+diaryContent[i][k].flag+'"><p class="tip-warning"><s class="clock-icon"></s><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle,20)+'</a></p></li>';
+              clockList += '<li pid="'+diaryContent[i][k].pid+'" flag="'+diaryContent[i][k].flag+'"><p class="tip-warning"><s class="clock-icon"></s><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle,20)+'</a></p></li>';
             }else if(diaryContent[i][k].flag == 2){
               var text = diaryContent[i][k].keys+'等共'+diaryContent[i][k].length+'条信息';
-              tdHtml+='<li flag="'+diaryContent[i][k].flag+'"><p class="tip-zx"><a href="http://blog.10jqka.com.cn/diary/ck-subscribe.html">' + text +'</a></p></li>';
+              dyList += '<li flag="'+diaryContent[i][k].flag+'"><p class="tip-zx"><a href="http://blog.10jqka.com.cn/diary/ck-subscribe.html">' + text +'</a></p></li>';
             }
           }//for
-          tdHtml+='</ul>';
+          tdHtml += clockList+jsList+dyList+'</ul>';
           }//if有数组
         }
         tdHtml+='</div></td>';
@@ -523,11 +524,11 @@ function render(nowYear,nowMonth){
         tipCodename = tipObj.tipCodename;
     $("#xqPid").val(tipPid);
     $(".xq-box .tip-title").text(tipTitle);
-    $(".xq-box .tip-content").text(tipContent);
+    $(".xq-box .tip-content").text(mCutStr(tipContent,100));
     if(tipCodename == ''){
       $(".xq-box .tip-codename").hide();
     }else{
-      $(".xq-box .tip-codename").show().text('相关股票：'+tipCodename);
+      $(".xq-box .tip-codename").show().html('相关股票：<span>'+tipCodename+'</span>');
     }
     if(tipClockText == '无'){
       $(".xq-box .xq-time").hide();
