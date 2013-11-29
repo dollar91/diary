@@ -127,7 +127,7 @@ $(function(){
           var nowYear = getDomainTime().nowYear;
           var nowMonth = getDomainTime().nowMonth;
           var nowDay = getDomainTime().nowDay;
-          var ctime = ''+nowYear+(nowMonth<10?'0'+month:month)+(nowDay<10?'0'+nowDay:nowDay)+'000000';
+          var ctime = ''+nowYear+(nowMonth<10?'0'+nowMonth:nowMonth)+(nowDay<10?'0'+nowDay:nowDay)+'000000';
           for(var i=0 ; i<dyArr.length ; i++){
               var codename = dyArr[i].codename;
               for(var k=0 ; k<codename.length ; k++){
