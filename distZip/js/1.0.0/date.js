@@ -87,9 +87,9 @@ $(function () {
           tdHtml+='<ul>';
           for(var k=0 ; k<diaryContent[i].length;k++){
             if(diaryContent[i][k].flag == 1){
-              tdHtml+='<li pid="' + diaryContent[i][k].pid + '" subcontent="'+diaryContent[i][k].subcontent+'" flag="'+diaryContent[i][k].flag+'" clockDate="'+diaryContent[i][k].clockDate+'"><p class="tip-js"><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle,30)+'</a></p></li>';
+              tdHtml+='<li pid="' + diaryContent[i][k].pid + '" flag="'+diaryContent[i][k].flag+'"><p class="tip-js"><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle,30)+'</a></p></li>';
             }else if(diaryContent[i][k].flag == 3){
-              tdHtml+='<li pid="'+diaryContent[i][k].pid+'" subcontent="'+diaryContent[i][k].subcontent+'" flag="'+diaryContent[i][k].flag+'" clockDate="'+diaryContent[i][k].clockDate+'"><p class="tip-warning"><s class="clock-icon"></s><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle,20)+'</a></p></li>';
+              tdHtml+='<li pid="'+diaryContent[i][k].pid+'" flag="'+diaryContent[i][k].flag+'"><p class="tip-warning"><s class="clock-icon"></s><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle,20)+'</a></p></li>';
             }else if(diaryContent[i][k].flag == 2){
               var text = diaryContent[i][k].keys+'等共'+diaryContent[i][k].length+'条信息';
               tdHtml+='<li flag="'+diaryContent[i][k].flag+'"><p class="tip-zx"><a href="http://blog.10jqka.com.cn/diary/ck-subscribe.html">' + text +'</a></p></li>';
@@ -133,14 +133,15 @@ $(function () {
         $(this).find("td").eq(0).addClass('bg-date');
         $(this).find("td").eq(6).addClass('bg-date');
       });
-      // if($("#jsShow").hasClass('cur')){
-      //   $(".tip-zx").parents('li').hide();
-      // }
+      if($("#jsShow").hasClass('cur')){
+        $(".tip-zx").parents('li').hide();
+      }
   }
 
 //处理请求到的数据
 function treatData(js,dy){
   var diaryList = [];//用于存储所有要填进去列表的数据，包括订阅和记事；
+  var jsList = [];//用于存储记事
   if($(js)[0].errorCode == 0){
       var jsArr = $(js)[0].data;
       for(var i=0 ; i<jsArr.length ; i++){
@@ -154,37 +155,39 @@ function treatData(js,dy){
         var clockDate;//提醒时间
         if(clock == 0){//没有闹钟提醒的时候
           clockDate = 0;
-          diaryList.push({flag:1,ctime:ctime,clockDate:clockDate,subtitle:subtitle,subcontent:subcontent,pid:pid,codename:codename}); 
+          jsList.push({flag:1,ctime:ctime,clockDate:clockDate,subtitle:subtitle,subcontent:subcontent,pid:pid,codename:codename}); 
         }else{
           clockDate = getFullDate(clock*1000);
-          diaryList.push({flag:3,ctime:ctime,clockDate:clockDate,subtitle:subtitle,subcontent:subcontent,pid:pid,codename:codename}); 
+          jsList.push({flag:3,ctime:ctime,clockDate:clockDate,subtitle:subtitle,subcontent:subcontent,pid:pid,codename:codename}); 
         }
       }
     }
-  if($(dy)[0].status == 0 && $(dy)[0].data.length != 0){
-    var dyArr = $(dy)[0].data;
-    var dyKeys = [];//用于存储订阅的关键字
-    var dylength = dyArr.length;
+  diaryList = jsList;
+  if($(dy)[0].status == 0 && $(dy)[0].data.total != 0){
+    var dylength = $(dy)[0].data.total;
+    var dyKeys = $(dy)[0].data.wd;//用于存储订阅的关键字
     var nowYear = getDomainTime().nowYear;
     var nowMonth = getDomainTime().nowMonth;
     var nowDay = getDomainTime().nowDay;
     var ctime = ''+nowYear+(nowMonth<10?'0'+nowMonth:nowMonth)+(nowDay<10?'0'+nowDay:nowDay)+'000000';
-    for(var i=0 ; i<dyArr.length ; i++){
-        var codename = dyArr[i].codename;
-        for(var k=0 ; k<codename.length ; k++){
-          dyKeys.push(codename[k]);
-        }
+    if(dyKeys.length == 3){
+      dyKeys = dyKeys[0]+','+dyKeys[1];
+    }else{
+      dyKeys = dyKeys.join(',');
     }
-    dyKeys = getTop(dyKeys,2).join(',');
     diaryList.push({flag:2,ctime:ctime,keys:dyKeys,length:dylength});
+    }
+    dateSort(diaryList);
+    return {
+      diaryList:diaryList,
+      jsList:jsList
+    }
   }
-  dateSort(diaryList);
-  return diaryList;
-}
 
 //页面渲染函数
+//设置全局的变量用于填充tip框。
+var tipList = [];
 function render(nowYear,nowMonth){
-
   //没有数据的时候或者有任何请求出错的时候先出现日历
   var diaryList = [];
   createDiary(nowYear,nowMonth,diaryList); 
@@ -193,46 +196,50 @@ function render(nowYear,nowMonth){
     IS = false;
     setSelectYear(nowYear);
     setSelectMonth(nowMonth);
-    var jsKey = false, dyKey = false, js = {}, dy = {};    
+  var jsKey = false, dyKey = false, js = {}, dy = {};  
     $.ajax({
-          url: jsUrl,
-          data: {order: 'display_date desc'},             
-          type: 'get',               
-          dataType: 'json',
-          success: function(data){
-            js = data;
-            jsKey = true;
-            if (dyKey) {
-              var diaryList = treatData(js,dy);
-              createDiary(nowYear,nowMonth,diaryList); 
-              IS = true;
-            }
-          },
-          error: function(x, status) {
-            jsKey = true;
-            IS = true;
-          }
-      });    
-      $.ajax({
-            url: dyUrl,             
-            type: 'get',        
-            dataType: 'json',
-            success: function(data){
-              dy = data;
-              dyKey = true;
-              if (jsKey) {
-                var diaryList = treatData(js,dy);
-                createDiary(nowYear,nowMonth,diaryList); 
-                IS = true;
-              }
-            },
-            error: function(x, status) {
-                dyKey = true;
-                IS = true;
-            }
-      });
-    }
-}
+      url: jsUrl,
+      data: {order: 'display_date desc'},             
+      type: 'get',               
+      dataType: 'json',
+      success: function(data){
+      js = data;
+      jsKey = true;
+      if (dyKey) {
+      var diaryList = treatData(js,dy).diaryList;
+      tipList = treatData(js,dy).jsList;
+      createDiary(nowYear,nowMonth,diaryList); 
+      IS = true;
+      }
+      },
+      error: function(x, status) {
+          jsKey = true;
+          IS = true;
+      }
+    });
+  
+    $.ajax({
+      url: dyUrl,
+      data: {order: 'display_date desc'},             
+      type: 'get',        
+      dataType: 'json',
+      success: function(data){
+      dy = data;
+      dyKey = true;
+      if (jsKey) {
+      var diaryList = treatData(js,dy).diaryList;
+      tipList = treatData(js,dy).jsList;
+      createDiary(nowYear,nowMonth,diaryList); 
+      IS = true;
+      }
+      },
+      error: function(x, status) {
+        dyKey = true;
+        IS = true;
+      }
+    });
+  }
+  }
 
   //页面初始化
   setSelectYear(getDomainTime().nowYear);
@@ -463,24 +470,38 @@ function render(nowYear,nowMonth){
   });
 
 
+  //现在是首页悬浮框效果
   $('#noteBody').delegate('li', 'mouseenter', function(e) {
+    var tipObj = {};
+    var tipPid = $(this).attr('pid');
+    var flag = $(this).attr('flag');
     if($(this).attr('flag') == 1 || $(this).attr('flag') == 3){
-      var tipContent = $(this).attr('subcontent');
-      var tipClockTime = $(this).attr('clockDate');
-      var tipPid = $(this).attr('pid');
-      var tipClockText = '提醒时间：';
-      if(tipClockTime == 0){
-          tipClockText+='无';
-      }else{
-          var tipYear = tipClockTime.slice(0,4);
-          var tipMonth = tipClockTime.slice(4,6);
-          var tipDate = tipClockTime.slice(6,8);
-          var tipHour = tipClockTime.slice(8,10);
-          var tipMin = tipClockTime.slice(10,12);
-          var tipSec = tipClockTime.slice(12);
-          tipClockText+=tipYear+'-'+tipMonth+'-'+tipDate+' '+tipHour+':'+tipMin+':'+tipSec;
+      for(var i=0 ; i<tipList.length ; i++){
+        if(tipList[i].pid == tipPid){       
+          var tipTitle = tipList[i].subtitle;
+          var tipContent = tipList[i].subcontent;
+          var tipCodename = tipList[i].codename;
+          var tipClockText;
+          var tipClockTime = tipList[i].clockDate;
+          if(tipClockTime == 0){
+            tipClockText='无';
+          }else{
+            var tipYear = tipClockTime.slice(0,4);
+            var tipMonth = tipClockTime.slice(4,6);
+            var tipDate = tipClockTime.slice(6,8);
+            var tipHour = tipClockTime.slice(8,10);
+            var tipMin = tipClockTime.slice(10,12);
+            var tipSec = tipClockTime.slice(12);
+            tipClockText=tipYear+'-'+tipMonth+'-'+tipDate+' '+tipHour+':'+tipMin+':'+tipSec;
+          }
+        }
       }
-        showTip($(this), tipContent , tipClockText , tipPid);
+      tipObj.tipPid = tipPid;
+      tipObj.tipContent = tipContent;
+      tipObj.tipTitle = tipTitle;
+      tipObj.tipClockText = tipClockText;
+      tipObj.tipCodename = tipCodename;
+      showTip($(this), tipObj);
     }
   })
 
@@ -494,33 +515,47 @@ function render(nowYear,nowMonth){
       $(this).hide();
   })
 
-
-  function showTip(el, content,tipClockText, pid, remind ) {
-      var left = $(el).position().left;
-      var top  = $(el).position().top;
-      var parentWidth = $('#noteBody').width();
-      var elWidth = $(el).width();
-      var targetLeft;
-      if (left > parentWidth / 2) {
-          targetLeft = left - $('.xq-box').outerWidth();
-          $('.xq-box').find('.point').css({
-              left: $('.xq-box').outerWidth() - 2,
-              background: 'url(images/point-r.png)'
-          })
-      } else {
-          targetLeft = left + elWidth;
-          $('.xq-box').find('.point').css({
-              left: -9,
-              background: 'url(http://i.thsi.cn/images/blog/diary/point.png)'
-          })
-      }
-      var targetHeight = $('.xq-box').find('p').eq(0).html(content).end().end().height(); 
-      $(".xq-time").text(tipClockText);
-      $("#xqPid").val(pid);
-      $('.xq-box').css({
-          left: targetLeft,
-          top : top - targetHeight / 2 + $(el).height() / 2
-      }).show();
+  function showTip(el, tipObj ) {
+    var tipPid = tipObj.tipPid,
+        tipContent = tipObj.tipContent,
+        tipTitle = tipObj.tipTitle,
+        tipClockText = tipObj.tipClockText,
+        tipCodename = tipObj.tipCodename;
+    $("#xqPid").val(tipPid);
+    $(".xq-box .tip-title").text(tipTitle);
+    $(".xq-box .tip-content").text(tipContent);
+    if(tipCodename == ''){
+      $(".xq-box .tip-codename").hide();
+    }else{
+      $(".xq-box .tip-codename").show().text('相关股票：'+tipCodename);
+    }
+    if(tipClockText == '无'){
+      $(".xq-box .xq-time").hide();
+    }else{
+      $(".xq-box .xq-time").show().text('提醒时间：'+tipClockText);
+    }
+    var left = $(el).position().left;
+    var top  = $(el).position().top;
+    var parentWidth = $('#noteBody').width();
+    var elWidth = $(el).width();
+    var targetLeft;
+    if (left > parentWidth / 2) {
+        targetLeft = left - $('.xq-box').outerWidth();
+        $('.xq-box').find('.point').css({
+            left: $('.xq-box').outerWidth() - 2,
+            background: 'url(images/point-r.png)'
+        })
+    } else {
+        targetLeft = left + elWidth;
+        $('.xq-box').find('.point').css({
+            left: -9,
+            background: 'url(http://i.thsi.cn/images/blog/diary/point.png)'
+        })
+    }   
+  var targetHeight = $(".xq-box").height();
+    $('.xq-box').css({
+        left: targetLeft,
+        top : top - targetHeight / 2 + $(el).height() / 2
+    }).show();
   }
-
 })

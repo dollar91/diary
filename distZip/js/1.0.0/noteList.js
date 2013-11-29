@@ -91,9 +91,9 @@ $(function(){
             }
         }
         $("#noteListBox").html(noteListInner);
-        // if($("#jsShow").hasClass('cur')){
-        //   $(".tip-zx").parents('li').hide();
-        // }
+        if($("#jsShow").hasClass('cur')){
+          $(".tip-zx").parents('li').hide();
+        }
     }
 
     //处理请求到的数据
@@ -120,21 +120,14 @@ $(function(){
               }
             }
           }
-        if($(dy)[0].status == 0 && $(dy)[0].data.length != 0){//有订阅内容才会去执行
-          var dyArr = $(dy)[0].data;
-          var dyKeys = [];//用于存储订阅的关键字
-          var dylength = dyArr.length;
+        if($(dy)[0].status == 0 && $(dy)[0].data.total != 0){//有订阅内容才会去执行
+          var dylength = $(dy)[0].data.total;
+          var dyKeys = $(dy)[0].data.wd;//用于存储订阅的关键字
           var nowYear = getDomainTime().nowYear;
           var nowMonth = getDomainTime().nowMonth;
           var nowDay = getDomainTime().nowDay;
           var ctime = ''+nowYear+(nowMonth<10?'0'+nowMonth:nowMonth)+(nowDay<10?'0'+nowDay:nowDay)+'000000';
-          for(var i=0 ; i<dyArr.length ; i++){
-              var codename = dyArr[i].codename;
-              for(var k=0 ; k<codename.length ; k++){
-                  dyKeys.push(codename[k]);
-              }
-          }
-          dyKeys = getTop(dyKeys,3).join(',');
+          dyKeys = dyKeys.join(',');
           diaryList.push({flag:2,ctime:ctime,keys:dyKeys,length:dylength});
         }
         dateSort(diaryList);
