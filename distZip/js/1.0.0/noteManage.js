@@ -55,7 +55,7 @@ $(function() {
             noteBody += '<td>' + getFullTime(pageList[page - 1][i].ctime).timeDate + '</td>';
             noteBody += '<td style="text-align:left;padding-left:20px;">' + mCutStr(pageList[page - 1][i].subtitle, 14) + '</td>';
             noteBody += '<td>' + pageList[page - 1][i].codename + '</td>';
-            noteBody += '<td style="text-align:left;padding-left:20px;">' + mCutStr(pageList[page - 1][i].subcontent, 50) + '</td>';
+            noteBody += '<td style="text-align:left;padding-left:20px;">' + mCutStr(pageList[page - 1][i].subcontent, 40) + '</td>';
             noteBody += '<td>' + clock + '</td>';
             noteBody += '<td><a href="###" class="show_note">查看</a><a href="###" class="edit_note">编辑</a><a href="###" class="delete_note">删除</a></td>';
             noteBody += '</tr>';
@@ -356,8 +356,13 @@ $(function() {
                     deleteNum++;
                 }
             }
-            pidStr = pidStr.substring(0, pidStr.length - 1);
-            deleteIf(pidStr);
+            if(deleteNum == 0){
+                tipBox('您尚未选择任何记事！');
+                return;
+            }else{
+                pidStr = pidStr.substring(0, pidStr.length - 1);
+                deleteIf(pidStr);
+            }   
         });
 
     //查看
@@ -411,5 +416,8 @@ $(function() {
             }
         });
     });
-
+//自动获取股票
+  var autoCode = getUrlParam('code');
+  var diaryUrl = 'http://blog.10jqka.com.cn/diary/index.html?code='+autoCode;//设置日历视图链接地址 
+  $(".subs-return").eq(0).attr('href',diaryUrl); 
 });

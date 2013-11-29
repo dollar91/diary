@@ -194,12 +194,7 @@ $('.subtitle_edit').live('keydown', function(event){
  */
 $(".edit_title_a a").click(function(){
     var this_title = $(this).text();
-    var subtitle_edit = $(this).parents('.cnpop-content').find(".subtitle_edit");
-    var new_title = subtitle_edit.val()+this_title;
-    subtitle_edit.val(new_title);
-    if(new_title.length > 25){
-        testFun();
-    }
+    $(this).parents('.cnpop-content').find(".subtitle_edit").val(this_title);
 });
 /**
  * 检测函数

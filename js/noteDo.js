@@ -141,9 +141,14 @@ function editData(saveBt){
 //点击添加记事按钮
 //添加记事框内容置为0
 function setAddData(){
+    var autoCode = getUrlParam('code');
     $("#add_box .subtitle_edit").val('');//标题为空
-    $("#add_box .codename_edit").val('');//代码为空
-    $("#add_box .select_clock").val('有');//有闹钟
+    if(autoCode == '1A0001'){
+        $("#add_box .codename_edit").val('');//代码为空
+    }else{
+        $("#add_box .codename_edit").val(autoCode);//代码不为空
+    }
+    $("#add_box .select_clock").val('无');//无闹钟
     $("#add_box .clock_edit").val('');//闹钟为空
     editor2.setContent('');//内容为空
 }
@@ -238,13 +243,13 @@ function tipBox(text){
         });
         setTimeout(function hide(){
             $("#success_box,#mask_iframe").hide();
-        },2000);
+        },3000);
     }else{
         $(".konwBt").click(function(){
             $("#success_box").hide();
         });
         setTimeout(function hide(){
             $("#success_box").hide();
-        },2000);
+        },3000);
     }
 }

@@ -234,70 +234,6 @@ function getFullTime(time){
     return{timeDate:timeDate,timeHour:timeHour,weekDay:weekDay}
 }
 
-//选出数组中出现次数最多的元素
-function getTop(arr, size)
-{
-  var value = []; //作为元素的计数器
-  var key = []; //用于对应元素和计算器的位置
-  for (var i in arr) {
-    if(!Array.prototype.indexOf){//IE6,7不支持数组的indexOf
-      Array.prototype.indexOf = function(val){
-      var value = this;
-      for(var i =0; i < value.length; i++){
-        if(value[i] == val) return i;
-      }
-      return -1;
-    };
-  }
-    var indexOfValue = key.indexOf(arr[i]);
-    if (indexOfValue == -1) {
-      key.push(arr[i]);
-      value.push(1);
-    } else {
-      value[indexOfValue]++;
-    }
-  }
-  
-  var obj = quickSort(key, value);
-  var rtn = [];
-  var len = obj.key.length;
-  for (var i = 0; i < size && i < len; i++) {
-    rtn.push(obj.key[i]);
-  }
-  return rtn;
-}
-
-function quickSort(key, value)
-{
-　　if (value.length <= 1) { 
-    return {
-      key : key,
-      value : value
-    };
-  }
-　　var pivotIndex = Math.floor(value.length / 2);
-  var pivotKey = key.splice(pivotIndex, 1)[0];
-　　var pivotValue = value.splice(pivotIndex, 1)[0];
-　　var leftValue = [];
-　　var rightValue = [];
-  var leftKey = [];
-　　var rightKey = [];
-　　for (var i = 0; i < value.length; i++) {
-　　　　if (value[i] > pivotValue) {
-      leftKey.push(key[i]);
-      leftValue.push(value[i]);
-　　　　} else {
-      rightKey.push(key[i]);
-      rightValue.push(value[i]);
-　　　　}
-　　}
-  var left = quickSort(leftKey, leftValue);
-  var right = quickSort(rightKey, rightValue);
-  return {
-    key : left.key.concat([pivotKey], right.key),
-    value : left.value.concat([pivotValue], right.value)
-  }
-}
 
 //去除数组的重复元素
 function unique(data){
@@ -328,6 +264,12 @@ function getFieldValue(field,url){
       return fieldvalue;
     }
   }
+}
+
+//获取location.url中的某一个字段值
+function getUrlParam(item) {
+    var value = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)", "i"));
+    return value ? value[1] : value;
 }
 
 //过滤字符串中的html标签

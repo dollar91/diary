@@ -11,7 +11,7 @@
 .note-th li{float:left;display:inline;width:120px;border-left:1px solid #bfbfbf;text-align:center;line-height:24px;background-position:0 -60px;}
 .note-border{border:1px solid #bfbfbf;position:absolute;top:0;left:0;width:846px;height:610px;}
 .bg-date{background-color:#f5f5f5;}
-.set-ul{position:absolute;z-index:1000;width:100px;height:120px;top:42px;right:25px;background-color:#fff;overflow:hidden;border:1px solid #ababab;display:none;}
+.set-ul{position:absolute;z-index:1000;width:100px;height:120px;top:45px;right:25px;background-color:#fff;overflow:hidden;border:1px solid #ababab;display:none;}
 .set-ul li{padding:0 2px;}
 .set-ul li a{height:24px;line-height:24px;display:block;padding-left:15px;}
 .set-ul .cur a,.set-ul li a:hover{background-color:#e0e0e0;}
@@ -63,14 +63,14 @@
 .xq-time{margin-top:5px;}
 .tip-title{font-weight:bold;}
 .tip-codename span{color:#2d80e6}
-.xq-bt a{float:right;display:inline;margin-right:20px;color:#2d80e6;}
+.xq-bt a{float:right;display:inline;margin-right:10px;color:#2d80e6;}
 .point{position:absolute;width:9px;height:16px;background:url(http://i.thsi.cn/images/blog/diary/point.png) no-repeat;top:50%;margin-top:-8px;left:-9px;}
 /*记事管理*/
 .note-manage-search{height:20px;padding:8px 10px 10px;overflow:hidden;}
 .note-manage-fl{width:365px;overflow:hidden;}
 .note-manage-fr{width:260px;overflow:hidden;}
 .note-manage-fl select{border:1px solid #bfbfbf;color:#453f3f;}
-.search-input{width:180px;height:20px;border:1px solid #bfbfbf;padding:0 10px;}
+.search-input{width:180px;height:20px;line-height:20px;border:1px solid #bfbfbf;padding:0 10px;}
 .search-bt{width:38px;height:24px;background-position:-109px -90px;text-align:center;line-height:24px;color:#453f3f;display:inline-block;vertical-align:middle;}
 .manage-table{line-height:25px;padding:0 10px;}
 .manage-table table{width:100%;}

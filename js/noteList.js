@@ -63,7 +63,7 @@ $(function(){
                 //添加连续的
                 if (i - 1 < 0 || !DayList[i-1] || !(DayList[i-1].length == 1 && DayList[i-1][0] == 'isempty')) {
                     noteListInner += '<div class="note-day">';
-                    noteListInner += '<div class="notelist-date-noli"><p class="notelist-date">'+ timeDate + ''+weekDay;
+                    noteListInner += '<div class="notelist-title"><p class="notelist-date-noli">'+ timeDate + ''+weekDay;
                     continue;
                 };
                 if (DayList[i-1].length == 1 && DayList[i-1][0] == 'isempty') {
@@ -384,5 +384,12 @@ $(function(){
     var pid = $(this).parents(".note-pop").find("#pidVal").val();
     var deleteUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=deletepost&userid=' + userid + '&&pid=' + pid + '&type=jsonp&callback=?';
     deleteIf(pid);
-  });    
+  });  
+
+    //自动获取股票
+  var autoCode = getUrlParam('code');
+  var manageUrl = $(".set-ul a").eq(0).attr('href')+'?code='+autoCode;//设置记事管理地址
+  var diaryUrl = $(".set-ul a").eq(1).attr('href')+'?code='+autoCode;//设置日历视图链接地址 
+  $(".set-ul a").eq(0).attr('href',manageUrl); 
+  $(".set-ul a").eq(1).attr('href',diaryUrl); 
 });

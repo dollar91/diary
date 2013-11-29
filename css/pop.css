@@ -18,8 +18,10 @@
 .npop-title{float:left;}
 .npop-title strong{font-size:14px;color:#fff;float:left;}
 .npop-icon{background-position:-342px -21px;width:22px;height:22px;float:left;}
-.npop-close{background-position:-280px -26px;width:14px;height:16px;float:right;}
+.npop-close{background-position:-280px -26px;width:14px;height:16px;float:right;margin-right:3px;}
 .edit{display:none;}
+.edit_title_a{padding-left:55px;}
+#add_box .clock_edit{display:none;}
 /*delete-box*/
 .delete-box,.success-box{background:#d47e7e;width:260px;height:170px;overflow:hidden;padding:3px;position:fixed;top:50%;left:50%;margin-left:-130px;margin-top:-85px;z-index:100001;}
 .delete-box,.success-box{_position:absolute;_top:expression(eval(document.documentElement.scrollTop)+100);_margin-top:0;}
@@ -35,7 +37,7 @@
 .npop-content span,.npop-content input,.npop-content select,.cnpop-content span,{vertical-align:middle;}
 .npop-span{width:50px;text-align:right;display:inline-block;}
 .npop-vt{vertical-align:top;float:left;margin-right:6px;}
-.npop-input,.npop-time,.npop-minute,.cnpop-textarea{height:20px;line-height:20px;padding:0 2px;border:1px solid #bfbfbf;}
+.npop-input,.npop-time,.npop-minute,.cnpop-textarea{height:20px;line-height:20px;padding:0 2px;border:1px solid #d4d4d4;}
 .npop-input,.npop-textarea{width:400px;}
 .npop-time{width:80px;}
 .wdate_picker_time{width:120px;}

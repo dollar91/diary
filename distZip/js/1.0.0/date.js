@@ -76,12 +76,20 @@ $(function () {
     var diaryTime = diaryObj.diaryTime;//完整的日期 年月日星期
     var diaryLength = diaryObj.diaryLength;//日历中的天数
     var tdContent = [];//单元格填充的内容数组
+    var nowYear = getDomainTime().nowYear;
+    var nowMonth = getDomainTime().nowMonth;
+    var nowDay = getDomainTime().nowDay;
+    var nowDate = ''+nowYear+(nowMonth<10?'0'+nowMonth:nowMonth)+(nowDay<10?'0'+nowDay:nowDay);
     for(var i=0 ; i<diaryLength ; i++ ){
       var tdHtml = '';
       var fulldate = diaryTime[i].fulldate;//20131115
       var weekDay = diaryTime[i].weekDay;//星期几
       var dateOnly = diaryTime[i].dateOnly;//几号
-      tdHtml+='<td date="'+ fulldate + '"weekday=' + weekDay + '><div class="td-inner"><div class="date-num">' + dateOnly +'<a href="###" class="add-note"><s class="add-icon"></s>添加记事</a></div>';
+      if(fulldate == nowDate){
+        tdHtml+='<td class="selected" date="'+ fulldate + '"weekday=' + weekDay + '><div class="td-inner"><div class="td-height"><div class="date-num">' + dateOnly +'<a href="###" class="add-note"><s class="add-icon"></s>添加记事</a></div>';
+      }else{
+        tdHtml+='<td date="'+ fulldate + '"weekday=' + weekDay + '><div class="td-inner"><div class="td-inner"><div class="date-num">' + dateOnly +'<a href="###" class="add-note"><s class="add-icon"></s>添加记事</a></div>';
+      }
       if(diaryContent.length != 0){//有请求道数据的时候填充数据否则只填充td
         if(diaryContent[i].length != 0){//有内容
           tdHtml+='<ul>';
@@ -99,7 +107,7 @@ $(function () {
           tdHtml += clockList+jsList+dyList+'</ul>';
           }//if有数组
         }
-        tdHtml+='</div></td>';
+        tdHtml+='</div></div></td>';
         tdContent.push(tdHtml);
       }//for
     return tdContent;
@@ -134,6 +142,9 @@ $(function () {
         $(this).find("td").eq(0).addClass('bg-date');
         $(this).find("td").eq(6).addClass('bg-date');
       });
+      //处理蓝框框 
+      var tdHeight = $(".selected").height();
+      $(".selected .td-height").css("height",tdHeight-2);
       if($("#jsShow").hasClass('cur')){
         $(".tip-zx").parents('li').hide();
       }
@@ -559,4 +570,10 @@ function render(nowYear,nowMonth){
         top : top - targetHeight / 2 + $(el).height() / 2
     }).show();
   }
+  //自动获取股票
+  var autoCode = getUrlParam('code');
+  var manageUrl = $(".set-ul a").eq(0).attr('href')+'?code='+autoCode;//设置记事管理地址
+  var listUrl = $(".set-ul a").eq(1).attr('href')+'?code='+autoCode;//设置记事列表的链接地址
+  $(".set-ul a").eq(0).attr('href',manageUrl);
+  $(".set-ul a").eq(1).attr('href',listUrl);
 })
