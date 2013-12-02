@@ -194,6 +194,7 @@ $(function() {
                     var codenow = $("#gpSelect").val();
                     var clocknow = $("#clockSelect").val();
                     var searchStr = $("#searchStr").val();
+                    $("#dateFilter").val('所有日期');
                     treatFilter(newDate,codenow,clocknow,searchStr,noteList);
                 }           
             });
@@ -301,10 +302,10 @@ $(function() {
 
     //编辑
     $(".edit_note").live('click', function() {
-        $(".mask,#edit_box,#mask_iframe").show();
         var pid = $(this).parents('tr').attr('pid');
         var currentUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiaryDetail&userid=' + userid + '&pid=' + pid + '&type=jsonp&charset=utf8&callback=?';
         $.getJSON(currentUrl, function(data) {
+            $(".mask,#edit_box,#mask_iframe").show();
             editNews(data, currentUrl);
         });
     });

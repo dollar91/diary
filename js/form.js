@@ -11,7 +11,7 @@ $(".select_clock").change(function(){
 	if($(this).val() == '无'){
 		boxOuter.find(".clock_edit").hide().val('');
 	}else{
-		boxOuter.find(".clock_edit").show();
+		boxOuter.find(".clock_edit").show().click();
 	}
 });
 
@@ -19,7 +19,7 @@ $(".select_clock").change(function(){
 $(".select_ctime").change(function(){
 	var boxOuter = $(this).parents('.note-pop'); 
 	if($(this).val() == '无'){
-		boxOuter.find(".ctime_edit").hide();
+		boxOuter.find(".ctime_edit").hide().val('');
 	}else{
 		boxOuter.find(".ctime_edit").show();
 	}

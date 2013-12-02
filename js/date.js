@@ -347,11 +347,11 @@ function render(nowYear,nowMonth){
 
 //修改记事
   $("#editBtn").live('click',function(){
-    $("#edit_box,#mask_iframe").show();
     $("#show_box").hide();
     var pid = $('#pidVal').val();
     var currentUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiaryDetail&userid='+userid+'&pid='+pid+'&type=jsonp&charset=utf8&callback=?';
      $.getJSON(currentUrl,function(data){
+      $("#edit_box,#mask_iframe").show();
       editNews(data,currentUrl);
     });
   });
@@ -535,7 +535,7 @@ function render(nowYear,nowMonth){
         tipCodename = tipObj.tipCodename;
     $("#xqPid").val(tipPid);
     $(".xq-box .tip-title").text(tipTitle);
-    $(".xq-box .tip-content").text(mCutStr(tipContent,100));
+    $(".xq-box .tip-content").html(mCutStr(tipContent,100));
     if(tipCodename == ''){
       $(".xq-box .tip-codename").hide();
     }else{

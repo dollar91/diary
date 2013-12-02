@@ -85,6 +85,12 @@
 .prompt-pop{padding:20px 30px;text-align:center;background:#abcdef;font-size:16px;font-weight:bold;position:absolute;top:50%;left:50%;margin:-20px 0 0 -20px; z-index:1000001;}
 
 
-
+/*修改添加记事框框样式*/
+#add_box .cnpop-content{padding:10px 5px 0px 20px;height:495px;overflow:hidden;}
+#add_box .cnpop-content p{margin-bottom:8px;}
+#add_box .npop-textarea{height:200px;}
+#add_box .textarea-box{height:260px;margin-bottom:10px;}
+#add_box .npop-btns{margin-top:20px;}
+#add_box .edit_title_a{margin-top:-5px;position:relative;}
 
 

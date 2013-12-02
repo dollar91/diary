@@ -269,11 +269,11 @@ $(function(){
 
   //编辑记事
   $("#editBtn").click(function(){
-    $("#edit_box,#mask_iframe").show();
     $("#show_box").hide();
     var pid = $('#pidVal').val();
     var currentUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiaryDetail&userid='+userid+'&pid='+pid+'&type=jsonp&charset=utf8&callback=?';
     $.getJSON(currentUrl,function(data){
+      $("#edit_box,#mask_iframe").show();
       editNews(data,currentUrl);
     });
   });
