@@ -233,24 +233,30 @@ function render(nowYear,nowMonth){
         IS = true;
       }
     });
-  
-    $.ajax({
-      url: dyUrl,             
-      type: 'get',        
-      dataType: 'json',
-      timeout:5000,
-      success: function(data) {
-        dy = data;
-      },
-      complete: function(){        
+    //判断是否是本年本月，若是本年本月则不必再请求订阅部分
+    if(nowYear == getDomainTime().nowYear && nowMonth == getDomainTime().nowMonth){
+        $.ajax({
+          url: dyUrl,             
+          type: 'get',        
+          dataType: 'json',
+          timeout:5000,
+          success: function(data) {
+            dy = data;
+          },
+          complete: function(){        
+            dyKey = true;
+            if (jsKey) {
+              renderDiary(js, dy, nowYear, nowMonth);
+            }
+            IS = true;
+          }      
+        });
+      }else{
         dyKey = true;
-        if (jsKey) {
-          renderDiary(js, dy, nowYear, nowMonth);
-        }
         IS = true;
-      }      
-    });
-  }
+        return;
+      }
+    }
   }
 
   //页面初始化
