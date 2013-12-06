@@ -86,6 +86,11 @@ $(function () {
                         $addStockBox.after(html.join(''));
                         $stockPageCurNum.text([page , '/' , stockTotalPage , '页'].join(''));
                     }
+                    if(htmlData.length > 0){
+                        $deleteAllStock.show();
+                    }else{
+                        $deleteAllStock.hide();
+                    }
                 } else if (block === 'plate') {
                     plateTotalPage = data.total;
                     if (plateTotalPage === 0) {
@@ -108,6 +113,11 @@ $(function () {
                         $subPlateList.find('li:gt(1)').remove();
                         $addPlateBox.after(html.join(''));
                         $platePageCurNum.text([page , '/' , plateTotalPage , '页'].join(''));
+                    }
+                    if(htmlData.length > 0){
+                        $('#deleteAllPlate').show();
+                    }else{
+                        $('#deleteAllPlate').hide();
                     }
                 }
             }, 'json');
@@ -386,7 +396,19 @@ $(function () {
         $('#plateSearchClose').click(function () {
             $plateSearch.hide();
             $plateSearchList.hide();
+            $plateSearchInput.val('输代码/名称，双击添加');
+        });
+        /**
+         * 板块input获得焦点
+         */
+        $plateSearchInput.focus(function(){
             $plateSearchInput.val('');
+        });
+        /**
+         * 板块input失去焦点
+         */
+        $plateSearchInput.blur(function(){
+            $plateSearchInput.val('输代码/名称，双击添加');
         });
         /**
          * 板块订阅实现按键精灵

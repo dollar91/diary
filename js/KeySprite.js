@@ -88,13 +88,21 @@
             //点击隐藏Search
             $stockSearchClose.click(function () {
                 me.$search.hide();
-                me.$searchInput.val('');
+                me.$searchInput.val('输代码/名称，双击添加');
             });
         },
 
         initSearchInputEvent:function(){
             var me = this;
             var $searchInput = this.$searchInput;
+
+            $searchInput.focus(function(){
+                $searchInput.val('');
+            });
+
+            $searchInput.blur(function(){
+                $searchInput.val('输代码/名称，双击添加');
+            });
 
             $searchInput.keyup(function (event) {
                 me.inputKeyup(event);
