@@ -121,7 +121,7 @@ $(function(){
               }
             }
           }
-        if($(dy)[0].status == 0 && $(dy)[0].data.total != 0){//有订阅内容才会去执行
+        if(dy && $(dy)[0] && $(dy)[0].status == 0 && $(dy)[0].data.total != 0){//有订阅内容才会去执行
           var dylength = $(dy)[0].data.total;
           var dyKeys = $(dy)[0].data.wd;//用于存储订阅的关键字
           var nowYear = getDomainTime().nowYear;
@@ -148,41 +148,39 @@ $(function(){
             data: {order: 'display_date desc'},             
             type: 'get',               
             dataType: 'json',
+            timeout:5000,
             success: function(data){
               js = data;
+            },
+            complete: function(){     
               jsKey = true;
               if (dyKey) {
-                var diaryList = treatData(js,dy);    
-                //默认列表
-                var NowDayList = countNoneList(nowYear,nowMonth,diaryList);
-                genDateList (nowYear,nowMonth,NowDayList);
-                IS = true;
+                  var diaryList = treatData(js,dy);    
+                  //默认列表
+                  var NowDayList = countNoneList(nowYear,nowMonth,diaryList);
+                  genDateList (nowYear,nowMonth,NowDayList);
               }
-            },
-            error: function(x, status) {
-              jsKey = true;
               IS = true;
-            }
+            } 
         });
       
       $.ajax({
             url: dyUrl,            
             type: 'get',        
             dataType: 'json',
+            timeout:5000,
             success: function(data){
               dy = data;
-              dyKey = true;
-              if (jsKey) {
-                var diaryList = treatData(js,dy);    
-                var NowDayList = countNoneList(nowYear,nowMonth,diaryList);
-                genDateList (nowYear,nowMonth,NowDayList);
-                IS = true;
-              }
             },
-            error: function(x, status) {
-                dyKey = true;
-                IS = true;
-            }
+            complete: function(){     
+              dyKey = true;
+              if (dyKey) {
+                  var diaryList = treatData(js,dy);    
+                  var NowDayList = countNoneList(nowYear,nowMonth,diaryList);
+                  genDateList (nowYear,nowMonth,NowDayList);
+              }
+              IS = true;
+            } 
         });
       } 
     }

@@ -174,8 +174,8 @@ function treatData(js,dy){
         }
       }
     }
-  diaryList = jsList;
-  if($(dy)[0].status == 0 && $(dy)[0].data.total != 0){
+  diaryList = jsList;  
+  if(dy && $(dy)[0] && $(dy)[0].status == 0 && $(dy)[0].data.total != 0){
     var dylength = $(dy)[0].data.total;
     var dyKeys = $(dy)[0].data.wd;//用于存储订阅的关键字
     var nowYear = getDomainTime().nowYear;
@@ -197,6 +197,13 @@ function treatData(js,dy){
   }
 
 //页面渲染函数
+//ajax回调函数
+  function renderDiary(js, dy, nowYear, nowMonth) {
+    var diaryList = treatData(js,dy).diaryList;
+        tipList = treatData(js,dy).jsList;
+        createDiary(nowYear,nowMonth,diaryList); 
+        IS = true;
+  }
 //设置全局的变量用于填充tip框。
 var tipList = [];
 function render(nowYear,nowMonth){
@@ -208,47 +215,40 @@ function render(nowYear,nowMonth){
     IS = false;
     setSelectYear(nowYear);
     setSelectMonth(nowMonth);
-  var jsKey = false, dyKey = false, js = {}, dy = {};  
+    var jsKey = false, dyKey = false, js = {}, dy = {};  
     $.ajax({
       url: jsUrl,
       data: {order: 'display_date desc'},             
       type: 'get',               
-      dataType: 'json',
+      dataType: 'json', 
+      timeout:5000,     
       success: function(data){
-      js = data;
-      jsKey = true;
-      if (dyKey) {
-      var diaryList = treatData(js,dy).diaryList;
-      tipList = treatData(js,dy).jsList;
-      createDiary(nowYear,nowMonth,diaryList); 
-      IS = true;
-      }
+        js = data;        
       },
-      error: function(x, status) {
-          jsKey = true;
-          IS = true;
+      complete: function() {
+        jsKey = true;
+        if (dyKey) {
+          renderDiary(js, dy, nowYear, nowMonth);
+        }
+        IS = true;
       }
     });
   
     $.ajax({
-      url: dyUrl,
-      data: {order: 'display_date desc'},             
+      url: dyUrl,             
       type: 'get',        
       dataType: 'json',
-      success: function(data){
-      dy = data;
-      dyKey = true;
-      if (jsKey) {
-      var diaryList = treatData(js,dy).diaryList;
-      tipList = treatData(js,dy).jsList;
-      createDiary(nowYear,nowMonth,diaryList); 
-      IS = true;
-      }
+      timeout:5000,
+      success: function(data) {
+        dy = data;
       },
-      error: function(x, status) {
+      complete: function(){        
         dyKey = true;
+        if (jsKey) {
+          renderDiary(js, dy, nowYear, nowMonth);
+        }
         IS = true;
-      }
+      }      
     });
   }
   }
