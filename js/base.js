@@ -121,7 +121,12 @@ function fngetday(year, month, date) {
 }
 
 //限制字数
-function mCutStr(str, len) {
+function mCutStr(str, len,str2) {
+  if(str2 == ''){
+    var str3 = '';
+  }else{
+    var str3 = str2 || '..';
+  } 
   var str_length = 0;
   var str_len = 0;
   str_cut = new String();
@@ -135,7 +140,7 @@ function mCutStr(str, len) {
     }
     str_cut = str_cut.concat(a);
     if (str_length >= len) {
-      str_cut = str_cut.concat("..");
+      str_cut = str_cut.concat(str3);
       return str_cut;
     }
   }
