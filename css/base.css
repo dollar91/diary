@@ -1,7 +1,7 @@
 @charset "utf-8";
-html,body{height:100%;overflow:hidden;}
+html,body{height:100%;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {margin:0;padding:0}
-body{ background:#fff; font:12px/1.5 'simsun',Arial, Helvetica, sans-serif;color:#453f3f;}
+body{ background:#ccc; font:12px/1.5 'simsun',Arial, Helvetica, sans-serif;color:#453f3f;}
 a{color:#453f3f;}
 table {border-collapse:collapse;border-spacing:0}
 a{text-decoration:none}
@@ -20,7 +20,6 @@ h1,h2,h3,h4,h5,h6 {font-size:100%;font-weight:normal}
 .pa{position:absolute}
 .zoom{zoom:1}
 .center{text-align:center;}
-input,textarea,select,option{background-color:#fff;}
 /*字母数字等强制换行*/
 .lineb{word-break: break-all;}
 /*拼图*/
