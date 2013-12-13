@@ -12,8 +12,8 @@
 #mask_iframe,.note-pop,.delete-box,.success-box{display:none;}
 #edit_box,#show_box,#add_box{height:531px;}
 /*note pop*/
-.note-pop{background:#d47e7e;width:500px;overflow:hidden;padding:3px;position:fixed;top:50%;left:50%;margin-left:-250px;margin-top:-275px;z-index:102;}
-.note-pop{ _position:absolute;_top:expression(eval(document.documentElement.scrollTop)+50);_margin-top:0;}
+.note-pop{background:#d47e7e;width:500px;overflow:hidden;padding:3px;position:fixed;top:70px;left:195px;z-index:102;}
+.note-pop{ _position:absolute;_top:expression(eval(document.documentElement.scrollTop)+70);}
 .npop-head{padding:2px 0;height:22px;}
 .npop-title{float:left;}
 .npop-title strong{font-size:14px;color:#fff;float:left;}
@@ -78,7 +78,7 @@
 .prompt-pop{padding:20px 30px;text-align:center;background:#abcdef;font-size:16px;font-weight:bold;position:absolute;top:50%;left:50%;margin:-20px 0 0 -20px; z-index:1000001;}
 /*按键精灵*/
 .npop-searchbox{position:relative;margin-bottom:5px;z-index:1000;}
-.autocomplete{border:1px solid #cf867e;background:#fff;width:324px;position:absolute;top:500px;left: 600px;z-index:1000;}
+.autocomplete{border:1px solid #cf867e;background:#fff;width:324px;position:absolute;top:217px;left:274px;z-index:1000;}
 .autocomplete li{ height:22px;line-height:22px;color:#453f3f; font-size:12px; padding-left:5px;cursor:pointer; overflow: hidden;}
 .autocomplete li strong { font-weight:normal; width:45px; overflow:hidden; display:block; float:left;}
 .autocomplete li span { width:100px; padding-right:5px; overflow:hidden; display:block; float:left;}

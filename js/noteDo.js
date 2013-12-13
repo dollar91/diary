@@ -113,7 +113,6 @@ function editData(saveBt) {
     var id = boxOuter.find(".pidVal").val();
     var title = boxOuter.find(".subtitle_edit").val();
     var content = editor.getContent();
-    var codeIndex = boxOuter.find(".codename_edit").val().
     var stockcode = boxOuter.find(".codename_edit").val().slice(0, 6);
     var ip = 0;
     var pcate = -1;
