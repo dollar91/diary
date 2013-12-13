@@ -86,7 +86,7 @@
 #dateAll{vertical-align:middle;height:22px;*margin-left:5px;display:none;}
 #prePageNo,#nextPageNo{margin-right:5px;}
 #prePage,#nextPageNo{display:none;}
-#empty{vertical-align:middle;padding:0;margin:0;height:22px;*margin-left:5px;}
+#empty{vertical-align:middle;padding:0;margin:0;height:22px;*margin-left:5px;display:none;}
 /*闹钟*/
 .clock-content{width:260px;height:144px;background-position:0 -85px;margin:0 auto;}
 .clock-inner{padding:5px 15px 0;}

@@ -251,7 +251,7 @@ $(function() {
             $("#searchStr").val('');
         });
         //enter键搜索
-        $("#searchStr").keypress(function(){
+        $("#searchStr").keydown(function(event){
              if(event.keyCode==13){
                 $(this).blur();
                 $("#searchBtn").trigger('click');

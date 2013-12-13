@@ -190,7 +190,7 @@
                 clockList += '<li pid="' + diaryContent[i][k].pid + '" flag="' + diaryContent[i][k].flag + '"><p class="tip-warning"><s class="clock-icon"></s><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle, 26) + '</a></p></li>';
               } else if (diaryContent[i][k].flag == 2) {
                 var text = diaryContent[i][k].keys + '等共' + diaryContent[i][k].length + '条信息';
-                dyList += '<li flag="' + diaryContent[i][k].flag + '"><p class="tip-zx"><a href="http://blog.10jqka.com.cn/diary/ck-subscribe.html">' + text + '</a></p></li>';
+                dyList += '<li flag="' + diaryContent[i][k].flag + '"><p class="tip-zx"><a href="'+dyListUrl+'">' + text + '</a></p></li>';
               }
             } //for
             tdHtml += clockList + jsList + dyList + '</ul>';
@@ -417,6 +417,7 @@
           },
           error: function(x, status) {
             tipBox("修改失败！");
+            alert(status);
           }
         });
       },
@@ -494,8 +495,11 @@
     var autoCodeName = getUrlParam('codename');
     var manageUrl = $(".set-ul a").eq(0).attr('href') + '?code=' + autoCode + '&codename=' + autoCodeName; //设置记事管理地址
     var listUrl = $(".set-ul a").eq(1).attr('href') + '?code=' + autoCode + '&codename=' + autoCodeName; //设置记事列表的链接地址
+    var dyListUrl = 'http://blog.10jqka.com.cn/diary/subscribe.html?&code='+autoCode+'&codename='+autoCodeName;
     $(".set-ul a").eq(0).attr('href', manageUrl);
     $(".set-ul a").eq(1).attr('href', listUrl);
+    $(".dy-bt").attr('href',dyListUrl);
+
 
     /*
      *查看记事

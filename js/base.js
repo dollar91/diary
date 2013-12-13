@@ -376,5 +376,5 @@ $(document).ready(function() {
   });
   $("#allShow").click(function() {
     $(".tip-zx").parents('li').show();
-  })
+  });
 });
