@@ -97,7 +97,7 @@ $(function() {
           } else if (DayList[i][j].flag == 3) {
             clockList += '<li class="js" pid=' + DayList[i][j].pid + '><i class="notelist-tip tip-warning"><i class="clock-icon"></i></i><a href="###" class="notelist-text">' + mCutStr(DayList[i][j].subtitle, 111) + '</a></li>'
           } else if (DayList[i][j].flag == 2) {
-            dyList += '<li><i class="notelist-tip tip-zx"></i><a href="'+dyListUrl+'" class="notelist-text">' + DayList[i][j].keys + '等共' + DayList[i][j].length + '条' + '</a></li>'
+            dyList += '<li><i class="notelist-tip tip-zx"></i><a href="'+dyListUrl2+'" class="notelist-text">' + DayList[i][j].keys + '等共' + DayList[i][j].length + '条' + '</a></li>'
           }
         }
         noteListInner += clockList + jsList + dyList + '</ul>';
@@ -240,8 +240,10 @@ $(function() {
       }
     });
   }
-  //渲染函数
-  function render(nowYear, nowMonth) {
+  /*
+   *渲染函数
+   */
+  var renderFunc = function(nowYear, nowMonth) {
     setSelectYear(nowYear);
     setSelectMonth(nowMonth);
     if (IS == true) {
@@ -250,7 +252,7 @@ $(function() {
         dyKey = false,
         js = {}, dy = {};
       $.ajax({
-        url: jsUrl,
+        url: urlMap.jsUrl,
         data: {
           order: 'display_date desc'
         },
@@ -273,7 +275,7 @@ $(function() {
       //判断是否是本年本月，若是本年本月则不必再请求订阅部分
       if (nowYear == getDomainTime().nowYear && nowMonth == getDomainTime().nowMonth) {
         $.ajax({
-          url: dyUrl,
+          url: urlMap.dyUrl,
           type: 'get',
           dataType: 'json',
           timeout: 5000,
@@ -300,103 +302,12 @@ $(function() {
 
   /*
    *inita初始化
-   *edit编辑后的操作
-   *add添加记事的操作
-   *deleteIf删除记事的操作
    */
-  var operateDiary = {
-    inita: function() {
+   var initaFunc = function(){
       setSelectYear(getDomainTime().nowYear);
       setSelectMonth(getDomainTime().nowMonth);
-      render(getDomainTime().nowYear, getDomainTime().nowMonth);
-    },
-    edit: function(editdata) {
-      if (editdata['title'] == '') {
-        promptFun('标题不可以为空');
-        $(this).parents(".note-pop").find('.subtitle_edit').focus();
-        return false;
-      }
-      if (editor.hasContents() == false) {
-        promptFun('内容不可以为空');
-        $(this).parents(".note-pop").find('.news_content_edit').focus();
-        return false;
-      }
-      $("#edit_box,#mask_iframe").hide();
-      $.ajax({
-        url: urlMap.save,
-        data: editdata,
-        type: 'POST',
-        dataType: 'json',
-        success: function(data) {
-          var errcode = data.errorCode,
-            errmsg = data.errorMsg
-          if (errcode == 0) {
-            tipBox('修改记事成功！');
-            render(getYear(), getMonth());
-          } else {
-            //alert(errmsg);
-            tipBox("修改记事失败！")
-          }
-        },
-        error: function(x, status) {
-          //alert('error' + ' :' + status);
-          tipBox("修改记事失败！");
-        }
-      });
-    },
-    add: function(adddata) {
-      if (adddata['title'] == '') {
-        promptFun('标题不可以为空');
-        $(this).parents(".note-pop").find('.subtitle_edit').focus();
-        return false;
-      }
-      if (editor2.hasContents() == false) {
-        promptFun('内容不可以为空');
-        $(this).parents(".note-pop").find('.news_content_edit').focus();
-        return false;
-      }
-      $("#add_box,#mask_iframe").hide();
-      $.ajax({
-        url: urlMap.save,
-        data: adddata,
-        type: 'POST',
-        dataType: 'json',
-        success: function(data) {
-          var errcode = data.errorCode,
-            errmsg = data.errorMsg
-          if (errcode == 0) {
-            tipBox('添加记事成功！');
-            render(getYear(), getMonth());
-          } else {
-            //alert(errmsg);
-            tipBox("添加记事失败！");
-          }
-        },
-        error: function(x, status) {
-          //alert('error' + ' :' + status);
-          tipBox("添加记事失败！");
-        }
-      });
-    },
-    deleteIf: function(pid) {
-      $("#delete_box,#mask_iframe").show();
-      var deleteUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=deletepost&userid=' + userid + '&&pid=' + pid + '&type=jsonp&callback=?';
-      $("#deleteYes").click(function() {
-        $("#delete_box,#show_box").hide();
-        $.getJSON(deleteUrl, function(deletemes) {
-          if (deletemes.errorCode == 0) {
-            tipBox('删除记事成功');
-            render(getYear(), getMonth());
-          } else {
-            tipBox('删除记事失败');
-          }
-        });
-      });
-      $("#deleteNo").click(function() {
-        $("#delete_box,#mask_iframe,#show_box").hide();
-      });
-    }
-  }
+      renderFunc(getDomainTime().nowYear, getDomainTime().nowMonth);
+   }
 
   /*
      *以下是具体各项操作
@@ -412,16 +323,18 @@ $(function() {
      *2、为各个链接添加自定义codename和code属性
      */
 
-  operateDiary.inita();
+  operateDiary.inita(initaFunc);
 
   var autoCode = getUrlParam('code');
   var autoCodeName = getUrlParam('codename');
   var manageUrl = $(".set-ul a").eq(0).attr('href') + '?code=' + autoCode + '&codename=' + autoCodeName; //设置记事管理地址
   var diaryUrl = $(".set-ul a").eq(1).attr('href') + '?code=' + autoCode + '&codename=' + autoCodeName; //设置日历视图链接地址 
   var dyListUrl = 'http://blog.10jqka.com.cn/diary/subscribe.html?&code='+autoCode+'&codename='+autoCodeName;
+  var dyListUrl2 = 'http://blog.10jqka.com.cn/diary/ck-subscribe.html?&code='+autoCode+'&codename='+autoCodeName;
   $(".set-ul a").eq(0).attr('href', manageUrl);
   $(".set-ul a").eq(1).attr('href', diaryUrl);
   $(".dy-bt").attr('href',dyListUrl);
+  
   /*
    *查看记事
    */
@@ -429,7 +342,7 @@ $(function() {
   $(".js").live('click', function() {
     $("#mask_iframe,#show_box").show();
     var pid = $(this).attr('pid');
-    showNewsAjax(pid)
+    operateDiary.show(pid);
   });
 
   /*
@@ -439,18 +352,14 @@ $(function() {
    */
 
   $("#editBtn").click(function() {
-    $("#show_box").hide();
     var pid = $('#pidVal').val();
     var currentUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiaryDetail&userid=' + userid + '&pid=' + pid + '&type=jsonp&charset=utf8&callback=?';
-    $.getJSON(currentUrl, function(data) {
-      $("#edit_box,#mask_iframe").show();
-      editNews(data, currentUrl);
-    });
+    operateDiary.showEditBox(currentUrl);
   });
 
   $("#edit_saveBtn").click(function() {
     var editdata = editData($(this));
-    operateDiary.edit(editdata);
+    operateDiary.edit(editdata,renderFunc,getYear(),getMonth());
   });
 
   /*
@@ -469,7 +378,7 @@ $(function() {
 
   $("#add_saveBtn").click(function() {
     var adddata = addData($(this));
-    operateDiary.add(adddata);
+    operateDiary.add(adddata,renderFunc,getYear(),getMonth());
   });
 
   /*
@@ -479,7 +388,7 @@ $(function() {
   $("#deleteBtn").click(function() {
     var pid = $(this).parents(".note-pop").find("#pidVal").val();
     var deleteUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=deletepost&userid=' + userid + '&&pid=' + pid + '&type=jsonp&callback=?';
-    operateDiary.deleteIf(pid);
+    operateDiary.deleteIf(pid,renderFunc,getYear(),getMonth());
   });
   
 });

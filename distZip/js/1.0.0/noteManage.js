@@ -1,13 +1,13 @@
 //@charset "utf-8"
 $(function() {
     var IS = true;
+    var pageLength = 20;
     //数据分页
     function setListPage(noteList, pageLength) {
         var ListLength = noteList.length;
         var pageCount; //总页数
         var pageList = []; //每一页的列表，二维数组
         var l = 0; //用于遍历所有日记
-        pageLength = pageLength || 20;
         if (ListLength % pageLength != 0) {
             pageCount = (ListLength - ListLength % pageLength) / pageLength + 1;
         } else {
@@ -27,7 +27,6 @@ $(function() {
 
     //填充列表
     function genNoteList(noteList, page, pageLength) {
-        pageLength = pageLength || 20;
         var pageList = setListPage(noteList, pageLength);
         var pageCount = pageList.length;
         //var pageCount = 0;
@@ -47,7 +46,7 @@ $(function() {
         for (var i = 0; i < onlyList; i++) {
             var clock; //有无提醒
             if (pageList[page - 1][i].clockDate == 0) {
-                clock = '无';
+                clock = '-';
             } else {
                 clock = getFullTime(pageList[page - 1][i].clockDate).timeDate;
             }
@@ -112,8 +111,53 @@ $(function() {
         return noteList;
     }
 
+    //翻页
+    function turnPage(noteList) {
+        $("#prePage").die().live('click',function() {
+            var currentPage = parseInt($("#currentPage").text());
+            var pageLen = parseInt($("#pageCount").text());
+            if (currentPage - 1 < 1) {
+                tipBox('超出页码范围');
+                return;
+            } else {
+                genNoteList(noteList,currentPage - 1,pageLength);
+            }
+        });
+
+        $("#nextPage").die().live('click',function() {
+            var currentPage = parseInt($("#currentPage").text());
+            var pageLen = parseInt($("#pageCount").text());
+            if (currentPage + 1 > pageLen) {
+                tipBox('超出页码范围');
+                return;
+            } else {
+                genNoteList( noteList,currentPage + 1,pageLength);
+            }
+        });
+
+        $("#jumpBt").die().live('click', function() {
+            var currentPage = parseInt($("#currentPage").text());
+            var toPage = parseInt($("#jumpTo").val());
+            var pageLen = parseInt($("#pageCount").text());
+            $("#jumpTo").val('');
+            if(currentPage == toPage || isNaN(toPage)){
+                return;
+            } else if (toPage > pageLen || toPage < 1) {
+                tipBox('超出页码范围');
+                return;
+            } else {
+                genNoteList(noteList,toPage,pageLength);
+            }
+        });
+
+        //enter
+        $("#jumpTo").die().live('keydown',function(){
+            $("#jumpBt").trigger('click');
+        });
+    }
+
     //处理筛选数据的函数
-    function treatFilter(newDate, codenow, clocknow, searchStr, noteList) {
+    function treatFilter(newDate, codenow, clocknow, searchStr, noteList,page) {
         var dateList = [];
         var codeList = [];
         var clockList = [];
@@ -165,14 +209,8 @@ $(function() {
                 }
             }
         }
-        genPageList(1, newList);
-    }
-
-
-    //分页请求后的数据渲染
-    function genPageList(page, noteList) {
-        var pageLength = 20;
-        genNoteList(noteList, page, pageLength);
+        genNoteList(newList,page,pageLength);
+        turnPage(newList);
     }
 
     //创建动态相关股票列表
@@ -197,14 +235,14 @@ $(function() {
     function filterDate(noteList) {
         //日期
         $("#dateFilter").live('click', function() {
-            WdatePicker({
+                 WdatePicker({
                 onpicking: function(dp) {
                     var date = dp.cal.getNewDateStr();
                     var newDate = dp.cal.getNewDateStr().replace(/-/g, '');
                     var codenow = $("#gpSelect").val();
                     var clocknow = $("#clockSelect").val();
                     var searchStr = $("#searchStr").val();
-                    treatFilter(newDate, codenow, clocknow, searchStr, noteList);
+                    treatFilter(newDate, codenow, clocknow, searchStr, noteList,1);
                     $("#empty").show();
                 },
                 onclearing: function() { //清空的时候
@@ -213,9 +251,9 @@ $(function() {
                     var clocknow = $("#clockSelect").val();
                     var searchStr = $("#searchStr").val();
                     $("#dateFilter").val('所有日期');
-                    treatFilter(newDate, codenow, clocknow, searchStr, noteList);
+                    treatFilter(newDate, codenow, clocknow, searchStr, noteList,1);
                 }
-            });
+            });           
         });
         //股票
         $("#gpSelect").live('change', function() {
@@ -226,7 +264,7 @@ $(function() {
             var codenow = $(this).val();
             var clocknow = $("#clockSelect").val();
             var searchStr = $("#searchStr").val();
-            treatFilter(newDate, codenow, clocknow, searchStr, noteList);
+            treatFilter(newDate, codenow, clocknow, searchStr, noteList,1);
         });
         //闹钟
         $("#clockSelect").live('change', function() {
@@ -237,7 +275,7 @@ $(function() {
             var codenow = $("#gpSelect").val();
             var clocknow = $(this).val();
             var searchStr = $("#searchStr").val();
-            treatFilter(newDate, codenow, clocknow, searchStr, noteList);
+            treatFilter(newDate, codenow, clocknow, searchStr, noteList,1);
         });
         //字符串搜索
         $("#searchBtn").live('click', function() {
@@ -248,7 +286,7 @@ $(function() {
             var codenow = $("#gpSelect").val();
             var clocknow = $("#clockSelect").val();
             var searchStr = $("#searchStr").val();
-            treatFilter(newDate, codenow, clocknow, searchStr, noteList);
+            treatFilter(newDate, codenow, clocknow, searchStr, noteList,1);
             $("#searchStr").val('');
         });
         //enter键搜索
@@ -264,138 +302,26 @@ $(function() {
             $("#gpSelect").val('全部股票');
             $("#clockSelect").val('全部提醒');
             $("#searchStr").val('');
-            treatFilter('所有日期', '全部股票', '全部提醒', '', noteList);
+            treatFilter('所有日期', '全部股票', '全部提醒', '', noteList,1);
             $(this).hide();
         })
     }
 
-    //翻页
-    function turnPage(noteList) {
-        $("#prePage").live('click', function() {
-            var currentPage = parseInt($("#currentPage").text());
-            var pageLen = parseInt($("#pageCount").text());
-            if (currentPage - 1 < 1) {
-                tipBox('超出页码范围');
-                return;
-            } else {
-                genPageList(currentPage - 1, noteList);
-            }
-        });
+   
 
-        $("#nextPage").live('click', function() {
-            var currentPage = parseInt($("#currentPage").text());
-            var pageLen = parseInt($("#pageCount").text());
-            if (currentPage + 1 > pageLen) {
-                tipBox('超出页码范围');
-                return;
-            } else {
-                genPageList(currentPage + 1, noteList);
-            }
-        });
-
-        $("#jumpBt").live('click', function() {
-            var currentPage = parseInt($("#currentPage").text());
-            var toPage = parseInt($("#jumpTo").val());
-            var pageLen = parseInt($("#pageCount").text());
-            $("#jumpTo").val('');
-            if(currentPage == toPage || isNaN(toPage)){
-                return;
-            } else if (toPage > pageLen || toPage < 1) {
-                tipBox('超出页码范围');
-                return;
-            } else {
-                genPageList(toPage, noteList);
-            }
-        });
-    }
-
-    //页面的渲染函数
-    function render(page) {
-        if (IS == true) {
-            IS = false;
-            $.getJSON(jsUrl, {
-                order: 'display_date desc'
-            }, function(data) {
-                var noteList = treatData(data);
-                createGpList(noteList);
-                treatFilter('所有日期', klinecode, '全部提醒', '', noteList);
-                IS = true
-                filterDate(noteList);
-                turnPage(noteList);
-            });
-        }
-    }
     /*
-     *inita初始化
-     *edit编辑后的操作
-     *add添加记事的操作
-     *deleteIf删除记事的操作
+     *渲染函数
      */
-    var operateDiary = {
-        inita: function() {
-            render(1);
-        },
-        edit: function(editdata) {
-            if (editdata['title'] == '') {
-                promptFun('标题不可为空');
-                $(this).parents(".note-pop").find('.subtitle_edit').focus();
-                return false;
-            }
-            if (editor.hasContents() == false) {
-                promptFun('内容不可以为空');
-                $(this).parents(".note-pop").find('.news_content_edit').focus();
-                return false;
-            }
-            $("#edit_box,#mask_iframe").hide();
-            $.ajax({
-                url: urlMap.save,
-                data: editdata,
-                type: 'POST',
-                dataType: 'json',
-                success: function(data) {
-                    var errcode = data.errorCode,
-                        errmsg = data.errorMsg;
-                    if (errcode == 0) {
-                        tipBox('修改成功！');
-                        $.getJSON(jsUrl, {
-                            order: 'display_date desc'
-                        }, function(data) {
-                            var noteList = treatData(data);
-                            genPageList(getCurrentPage(), noteList);
-                            createGpList(noteList);
-                            filterDate(noteList);
-                        });
-                    } else {
-                        //alert('success'+errmsg);
-                        tipBox("修改记事失败！");
-                    }
-                },
-                error: function(x, status) {
-                    tipBox("修改记事失败！");
-                    //alert('error' + ' :' + status);
-                }
-            });
-        },
-        deleteIf: function(pid) {
-            $("#delete_box,#mask_iframe").show();
-            var deleteUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=deletepost&userid=' + userid + '&&pid=' + pid + '&type=jsonp&callback=?';
-            $("#deleteYes").click(function() {
-                $("#delete_box,#show_box").hide();
-                $.getJSON(deleteUrl, function(deletemes) {
-                    if (deletemes.errorCode == 0) {
-                        tipBox('删除记事成功！');
-                        render(getCurrentPage());
-                    } else {
-                        tipBox('删除记事失败！');
-                    }
-                });
-            });
-            $("#deleteNo").click(function() {
-                $("#delete_box,#mask_iframe").hide();
-            });
-        }
+    var renderFunc = function(){
+        $.getJSON(urlMap.jsUrl, {
+            order: 'display_date desc'
+        }, function(data) {
+            var noteList = treatData(data);
+            createGpList(noteList);
+            treatFilter('所有日期', klinecode, '全部提醒', '', noteList,1);
+            filterDate(noteList);
+        });
     }
-
 
     /*
      *以下是具体各项操作
@@ -409,7 +335,7 @@ $(function() {
      *1、初始化
      *2、为各个链接添加自定义codename和code属性
      */
-    render(1);
+    operateDiary.initaManage(renderFunc,1);
 
     var autoCode = getUrlParam('code');
     var autoCodeName = getUrlParam('codename');
@@ -423,7 +349,7 @@ $(function() {
     $(".show_note").live('click', function() {
         $("#show_box,#mask_iframe").show();
         var pid = $(this).parents('tr').attr('pid');
-        showNewsAjax(pid);
+        operateDiary.show(pid);
     });
 
     /*
@@ -436,25 +362,18 @@ $(function() {
     $(".edit_note").live('click', function() {
         var pid = $(this).parents('tr').attr('pid');
         var currentUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiaryDetail&userid=' + userid + '&pid=' + pid + '&type=jsonp&charset=utf8&callback=?';
-        $.getJSON(currentUrl, function(data) {
-            $(".mask,#edit_box,#mask_iframe").show();
-            editNews(data, currentUrl);
-        });
+        operateDiary.showEditBox(currentUrl);
     });
 
     $("#editBtn").live('click', function() {
-        $("#show_box").hide();
         var pid = $('#pidVal').val();
         var currentUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiaryDetail&userid=' + userid + '&pid=' + pid + '&type=jsonp&charset=utf8&callback=?';
-        $.getJSON(currentUrl, function(data) {
-            $("#edit_box,#mask_iframe").show();
-            editNews(data, currentUrl);
-        });
+        operateDiary.showEditBox(currentUrl);
     });
 
     $("#edit_saveBtn").click(function() {
         var editdata = editData($(this));
-        operateDiary.edit(editdata);
+        operateDiary.editManage(editdata,renderFunc,getPage());
     });
 
 
@@ -467,12 +386,12 @@ $(function() {
 
     $(".delete_note").live('click', function() {
         var pid = $(this).parents('tr').attr('pid');
-        operateDiary.deleteIf(pid);
+        operateDiary.deleteIfManage(pid,renderFunc,getPage());
     });
 
     $("#deleteBtn").click(function() {
         var pid = $(this).parents(".note-pop").find("#pidVal").val();
-        operateDiary.deleteIf(pid);
+        operateDiary.deleteIfManage(pid,renderFunc,getPage());
     });
 
     //全选
@@ -501,7 +420,7 @@ $(function() {
             return;
         } else {
             pidStr = pidStr.substring(0, pidStr.length - 1);
-            operateDiary.deleteIf(pidStr);
+            operateDiaryManage.deleteIf(pidStr,renderFunc,getPage());
         }
     });
     

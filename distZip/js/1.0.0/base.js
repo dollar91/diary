@@ -7,10 +7,11 @@ var info = external.createObject("Passport");
 var userid = info.get("userid");
 var uname  = info.get("account");
 var urlMap = {
-  'save': "http://blog.10jqka.com.cn/sapigsrj/index.php?module=blog&controller=api&action=post"
+  'save': "http://blog.10jqka.com.cn/sapigsrj/index.php?module=blog&controller=api&action=post",
+  'jsUrl': "http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiary&userid=" + userid + "&type=jsonp&charset=utf8&callback=?",
+  'dyUrl': "http://comment.10jqka.com.cn/api/subscribe.php?act=getTips&userid=" + userid + "&jsoncallback=?"
 };
-var jsUrl = "http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiary&userid=" + userid + "&type=jsonp&charset=utf8&callback=?";
-var dyUrl = "http://comment.10jqka.com.cn/api/subscribe.php?act=getTips&userid=" + userid + "&jsoncallback=?";
+
 
 //以下用于日记列表和表格日历的共用部分
 //获取服务器时间
@@ -31,6 +32,7 @@ function getDomainTime() {
     nowSec: nowSec
   }
 }
+
 var yearSelect = $("#year-select");
 var yearBt = $("#year-bt");
 var monthSelect = $('#month-select');
@@ -334,7 +336,7 @@ function getMonth() {
 }
 
 //获取当前是第几页数
-function getCurrentPage() {
+function getPage() {
   return parseInt($("#currentPage").text(), 10);
 }
 

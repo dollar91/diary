@@ -107,6 +107,7 @@
           var subcontent = jsArr[i].content;
           var pid = jsArr[i].pid;
           var codename = jsArr[i].codename;
+          var code = jsArr[i].code;
           var clockDate; //提醒时间
           if (clock == 0) { //没有闹钟提醒的时候
             clockDate = 0;
@@ -117,7 +118,8 @@
               subtitle: subtitle,
               subcontent: subcontent,
               pid: pid,
-              codename: codename
+              codename: codename,
+              code:code
             });
           } else {
             clockDate = getFullDate(clock * 1000);
@@ -128,7 +130,8 @@
               subtitle: subtitle,
               subcontent: subcontent,
               pid: pid,
-              codename: codename
+              codename: codename,
+              code:code
             });
           }
         }
@@ -190,7 +193,7 @@
                 clockList += '<li pid="' + diaryContent[i][k].pid + '" flag="' + diaryContent[i][k].flag + '"><p class="tip-warning"><s class="clock-icon"></s><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle, 26) + '</a></p></li>';
               } else if (diaryContent[i][k].flag == 2) {
                 var text = diaryContent[i][k].keys + '等共' + diaryContent[i][k].length + '条信息';
-                dyList += '<li flag="' + diaryContent[i][k].flag + '"><p class="tip-zx"><a href="'+dyListUrl+'">' + text + '</a></p></li>';
+                dyList += '<li flag="' + diaryContent[i][k].flag + '"><p class="tip-zx"><a href="'+dyListUrl2+'">' + text + '</a></p></li>';
               }
             } //for
             tdHtml += clockList + jsList + dyList + '</ul>';
@@ -314,8 +317,10 @@
       });
     }
 
-    //渲染的函数
-    function render(nowYear, nowMonth) {
+    /*
+     *渲染的函数
+     */
+    var renderFunc = function(nowYear, nowMonth) {
       //没有数据的时候或者有任何请求出错的时候先出现日历
       var diaryList = [];
       setSelectYear(nowYear);
@@ -328,13 +333,12 @@
           dyKey = false,
           js = {}, dy = {};
         $.ajax({
-          url: jsUrl,
+          url: urlMap.jsUrl,
           data: {
             order: 'display_date desc'
           },
           type: 'get',
           dataType: 'json',
-          timeout: 5000,
           success: function(data) {
             js = data;
           },
@@ -351,10 +355,9 @@
         //判断是否是本年本月，若是本年本月则不必再请求订阅部分
         if (nowYear == getDomainTime().nowYear && nowMonth == getDomainTime().nowMonth) {
           $.ajax({
-            url: dyUrl,
+            url: urlMap.dyUrl,
             type: 'get',
             dataType: 'json',
-            timeout: 5000,
             success: function(data) {
               dy = data;
             },
@@ -377,105 +380,13 @@
     }
 
     /*
-     *inita初始化
-     *edit编辑后的操作
-     *add添加记事的操作
-     *deleteIf删除记事的操作
+     *inita初始化函数
      */
-    var operateDiary = {
-      inita: function() {
+    var initaFunc = function(){
         setSelectYear(getDomainTime().nowYear);
         setSelectMonth(getDomainTime().nowMonth);
-        render(getDomainTime().nowYear, getDomainTime().nowMonth);
-      },
-      edit: function(editdata) {
-        if (editdata['title'] == '') {
-          promptFun('请输入标题');
-          $(this).parents(".note-pop").find('.subtitle_edit').focus();
-          return false;
-        }
-        if (editor.hasContents() == false) {
-          promptFun('内容不能为空');
-          $(this).parents(".note-pop").find('.news_content_edit').focus();
-          return false;
-        }
-        $("#edit_box,#mask_iframe").hide();
-        $.ajax({
-          url: urlMap.save,
-          data: editdata,
-          type: 'POST',
-          dataType: 'json',
-          success: function(data) {
-            var errcode = data.errorCode,
-              errmsg = data.errorMsg
-            if (errcode == 0) {
-              tipBox('修改成功！');
-              render(getYear(), getMonth());
-            } else {
-              tipBox("修改失败！");
-            }
-          },
-          error: function(x, status) {
-            tipBox("修改失败！");
-            alert(status);
-          }
-        });
-      },
-      add: function(adddata) {
-        if (adddata['title'] == '') {
-          promptFun('请输入标题');
-          $(this).parents(".note-pop").find('.subtitle_edit').focus();
-          return false;
-        }
-        if (editor2.hasContents() == false) {
-          promptFun('内容不能为空');
-          $(this).parents(".note-pop").find('.news_content_edit').focus();
-          return false;
-        }
-        $("#add_box,#mask_iframe").hide();
-        $.ajax({
-          url: urlMap.save,
-          data: adddata,
-          type: 'POST',
-          dataType: 'json',
-          success: function(data) {
-            var errcode = data.errorCode,
-              errmsg = data.errorMsg
-            if (errcode == 0) {
-              tipBox('添加记事成功！');
-              render(getYear(), getMonth());
-            } else {
-              //alert(errmsg);
-              tipBox("添加记事失败！")
-            }
-          },
-          error: function(x, status) {
-            //alert('error' + ' :' + status);
-            tipBox("添加记事失败！");
-          }
-        });
-      },
-      deleteIf: function(pid) {
-        $("#delete_box,#mask_iframe").show();
-        var deleteIf1;
-        var deleteUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=deletepost&userid=' + userid + '&&pid=' + pid + '&type=jsonp&callback=?';
-        $("#deleteYes").click(function() {
-          $("#delete_box,#show_box").hide();
-          $.getJSON(deleteUrl, function(deletemes) {
-            if (deletemes.errorCode == 0) {
-              tipBox('删除记事成功');
-              render(getYear(), getMonth());
-            } else {
-              tipBox('删除记事失败');
-            }
-          });
-        });
-        $("#deleteNo").click(function() {
-          $("#delete_box,#mask_iframe,#show_box").hide();
-        });
-      }
-    }
-
+        renderFunc(getDomainTime().nowYear, getDomainTime().nowMonth);
+     }
     /*
      *以下是具体各项操作
      *初始化,为各个链接添加自定义codename和code属性
@@ -489,13 +400,14 @@
      *1、初始化
      *2、为各个链接添加自定义codename和code属性
      */
-    operateDiary.inita();
+    operateDiary.inita(initaFunc);
 
     var autoCode = getUrlParam('code');
     var autoCodeName = getUrlParam('codename');
     var manageUrl = $(".set-ul a").eq(0).attr('href') + '?code=' + autoCode + '&codename=' + autoCodeName; //设置记事管理地址
     var listUrl = $(".set-ul a").eq(1).attr('href') + '?code=' + autoCode + '&codename=' + autoCodeName; //设置记事列表的链接地址
     var dyListUrl = 'http://blog.10jqka.com.cn/diary/subscribe.html?&code='+autoCode+'&codename='+autoCodeName;
+    var dyListUrl2 = 'http://blog.10jqka.com.cn/diary/ck-subscribe.html?&code='+autoCode+'&codename='+autoCodeName;
     $(".set-ul a").eq(0).attr('href', manageUrl);
     $(".set-ul a").eq(1).attr('href', listUrl);
     $(".dy-bt").attr('href',dyListUrl);
@@ -508,7 +420,7 @@
       if ($(this).attr('flag') == 1 || $(this).attr('flag') == 3) {
         $("#mask_iframe,#show_box").show();
         var pid = $(this).attr('pid');
-        showNewsAjax(pid);
+        operateDiary.show(pid);
       }
     });
 
@@ -520,27 +432,20 @@
      */
 
     $("#editBtn").live('click', function() {
-      $("#show_box").hide();
       var pid = $('#pidVal').val();
       var currentUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiaryDetail&userid=' + userid + '&pid=' + pid + '&type=jsonp&charset=utf8&callback=?';
-      $.getJSON(currentUrl, function(data) {
-        $("#edit_box,#mask_iframe").show();
-        editNews(data, currentUrl);
-      });
+       operateDiary.showEditBox(currentUrl);
     });
 
     $("#xqEdit").live('click', function() {
-      $("#edit_box,#mask_iframe").show();
       var pid = $('#xqPid').val();
       var currentUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiaryDetail&userid=' + userid + '&pid=' + pid + '&type=jsonp&charset=utf8&callback=?';
-      $.getJSON(currentUrl, function(data) {
-        editNews(data, currentUrl);
-      });
+      operateDiary.showEditBox(currentUrl);
     });
 
     $("#edit_saveBtn").click(function() {
       var editdata = editData($(this));
-      operateDiary.edit(editdata);
+      operateDiary.edit(editdata,renderFunc,getYear(),getMonth());
     });
 
     /*
@@ -559,7 +464,7 @@
 
     $("#add_saveBtn").click(function() {
       var adddata = addData($(this));
-      operateDiary.add(adddata);
+      operateDiary.add(adddata,renderFunc,getYear(),getMonth());
     });
 
     /*
@@ -571,16 +476,129 @@
 
     $("#deleteBtn").click(function() {
       var pid = $(this).parents(".note-pop").find("#pidVal").val();
-      operateDiary.deleteIf(pid);
+      operateDiary.deleteIf(pid,renderFunc,getYear(),getMonth());
     });
 
     $("#xqDelete").click(function() {
       var pid = $("#xqPid").val();
-      operateDiary.deleteIf(pid);
+      operateDiary.deleteIf(pid,renderFunc,getYear(),getMonth());
     });
 
 
      /*
+     *详情框框渲染
+     */  
+    // $('#noteBody').delegate('li', 'mouseenter', function(e) {
+    //   var tipObj = {};
+    //   var tipPid = $(this).attr('pid');
+    //   var flag = $(this).attr('flag');
+    //   if ($(this).attr('flag') == 1 || $(this).attr('flag') == 3) {
+    //     for (var i = 0; i < tipList.length; i++) {
+    //       if (tipList[i].pid == tipPid) {
+    //         var tipTitle = tipList[i].subtitle,
+    //           tipContent = tipList[i].subcontent,
+    //           tipCodename = tipList[i].codename,
+    //           tipCode = tipList[i].code,
+    //           tipClockText,
+    //           tipClockTime = tipList[i].clockDate;
+    //         if (tipClockTime == 0) {
+    //           tipClockText = '无';
+    //         } else {
+    //           var tipYear = tipClockTime.slice(0, 4);
+    //           var tipMonth = tipClockTime.slice(4, 6);
+    //           var tipDate = tipClockTime.slice(6, 8);
+    //           var tipHour = tipClockTime.slice(8, 10);
+    //           var tipMin = tipClockTime.slice(10, 12);
+    //           var tipSec = tipClockTime.slice(12);
+    //           tipClockText = tipYear + '-' + tipMonth + '-' + tipDate + ' ' + tipHour + ':' + tipMin + ':' + tipSec;
+    //         }
+    //       }
+    //     }
+    //     tipObj.tipPid = tipPid;
+    //     tipObj.tipContent = tipContent;
+    //     tipObj.tipTitle = tipTitle;
+    //     tipObj.tipClockText = tipClockText;
+    //     tipObj.tipCodename = tipCodename;
+    //     tipObj.tipCode = tipCode;
+    //     showTip($(this), tipObj);
+    //   }
+    // })
+
+    // $('#noteBody').delegate('li', 'mouseleave', function(e) {
+    //   if (!$('.xq-box')[0].contains(e.relatedTarget)) {
+    //     $('.xq-box').hide();
+    //   };
+    // })
+
+    // $('.xq-box').bind('mouseleave', function() {
+    //   $(this).hide();
+    // })
+
+    // function showTip(el, tipObj) {
+    //   var tipPid = tipObj.tipPid,
+    //     tipContent = tipObj.tipContent,
+    //     tipTitle = tipObj.tipTitle,
+    //     tipClockText = tipObj.tipClockText,
+    //     tipCode = tipObj.tipCode;
+    //   $("#xqPid").val(tipPid);
+    //   $(".xq-box .tip-title").html(tipTitle);
+    //   $(".xq-box .tip-content").html(mCutStr(tipContent, 101));
+    //   if (tipClockText == '无') {
+    //     $(".xq-box .xq-time").hide();
+    //   } else {
+    //     $(".xq-box .xq-time").show().text('提醒时间：' + tipClockText);
+    //   }
+    //   //从客户端取codename
+    //   var thsQuote = external.createObject('Quote');
+    //   var reqObj = {
+    //     code : tipCode,
+    //     type : 'zqmc,new',
+    //     onready: function(){
+    //       var param = {
+    //         code : tipCode,
+    //         type : 'zqmc'
+    //       };
+    //       var retObj = thsQuote.getData(param);
+    //       var codenameNew;
+    //       if(tipCode == ''){
+    //         codenameNew = '';
+    //       }else{
+    //         codenameNew = getEvalJson(retObj)[tipCode]['zqmc'];
+    //       }
+    //       if (codenameNew == '') {
+    //         $(".xq-box .tip-codename").hide();
+    //       } else {
+    //         $(".xq-box .tip-codename").show().html('相关股票：<span>' + codenameNew + '</span>');
+    //       }
+    //     }
+    //   };
+    //   var flag = thsQuote.request(reqObj);
+
+    //   var left = $(el).position().left;
+    //   var top = $(el).position().top;
+    //   var parentWidth = $('#noteBody').width();
+    //   var elWidth = $(el).width();
+    //   var targetLeft;
+    //   if (left > parentWidth / 2) {
+    //     targetLeft = left - $('.xq-box').outerWidth();
+    //     $('.xq-box').find('.point').css({
+    //       left: $('.xq-box').outerWidth() - 2,
+    //       background: 'url(images/point-r.png)'
+    //     })
+    //   } else {
+    //     targetLeft = left + elWidth;
+    //     $('.xq-box').find('.point').css({
+    //       left: -9,
+    //       background: 'url(http://i.thsi.cn/images/blog/diary/point.png)'
+    //     })
+    //   }
+    //   var targetHeight = $(".xq-box").height();
+    //   $('.xq-box').css({
+    //     left: targetLeft,
+    //     top: top - targetHeight / 2 + $(el).height() / 2
+    //   }).show();
+    // }
+    /*
      *详情框框渲染
      */  
     $('#noteBody').delegate('li', 'mouseenter', function(e) {
@@ -593,6 +611,7 @@
             var tipTitle = tipList[i].subtitle,
               tipContent = tipList[i].subcontent,
               tipCodename = tipList[i].codename,
+              tipCode = tipList[i].code,
               tipClockText,
               tipClockTime = tipList[i].clockDate;
             if (tipClockTime == 0) {
@@ -613,6 +632,7 @@
         tipObj.tipTitle = tipTitle;
         tipObj.tipClockText = tipClockText;
         tipObj.tipCodename = tipCodename;
+        tipObj.tipCode = tipCode;
         showTip($(this), tipObj);
       }
     })
@@ -632,6 +652,7 @@
         tipContent = tipObj.tipContent,
         tipTitle = tipObj.tipTitle,
         tipClockText = tipObj.tipClockText,
+        tipCode = tipObj.tipCode,
         tipCodename = tipObj.tipCodename;
       $("#xqPid").val(tipPid);
       $(".xq-box .tip-title").html(tipTitle);
@@ -670,5 +691,4 @@
         top: top - targetHeight / 2 + $(el).height() / 2
       }).show();
     }
-
   })
