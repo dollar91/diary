@@ -9,6 +9,27 @@ $(function () {
             getNewsListUrlFormat = 'http://comment.10jqka.com.cn/api/subscribe.php?act=getNews&userid={userid}&jsoncallback=?',
             $newsContent = $('#newsContent'),
             $newsList = $('#newsList');
+
+        /**
+         * 获取location.url的某一个字段
+         * @param item 字段名
+         * @returns {*}
+         */
+        function getUrlParam(item) {
+            var value = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)", "i"));
+            return value ? value[1] : value;
+        }
+        /**
+         * 设置返回日记url，加上获取到的code和codename
+         */
+        var setUrl = function(){
+            var code = getUrlParam('code');
+            var codename = getUrlParam('codename');
+            $('#return').attr('href', function(){
+                return $('#return').attr('href')+'?code='+code+'&codename='+codename;
+            });
+        }
+        setUrl();
         /**
          * 返回需要的date
          * @param fmt

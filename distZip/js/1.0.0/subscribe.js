@@ -29,6 +29,10 @@ $(function () {
             $stockPageJump = $('#stockPageJump'),
             $stockPageJumpNum = $('#stockPageJumpNum'),
             $deleteAllStock = $('#deleteAllStock'),
+            $deleteAllStockPop = $('#deleteAllStockPop'),
+            $deleteAllStockClose = $('#deleteAllStockClose'),
+            $deleteAllStockSure = $('#deleteAllStockSure'),
+            $deleteAllStockCancel = $('#deleteAllStockCancel'),
             $stockSet = $('#stockSet'),
             $stockExtent = $('#stockExtent'),
             $stockExtentList = $('#stockExtentList'),
@@ -37,6 +41,10 @@ $(function () {
             $stockExtentcancel = $('#stockExtentcancel'),
             $stockExtentSure = $('#stockExtentSure'),
 			$stockExtentEm = $('#stockExtentEm'),
+            $deleteAllPlatePop = $('#deleteAllPlatePop'),
+            $deleteAllPlateClose = $('#deleteAllPlateClose'),
+            $deleteAllPlateSure = $('#deleteAllPlateSure'),
+            $deleteAllPlateCancel = $('#deleteAllPlateCancel'),
             $platePageCurNum = $('#platePageCurNum'),
             $platePageJumpNum = $('#platePageJumpNum'),
             $plateSearch = $('#plateSearch'),
@@ -44,6 +52,26 @@ $(function () {
             $plateSearchList = $('#plateSearchList'),
             $plateSearchInput = $('#plateSearchInput');
 
+        /**
+         * 获取location.url的某一个字段
+         * @param item 字段名
+         * @returns {*}
+         */
+        function getUrlParam(item) {
+            var value = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)", "i"));
+            return value ? value[1] : value;
+        }
+        /**
+         * 设置返回日记url，加上获取到的code和codename
+         */
+        var setUrl = function(){
+            var code = getUrlParam('code');
+            var codename = getUrlParam('codename');
+            $('#return').attr('href', function(){
+                return $('#return').attr('href')+'?code='+code+'&codename='+codename;
+            });
+        }
+        setUrl();
         /**
          * 根据block返回用户的个股或者板块列表
          * @param userId 用户id
@@ -193,13 +221,32 @@ $(function () {
             }, 'json');
         });
         /**
-         * 点击个股取消全部订阅，删除所有个股订阅
+         * 点击个股取消全部订阅，弹出弹窗
          */
         $deleteAllStock.live('click', function () {
+            $deleteAllStockPop.show();
+        });
+        /**
+         * 点击确定删除所有个股订阅
+         */
+        $deleteAllStockSure.live('click', function(){
+            $deleteAllStockPop.hide();
             $.get([subscribeUrl,'?act=deleteAll&userid=' , userId , '&block=stock&jsoncallback=?'].join(''), function (data) {
                 stockCurPage = 1;
                 stockTurnPage('stock', stockCurPage);
             }, 'json');
+        });
+        /**
+         * 关闭弹窗
+         */
+        $deleteAllStockClose.live('click', function(){
+            $deleteAllStockPop.hide();
+        });
+        /**
+         * 关闭弹窗
+         */
+        $deleteAllStockCancel.live('click', function(){
+            $deleteAllStockPop.hide();
         });
         /**
          * 点击设置按钮，弹出订阅范围弹窗
@@ -296,6 +343,8 @@ $(function () {
                         }
                         stockTurnPage('stock', stockCurPage);
                         promptFun('新增成功！');
+                    }else if(msg == 'Added'){
+                        promptFun('您已添加过该股票！');
                     }
                 }, 'json');
             }
@@ -376,13 +425,33 @@ $(function () {
             }, 'json');
          });
         /**
-         * 点击板块取消全部订阅，删除所有板块订阅
+         * 点击板块取消全部订阅，弹出弹窗
          */
         $('#deleteAllPlate').live('click', function () {
+            $deleteAllPlatePop.show();
+
+        });
+        /**
+         * 点击确定删除所有板块订阅
+         */
+        $deleteAllPlateSure.live('click', function(){
+            $deleteAllPlatePop.hide();
             $.get(subscribeUrl+'?act=deleteAll&userid=' + userId + '&block=plate&jsoncallback=?', function (data) {
                 plateCurPage = 1;
                 plateTurnPage('plate', plateCurPage);
             }, 'json');
+        });
+        /**
+         * 关闭弹窗
+         */
+        $deleteAllPlateClose.live('click', function(){
+            $deleteAllPlatePop.hide();
+        });
+        /**
+         * 关闭弹窗
+         */
+        $deleteAllPlateCancel.live('click', function(){
+            $deleteAllPlatePop.hide();
         });
         /**
          * 点击添加板块订阅，弹出板块按键精灵弹窗
@@ -505,6 +574,8 @@ $(function () {
                         }
                         plateTurnPage('plate', plateCurPage);
                         promptFun('新增成功！');
+                    }else if(msg == 'Added'){
+                        promptFun('您已添加过该板块！');
                     }
                 }, 'json');
             }
@@ -515,10 +586,30 @@ $(function () {
         $('#yjzxg').live('click', function () {
             $.getJSON(yjzxgUrl, function(data){
                     for(var i=0;i<data.length;i++){
-                        addStock(data[i].code);
+                        var code = data[i].code;
+                        if(matchCode(code)){
+                            addStock(code);
+                        }
                     }
             });
         });
+        /**
+         * 筛选自选股中沪深AB股
+         * @param code 待筛选股票代码
+         * @returns {boolean}
+         */
+        var matchCode = function(code){
+            var matches = ['000','001','002','200','300','600','601','603','900'];
+            if(code === ""){
+                return false;
+            }
+            for(var i=0;i<matches.length;i++){
+                if(code.search(matches[i])>-1){
+                    return true;
+                }
+            }
+            return false;
+        }
         /**
          * 点击页面上其他地方，关闭按键精灵
          */

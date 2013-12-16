@@ -51,7 +51,7 @@
                     '<dl>',
                     '</dl>',
                     '</div>',
-                    '<p id="yjzxg" class="sli-yj"  style="display:none;">一键订阅所有我的自选股</p>'
+                    '<p id="yjzxg" class="sli-yj"  style="display:none;">一键订阅我的自选股(仅支持沪深AB股)</p>'
                 ].join(''));
                 this.$yjzxg = this.$search.find('#yjzxg');
             }else{

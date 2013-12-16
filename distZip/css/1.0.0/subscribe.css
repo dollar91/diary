@@ -66,6 +66,8 @@ a.sli-w2:hover{text-decoration:underline;}
 .sex-sure{background-position:-156px -91px;color:#fff;}
 .sex-del{background-position:-215px -91px;color:#453f3f;}
 .prompt-pop{padding:20px 30px;text-align:center;background:#abcdef;font-size:16px;font-weight:bold;position:absolute;top:50%;left:50%;margin:-20px 0 0 -20px;}
+/*取消全部订阅弹窗*/
+.delete-content{font-size:14px;padding:0 10px 10px 0;text-align:center;}
 /*按键精灵*/
 .sli-stock,.sli-plate{background:#fff;width:210px;padding:3px;border:1px solid #5aa1c0;position:absolute;top:5px;left:130px;}
 .sli-search{width:193px;height:20px;border:1px solid #bfbfbf;}
