@@ -205,6 +205,7 @@ $(function() {
                     var clocknow = $("#clockSelect").val();
                     var searchStr = $("#searchStr").val();
                     treatFilter(newDate, codenow, clocknow, searchStr, noteList);
+                    $("#empty").show();
                 },
                 onclearing: function() { //清空的时候
                     var newDate = '';
@@ -264,6 +265,7 @@ $(function() {
             $("#clockSelect").val('全部提醒');
             $("#searchStr").val('');
             treatFilter('所有日期', '全部股票', '全部提醒', '', noteList);
+            $(this).hide();
         })
     }
 
