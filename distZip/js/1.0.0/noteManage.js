@@ -229,7 +229,7 @@ $(function() {
         $("#gpSelect ul").html('');
         $("#gpSelect ul").append('<li class="cur"><a>全部股票</a></li>');
         for (var i = 0; i < codeArr.length; i++) {
-            $("#gpSelect ul").append('<li><a>' + codeArr[i] + '</a></li>');
+            $("#gpSelect ul").append('<li><a>' + mCutStr(codeArr[i],16) + '</a></li>');
         }        
         $("#gpSelect").attr('val',klinecode);
     }

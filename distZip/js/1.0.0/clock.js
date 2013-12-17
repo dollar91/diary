@@ -28,7 +28,7 @@ $(function() {
                 $("#clockCode").html('相关股票：<span>'+getKHDCodename(code,codename)+'</span>');
               }        
     });
-    $("#konwBt").click(function() {
+    $(".konwBt").click(function() {
         external.closeWindow();
     });
 })

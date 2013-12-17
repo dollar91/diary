@@ -93,7 +93,7 @@
 #gpSelect{width:130px;height:21px;line-height:20px;background-position:-3px -121px;position:relative;}
 #gpSelect p{padding-left:5px;}
 #gpSelect ul{width:127px;max-height:200px;border:1px solid #bfbfbf;display:none;overflow-x:hidden;overflow-y:auto;position:absolute;top:21px;left:1px;background-color:#fff;}
-#gpSelect ul{_height:expression((document.documentElement.clientHeight||document.body.clientHeight)<200?"200px":"");}
+#gpSelect ul{_height:expression(this.scrollHeight > 200 ? "200px" : "auto");}
 #gpSelect ul li{height:20px;line-height:20px;border-top:0 none;}
 #gpSelect ul li a{display:block;padding-left:5px;}
 #gpSelect ul li a:hover,#gpSelect ul .cur a{background-color:#3399ff;color:#fff;}
