@@ -23,7 +23,7 @@ h1,h2,h3,h4,h5,h6 {font-size:100%;font-weight:normal}
 /*字母数字等强制换行*/
 .lineb{word-break: break-all;}
 /*拼图*/
-.note-bt,.dy-bt,.set-icon,.date-pre,.date-next,.note-icon,.today-bt,.set-bt,.dz-icon,.clock-icon,.add-icon,.search-bt,.yes-icon,.konwBt{background:url(http://i.thsi.cn/images/blog/diary/sprite.png) no-repeat;}
+.note-bt,.dy-bt,.set-icon,.date-pre,.date-next,.note-icon,.today-bt,.set-bt,.dz-icon,.clock-icon,.add-icon,.search-bt,.yes-icon,.konwBt,#gpSelect{background:url(http://i.thsi.cn/images/blog/diary/sprite.png) no-repeat;}
 .sli-add,.return-icon,.sex-close,.sli-search span,.sli-nav a,.npop-icon,.npop-close,.npop-save,.npop-cancel,.npop-del,.npop-edit,.cnpop-icon1,.cnpop-icon2,.cnpop-prev,.cnpop-next,.sex-sure,.sex-del,.sli-close{background:url(http://i.thsi.cn/images/blog/diary/sprite.png) no-repeat;}
 .gray-c,.note-th li,.notelist-title,.manage-table th,.sli-bg,.cks-head,.cks-table th,.clock-content{background:url(http://i.thsi.cn/images/blog/diary/repeat.png) repeat-x;}
 .note-bt,.dy-bt,.gray-c,.date-box,.date-pre,.date-next,.notelist-tip,.notelist-text,.note-manage-fl,.subs-head,.subs-return{float:left;display:inline;}

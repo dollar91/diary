@@ -12,7 +12,7 @@
 #mask_iframe,.note-pop,.delete-box,.success-box{display:none;}
 #edit_box,#show_box,#add_box{height:531px;}
 /*note pop*/
-.note-pop{background:#d47e7e;width:500px;overflow:hidden;padding:3px;position:fixed;top:70px;left:195px;z-index:102;}
+.note-pop{background:#d47e7e;width:500px;overflow:hidden;padding:3px;position:fixed;top:70px;left:50%;margin-left:-250px;z-index:102;}
 .note-pop{ _position:absolute;_top:expression(eval(document.documentElement.scrollTop)+70);}
 .npop-head{padding:2px 0;height:22px;}
 .npop-title{float:left;}

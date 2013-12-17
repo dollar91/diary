@@ -138,6 +138,7 @@ $(function() {
           });
         } else {
           clockDate = getFullDate(clock * 1000);
+          ctime=clockDate;
           diaryList.push({
             flag: 3,
             ctime: ctime,

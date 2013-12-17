@@ -49,13 +49,14 @@ $(function() {
                 clock = '-';
             } else {
                 clock = getFullTime(pageList[page - 1][i].clockDate).timeDate;
+                clock +=' '+getFullTime(pageList[page - 1][i].clockDate).timeHour.slice(0,5)
             }
             noteBody += '<tr pid=' + pageList[page - 1][i].pid + '>';
             noteBody += '<td><input class="delete-input" type="checkbox"></td>';
             noteBody += '<td>' + getFullTime(pageList[page - 1][i].ctime).timeDate + '</td>';
-            noteBody += '<td style="text-align:left;padding-left:20px;">' + mCutStr(pageList[page - 1][i].subtitle, 20) + '</td>';
+            noteBody += '<td style="text-align:left;padding-left:10px;">' + mCutStr(pageList[page - 1][i].subtitle, 20) + '</td>';
             noteBody += '<td>' + pageList[page - 1][i].codename + '</td>';
-            noteBody += '<td style="text-align:left;padding-left:20px;">' + mCutStr(pageList[page - 1][i].subcontent, 40) + '</td>';
+            noteBody += '<td style="text-align:left;padding-left:10px;">' + mCutStr(pageList[page - 1][i].subcontent, 40) + '</td>';
             noteBody += '<td>' + clock + '</td>';
             noteBody += '<td><a href="###" class="show_note">查看</a><a href="###" class="edit_note">编辑</a><a href="###" class="delete_note">删除</a></td>';
             noteBody += '</tr>';
@@ -96,6 +97,8 @@ $(function() {
                 var subcontent = jsArr[i].content;
                 var pid = jsArr[i].pid;
                 var codename = jsArr[i].codename;
+                var code = jsArr[i].code;
+                    codename = getKHDCodename(code,codename);
                 noteList.push({
                     flag: 1,
                     ctime: ctime,
@@ -213,7 +216,7 @@ $(function() {
         turnPage(newList);
     }
 
-    //创建动态相关股票列表
+   //创建动态相关股票列表
     function createGpList(noteList) {
         var noteListLen = noteList.length;
         var codeArr = [];
@@ -223,12 +226,12 @@ $(function() {
             }
         }
         codeArr = unique(codeArr);
-        $("#gpSelect").html('');
-        $("#gpSelect").append('<option>全部股票</option>');
+        $("#gpSelect ul").html('');
+        $("#gpSelect ul").append('<li class="cur"><a>全部股票</a></li>');
         for (var i = 0; i < codeArr.length; i++) {
-            $("#gpSelect").append('<option>' + codeArr[i] + '</option>');
-        }
-        $("#gpSelect").val(klinecode);
+            $("#gpSelect ul").append('<li><a>' + codeArr[i] + '</a></li>');
+        }        
+        $("#gpSelect").attr('val',klinecode);
     }
 
     //筛选数据
@@ -256,12 +259,20 @@ $(function() {
             });           
         });
         //股票
-        $("#gpSelect").live('change', function() {
+        $("#gpSelect p").live('click',function(){
+            $(this).hide();
+            $("#gpSelect ul").show();
+        });
+        $("#gpSelect ul li a").live('click',function(){
             var newDate = $("#dateFilter").val();
             if (newDate != '所有日期') {
                 newDate = newDate.replace(/-/g, '');
             }
-            var codenow = $(this).val();
+            var codenow = $(this).text();
+            $(this).parents('li').addClass('cur').siblings('li').removeClass('cur');
+            $("#gpSelect").attr('val',codenow);
+            $("#gpSelect p").show().text(codenow);
+            $("#gpSelect ul").hide();
             var clocknow = $("#clockSelect").val();
             var searchStr = $("#searchStr").val();
             treatFilter(newDate, codenow, clocknow, searchStr, noteList,1);

@@ -2,40 +2,10 @@
 $(function() {
     var pid = getUrlParam('pid');
     var testUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiaryDetail&userid=' + userid + '&pid=' + pid + '&type=jsonp&charset=utf8&callback=?';
-    //根据code取codename
-    function getEvalJson(str){
-      return eval(str);
-    }
-    function getKHDCodename(code,codename){
-      var thsQuote = external.createObject('Quote');
-      var reqObj = {
-        code : code,
-        type : 'zqmc,new',
-        onready: function(){
-          var param = {
-            code : code,
-            type : 'zqmc'
-          };
-          var retObj = thsQuote.getData(param);
-          var codenameNew;
-          if(code == ''){
-            codenameNew = '';
-          }else{
-            codenameNew = getEvalJson(retObj)[code]['zqmc'];
-          }
-          if(codenameNew == ''){
-            $("#clockCode").hide();
-            }else{
-                $("#clockCode").html('相关股票：<span>'+codenameNew+'</span>');
-            }
-        }
-      };
-      var flag = thsQuote.request(reqObj);
-    }
     $.getJSON(testUrl, function(data) {
         var content = removeHTMLTag($(data)[0].data.content);
         var title = $(data)[0].data.subtitle;
-        var code = $(data)[0].data.code;
+        var code = ''+$(data)[0].data.code;
         var codename = $(data)[0].data.codename;
         var clocktime = $(data)[0].data.clock;
         $("#clockTitle").text(mCutStr(title,30));
@@ -52,7 +22,11 @@ $(function() {
                 sec = fulldate.slice(12);
             $("#clockTime").text('提醒时间：'+year+':'+month+':'+day+' '+hour+':'+min+':'+sec);
         }
-        getKHDCodename(code,codename);
+        if(codenameNew == ''){
+            $("#clockCode").hide();
+        }else{
+                $("#clockCode").html('相关股票：<span>'+getKHDCodename(code,codename)+'</span>');
+              }        
     });
     $("#konwBt").click(function() {
         external.closeWindow();

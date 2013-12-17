@@ -4,32 +4,6 @@
 window.lastId = 0;
 window.nextId = 0;
 //根据code取codename
-function getEvalJson(str){
-  return eval(str);
-}
-function getKHDCodename(code,codename){
-  var thsQuote = external.createObject('Quote');
-  var reqObj = {
-    code : code,
-    type : 'zqmc,new',
-    onready: function(){
-      var param = {
-        code : code,
-        type : 'zqmc'
-      };
-      var retObj = thsQuote.getData(param);
-      var codenameNew;
-      if(code == ''){
-        codenameNew = '';
-      }else{
-        codenameNew = getEvalJson(retObj)[code]['zqmc'];
-      }
-      $("#show_box #codename").text(codenameNew);
-      $("#edit_box .codename_edit").val(''+code+' '+codenameNew); 
-    }
-  };
-  var flag = thsQuote.request(reqObj);
-}
 
 //填充单片记事内容
 function showNews(data, url) {
@@ -38,7 +12,7 @@ function showNews(data, url) {
         subtitle = news.subtitle,
         subcontent = news.content,
         codename = news.codename,
-        code = (''+news.code).toUpperCase();
+        code = ''+news.code;
     if (news.clock == 0) {
         var clocktext = '无'
     } else {
@@ -62,7 +36,7 @@ function showNews(data, url) {
     } else {
         $("#clock").text(clock_date + ' ' + clock_time);
     }
-    getKHDCodename(code,codename);
+    $("#show_box #codename").text(getKHDCodename(code,codename));
 }
 
 //以下为点击编辑以后的处理
@@ -73,7 +47,7 @@ function editNews(data) {
         subtitle = news.subtitle,
         subcontent = news.content,
         codename = news.codename,
-        code = (''+news.code).toUpperCase();   
+        code = ''+news.code;   
     $("#edit_box .subtitle_edit").val(subtitle).focus();
     $("#edit_box .pidVal").val(pid);
     editor.setContent(subcontent);
@@ -92,7 +66,7 @@ function editNews(data) {
         var clock_time = getFullTime(clocktime).timeHour; //分秒
         $("#edit_box .clock_edit").show().val(clock_date + ' ' + clock_time);
     }
-    getKHDCodename(code,codename);
+    $("#edit_box .codename_edit").val(code+' '+getKHDCodename(code,codename)); 
 }
 //编辑保存需要提交的数据
 function editData(saveBt) {
@@ -108,6 +82,7 @@ function editData(saveBt) {
     }
     var codeVal = boxOuter.find(".codename_edit").val();
     var stockcode = codeVal.slice(0,codeVal.indexOf(' '));
+        stockcode = setKHDCode(stockcode);
     var ip = 0;
     var pcate = -1;
     var display_date;
@@ -174,6 +149,7 @@ function addData(saveBt) {
     }
     var codeVal = boxOuter.find(".codename_edit").val();
     var stockcode = codeVal.slice(0,codeVal.indexOf(' '));
+        stockcode = setKHDCode(stockcode);
     var ip = 0;
     var pcate = -1;
     var display_date;

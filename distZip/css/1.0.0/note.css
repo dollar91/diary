@@ -66,8 +66,8 @@
 .tip-codename span{color:#2d80e6}
 .point{position:absolute;width:9px;height:16px;background:url(http://i.thsi.cn/images/blog/diary/point.png) no-repeat;top:50%;margin-top:-8px;left:-9px;}
 /*记事管理*/
-.note-manage-search{height:20px;padding:8px 10px 10px;overflow:hidden;}
-.note-manage-fl{width:365px;overflow:hidden;}
+.note-manage-search{height:20px;padding:8px 10px 10px;}
+.note-manage-fl{width:365px;}
 .note-manage-fr{width:260px;overflow:hidden;}
 .note-manage-fl select{border:1px solid #bfbfbf;color:#453f3f;}
 .search-input{width:180px;height:20px;line-height:20px;border:1px solid #bfbfbf;padding:0 10px;}
@@ -86,9 +86,20 @@
 #dateAll{vertical-align:middle;height:22px;*margin-left:5px;display:none;}
 #prePageNo,#nextPageNo{margin-right:5px;}
 #prePage,#nextPageNo{display:none;}
-#empty{vertical-align:middle;padding:0;margin:0;height:22px;*margin-left:5px;display:none;}
+#empty{padding:0;margin:0;height:22px;}
+#clockSelect{margin:0;}
+#dateFilter,#empty,#gpSelect,#clockSelect{display:inline;float:left;margin-right:6px;}
+#empty{display:none;}
+#gpSelect{width:130px;height:21px;line-height:20px;background-position:-3px -121px;position:relative;}
+#gpSelect p{padding-left:5px;}
+#gpSelect ul{width:127px;max-height:200px;border:1px solid #bfbfbf;display:none;overflow-x:hidden;overflow-y:auto;position:absolute;top:21px;left:1px;background-color:#fff;}
+#gpSelect ul{_height:expression((document.documentElement.clientHeight||document.body.clientHeight)<200?"200px":"");}
+#gpSelect ul li{height:20px;line-height:20px;border-top:0 none;}
+#gpSelect ul li a{display:block;padding-left:5px;}
+#gpSelect ul li a:hover,#gpSelect ul .cur a{background-color:#3399ff;color:#fff;}
 /*闹钟*/
 .clock-content{width:260px;height:144px;background-position:0 -85px;margin:0 auto;}
 .clock-inner{padding:5px 15px 0;}
 .konwBt{display:block;width:71px;text-align:center;background-position:0 -87px;height:28px;line-height:28px;margin-top:7px;margin-left:90px;}
 #clock_box .konwBt{position:absolute;margin:0;bottom:-35px;left:95px;}
+#clock_box{width:100%;height:100%;}

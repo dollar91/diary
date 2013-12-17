@@ -123,6 +123,7 @@
             });
           } else {
             clockDate = getFullDate(clock * 1000);
+            ctime=clockDate;
             jsList.push({
               flag: 3,
               ctime: ctime,
@@ -654,6 +655,7 @@
         tipClockText = tipObj.tipClockText,
         tipCode = tipObj.tipCode,
         tipCodename = tipObj.tipCodename;
+        tipCodename = getKHDCodename(tipCode,tipCodename);
       $("#xqPid").val(tipPid);
       $(".xq-box .tip-title").html(tipTitle);
       $(".xq-box .tip-content").html(mCutStr(tipContent, 101));

@@ -11,8 +11,37 @@ var urlMap = {
   'jsUrl': "http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiary&userid=" + userid + "&type=jsonp&charset=utf8&callback=?",
   'dyUrl': "http://comment.10jqka.com.cn/api/subscribe.php?act=getTips&userid=" + userid + "&jsoncallback=?"
 };
-
-
+//用于取codename的对象
+var util = external.createObject('Util');
+function getKHDCodename(code,codename){
+    var codenameNew;
+    if(code == ''){
+        codenameNew='';
+    }else{
+       if(codename != ''){
+        codenameNew = codename;
+        } else{
+            try{
+              var stockObj = eval(util.filterStock({filter: code, count: 1}));
+              codenameNew = stockObj[0].name;
+            }catch(e){
+              codenameNew = '';
+            }            
+        }
+    }
+    return codenameNew;
+}
+//设置客户端提交的code
+function setKHDCode(code){
+  var codeNew;
+  try{
+      var stockObj = eval(util.filterStock({filter: code, count: 1}));
+      codeNew = stockObj[0].stock;
+  }catch(e){
+      codeNew = '';
+  }
+    return codeNew;
+}
 //以下用于日记列表和表格日历的共用部分
 //获取服务器时间
 function getDomainTime() {
@@ -129,26 +158,26 @@ function mCutStr(str, len,str2) {
   }else{
     var str3 = str2 || '..';
   } 
-  var str_length = 0;
+  var str_length = 0;//实际长度
   var str_len = 0;
   str_cut = new String();
   str_len = str.length;
   for (var i = 0; i < str_len; i++) {
     a = str.charAt(i);
     str_length++;
+    //中文的情况多加1
     if (escape(a).length > 4) {
       //中文字符的长度经编码之后大于4
       str_length++;
     }
     str_cut = str_cut.concat(a);
-    if (str_length >= len) {
-      str_cut = str_cut.concat(str3);
-      return str_cut;
+    if(str_length <= len && i== (str_len-1)){
+        return str;
     }
-  }
-  //如果给定字符串小于指定长度，则返回源字符串；
-  if (str_length < len) {
-    return str;
+    if (str_length >= len && i< (str_len-1)) {
+       str_cut = str_cut.concat(str3);
+       return str_cut;
+    }
   }
 }
 
