@@ -2,6 +2,39 @@
 $(function() {
     var IS = true;
     var pageLength = 20;
+    //从客户端获取codename
+    var codenameArr = [];//存放名称和代码
+    function getKHDCManageodename(code,codename){
+        var codenameNew;
+        if(code == ''){
+            codenameNew='';
+        }else{
+           if(codename != ''){
+            codenameNew = codename;
+            } else{
+                var codenameLen = codenameArr.length;
+                var codenameKHD = '';
+                for(var i=0 ; i<codenameLen ; i++){
+                    if(codenameArr[i].code == code){
+                        codenameKHD = codenameArr[i].codename;
+                        break;
+                    }
+                }
+                if(codenameKHD != ''){
+                    codenameNew = codenameKHD;
+                }else{
+                  try{
+                      var stockObj = eval(util.filterStock({filter: code, count: 1}));
+                      codenameNew = stockObj[0].name;
+                      codenameArr.push({'code':code,'codename':codenameNew});
+                    }catch(e){
+                      codenameNew = '';
+                    }  
+                }                            
+            }
+        }
+        return codenameNew;
+    }
     //数据分页
     function setListPage(noteList, pageLength) {
         var ListLength = noteList.length;
@@ -98,7 +131,7 @@ $(function() {
                 var pid = jsArr[i].pid;
                 var codename = jsArr[i].codename;
                 var code = jsArr[i].code;
-                    codename = getKHDCodename(code,codename);
+                    codename = getKHDCManageodename(code,codename);
                 noteList.push({
                     flag: 1,
                     ctime: ctime,
