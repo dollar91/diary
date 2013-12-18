@@ -13,24 +13,38 @@ var urlMap = {
 };
 //用于取codename的对象
 var util = external.createObject('Util');
-function getKHDCodename(code,codename){
-    var codenameNew;
-    if(code == ''){
-        codenameNew='';
-    }else{
-       if(codename != ''){
-        codenameNew = codename;
-        } else{
-            try{
-              var stockObj = eval(util.filterStock({filter: code, count: 1}));
-              codenameNew = stockObj[0].name;
-            }catch(e){
-              codenameNew = '';
-            }            
-        }
-    }
-    return codenameNew;
-}
+var codenameArr = [];//存放名称和代码
+  function getKHDCodename(code,codename){
+      var codenameNew;
+      if(code == ''){
+          codenameNew='';
+      }else{
+         if(codename != ''){
+          codenameNew = codename;
+          } else{
+              var codenameLen = codenameArr.length;
+              var codenameKHD = '';
+              for(var i=0 ; i<codenameLen ; i++){
+                  if(codenameArr[i].code == code){
+                      codenameKHD = codenameArr[i].codename;
+                      break;
+                  }
+              }
+              if(codenameKHD != ''){
+                  codenameNew = codenameKHD;
+              }else{
+                try{
+                    var stockObj = eval(util.filterStock({filter: code, count: 1}));
+                    codenameNew = stockObj[0].name;
+                    codenameArr.push({'code':code,'codename':codenameNew});
+                  }catch(e){
+                    codenameNew = '';
+                  }  
+              }                            
+          }
+      }
+      return codenameNew;
+  }
 //设置客户端提交的code
 function setKHDCode(code){
   var codeNew;

@@ -1,5 +1,5 @@
 @charset "utf-8";
-html,body{height:100%;}
+html,body{height:100%;overflow:hidden;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {margin:0;padding:0}
 body{ background:#ccc; font:12px/1.5 'simsun',Arial, Helvetica, sans-serif;color:#453f3f;}
 a{color:#453f3f;}

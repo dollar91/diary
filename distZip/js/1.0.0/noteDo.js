@@ -3,7 +3,6 @@
 //查看记事
 window.lastId = 0;
 window.nextId = 0;
-//根据code取codename
 
 //填充单片记事内容
 function showNews(data, url) {

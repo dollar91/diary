@@ -2,39 +2,6 @@
 $(function() {
     var IS = true;
     var pageLength = 20;
-    //从客户端获取codename
-    var codenameArr = [];//存放名称和代码
-    function getKHDCManageodename(code,codename){
-        var codenameNew;
-        if(code == ''){
-            codenameNew='';
-        }else{
-           if(codename != ''){
-            codenameNew = codename;
-            } else{
-                var codenameLen = codenameArr.length;
-                var codenameKHD = '';
-                for(var i=0 ; i<codenameLen ; i++){
-                    if(codenameArr[i].code == code){
-                        codenameKHD = codenameArr[i].codename;
-                        break;
-                    }
-                }
-                if(codenameKHD != ''){
-                    codenameNew = codenameKHD;
-                }else{
-                  try{
-                      var stockObj = eval(util.filterStock({filter: code, count: 1}));
-                      codenameNew = stockObj[0].name;
-                      codenameArr.push({'code':code,'codename':codenameNew});
-                    }catch(e){
-                      codenameNew = '';
-                    }  
-                }                            
-            }
-        }
-        return codenameNew;
-    }
     //数据分页
     function setListPage(noteList, pageLength) {
         var ListLength = noteList.length;
@@ -131,7 +98,7 @@ $(function() {
                 var pid = jsArr[i].pid;
                 var codename = jsArr[i].codename;
                 var code = jsArr[i].code;
-                    codename = getKHDCManageodename(code,codename);
+                    codename = getKHDCodename(code,codename);
                 noteList.push({
                     flag: 1,
                     ctime: ctime,
@@ -260,11 +227,20 @@ $(function() {
         }
         codeArr = unique(codeArr);
         $("#gpSelect ul").html('');
+
         $("#gpSelect ul").append('<li class="cur"><a>全部股票</a></li>');
         for (var i = 0; i < codeArr.length; i++) {
-            $("#gpSelect ul").append('<li><a>' + mCutStr(codeArr[i],16) + '</a></li>');
+            if(klinecode == codeArr[i]){
+                $("#gpSelect ul").append('<li class="cur"><a>' + mCutStr(codeArr[i],16) + '</a></li>');
+            }else{
+                $("#gpSelect ul").append('<li><a>' + mCutStr(codeArr[i],16) + '</a></li>');
+            }
         }        
         $("#gpSelect").attr('val',klinecode);
+        $("#gpSelect p").text(klinecode);
+        if(klinecode != '全部股票'){
+            $("#gpSelect ul li").eq(0).removeClass('cur');
+        }
     }
 
     //筛选数据
@@ -296,6 +272,10 @@ $(function() {
             $(this).hide();
             $("#gpSelect ul").show();
         });
+        $("body").click(function(){
+            $("#gpSelect ul").hide();
+            $("#gpSelect p").show();
+        })
         $("#gpSelect ul li a").live('click',function(){
             var newDate = $("#dateFilter").val();
             if (newDate != '所有日期') {
@@ -310,6 +290,7 @@ $(function() {
             var searchStr = $("#searchStr").val();
             treatFilter(newDate, codenow, clocknow, searchStr, noteList,1);
         });
+        
         //闹钟
         $("#clockSelect").live('change', function() {
             var newDate = $("#dateFilter").val();
