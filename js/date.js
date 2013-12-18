@@ -1,7 +1,5 @@
   //@charset "utf-8"
   $(function() {
-    //设置全局的变量用于填充tip框。
-    var tipList = [];
     var IS = true;
     /**
      *此处分日期和内容两部分处理数据
@@ -93,74 +91,6 @@
       return diaryContent;
     }
 
-    //处理请求到的数据
-    function treatData(js, dy) {
-      var diaryList = []; //用于存储所有要填进去列表的数据，包括订阅和记事；
-      var jsList = []; //用于存储记事
-      if ($(js)[0].errorCode == 0) {
-        var jsArr = $(js)[0].data;
-        for (var i = 0; i < jsArr.length; i++) {
-          var ctime = getFullDate(jsArr[i].ctime * 1000);
-          var clockDate;
-          var clock = jsArr[i].clock;
-          var subtitle = jsArr[i].subtitle;
-          var subcontent = jsArr[i].content;
-          var pid = jsArr[i].pid;
-          var codename = jsArr[i].codename;
-          var code = jsArr[i].code;
-          var clockDate; //提醒时间
-          if (clock == 0) { //没有闹钟提醒的时候
-            clockDate = 0;
-            jsList.push({
-              flag: 1,
-              ctime: ctime,
-              clockDate: clockDate,
-              subtitle: subtitle,
-              subcontent: subcontent,
-              pid: pid,
-              codename: codename,
-              code:code
-            });
-          } else {
-            clockDate = getFullDate(clock * 1000);
-            ctime=clockDate;
-            jsList.push({
-              flag: 3,
-              ctime: ctime,
-              clockDate: clockDate,
-              subtitle: subtitle,
-              subcontent: subcontent,
-              pid: pid,
-              codename: codename,
-              code:code
-            });
-          }
-        }
-      }
-      diaryList = jsList;
-      if (dy && $(dy)[0] && $(dy)[0].status == 0 && $(dy)[0].data.total != 0) {
-        var dylength = $(dy)[0].data.total;
-        var dyKeys = $(dy)[0].data.wd; //用于存储订阅的关键字
-        var nowYear = getDomainTime().nowYear;
-        var nowMonth = getDomainTime().nowMonth;
-        var nowDay = getDomainTime().nowDay;
-        var ctime = '' + nowYear + (nowMonth < 10 ? '0' + nowMonth : nowMonth) + (nowDay < 10 ? '0' + nowDay : nowDay) + '000000';
-        if (dyKeys.length == 3) {
-          dyKeys = dyKeys[0] + ',' + dyKeys[1];
-        } else {
-          dyKeys = dyKeys.join(',');
-        }
-        diaryList.push({
-          flag: 2,
-          ctime: ctime,
-          keys: dyKeys,
-          length: dylength
-        });
-      }
-      dateSort(diaryList);
-      tipList = jsList;
-      return diaryList;
-    }
 
     //创建单元格填充内容
     function innerTdContent(diaryObj, diaryContent) {
@@ -189,9 +119,9 @@
               dyList = '';
             for (var k = 0; k < diaryContent[i].length; k++) {
               if (diaryContent[i][k].flag == 1) {
-                jsList += '<li pid="' + diaryContent[i][k].pid + '" flag="' + diaryContent[i][k].flag + '"><p class="tip-js"><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle, 30) + '</a></p></li>';
+                jsList += '<li pid="' + diaryContent[i][k].pid + '" flag="' + diaryContent[i][k].flag + '" code="' + diaryContent[i][k].code + '"><p class="tip-js"><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle, 30) + '</a></p></li>';
               } else if (diaryContent[i][k].flag == 3) {
-                clockList += '<li pid="' + diaryContent[i][k].pid + '" flag="' + diaryContent[i][k].flag + '"><p class="tip-warning"><s class="clock-icon"></s><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle, 26) + '</a></p></li>';
+                clockList += '<li pid="' + diaryContent[i][k].pid + '" flag="' + diaryContent[i][k].flag + '" code="' + diaryContent[i][k].code + '"><p class="tip-warning"><s class="clock-icon"></s><a href="###" class="lineb">' + mCutStr(diaryContent[i][k].subtitle, 26) + '</a></p></li>';
               } else if (diaryContent[i][k].flag == 2) {
                 var text = diaryContent[i][k].keys + '等共' + diaryContent[i][k].length + '条信息';
                 dyList += '<li flag="' + diaryContent[i][k].flag + '"><p class="tip-zx"><a href="'+dyListUrl2+'">' + text + '</a></p></li>';
@@ -421,7 +351,7 @@
       if ($(this).attr('flag') == 1 || $(this).attr('flag') == 3) {
         $("#mask_iframe,#show_box").show();
         var pid = $(this).attr('pid');
-        operateDiary.show(pid);
+        operateDiary.show(pid,0);
       }
     });
 

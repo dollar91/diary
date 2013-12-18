@@ -93,9 +93,9 @@ $(function() {
           dyList = '';
         for (var j = 0; j < DayList[i].length; j++) {
           if (DayList[i][j].flag == 1) {
-            jsList += '<li class="js" pid=' + DayList[i][j].pid + '><i class="notelist-tip tip-js"></i><a href="###" class="notelist-text">' + mCutStr(DayList[i][j].subtitle, 111) + '</a></li>'
+            jsList += '<li class="js" pid=' + DayList[i][j].pid + ' code="'+ DayList[i][j].code +'"><i class="notelist-tip tip-js"></i><a href="###" class="notelist-text">' + mCutStr(DayList[i][j].subtitle, 111) + '</a></li>'
           } else if (DayList[i][j].flag == 3) {
-            clockList += '<li class="js" pid=' + DayList[i][j].pid + '><i class="notelist-tip tip-warning"><i class="clock-icon"></i></i><a href="###" class="notelist-text">' + mCutStr(DayList[i][j].subtitle, 111) + '</a></li>'
+            clockList += '<li class="js" pid=' + DayList[i][j].pid + ' code="'+ DayList[i][j].code +'"><i class="notelist-tip tip-warning"><i class="clock-icon"></i></i><a href="###" class="notelist-text">' + mCutStr(DayList[i][j].subtitle, 111) + '</a></li>'
           } else if (DayList[i][j].flag == 2) {
             dyList += '<li><i class="notelist-tip tip-zx"></i><a href="'+dyListUrl2+'" class="notelist-text">' + DayList[i][j].keys + '等共' + DayList[i][j].length + '条' + '</a></li>'
           }
@@ -110,65 +110,7 @@ $(function() {
     }
   }
 
-  //处理请求到的数据
-  function treatData(js, dy) {
-    var jsArr;
-    var diaryList = []; //用于存储所有要填进去列表的数据，包括订阅和记事；
-    if ($(js)[0].errorCode == 0) {
-      jsArr = $(js)[0].data;
-      for (var i = 0; i < jsArr.length; i++) {
-        var ctime = getFullDate(jsArr[i].ctime * 1000);
-        var clockDate;
-        var clock = jsArr[i].clock;
-        var subtitle = jsArr[i].subtitle;
-        var subcontent = jsArr[i].content;
-        var pid = jsArr[i].pid;
-        var codename = jsArr[i].codename;
-        var clockDate; //提醒时间
-        if (clock == 0) { //没有闹钟提醒的时候
-          clockDate = 0;
-          diaryList.push({
-            flag: 1,
-            ctime: ctime,
-            clockDate: clockDate,
-            subtitle: subtitle,
-            subcontent: subcontent,
-            pid: pid,
-            codename: codename
-          });
-        } else {
-          clockDate = getFullDate(clock * 1000);
-          ctime=clockDate;
-          diaryList.push({
-            flag: 3,
-            ctime: ctime,
-            clockDate: clockDate,
-            subtitle: subtitle,
-            subcontent: subcontent,
-            pid: pid,
-            codename: codename
-          });
-        }
-      }
-    }
-    if (dy && $(dy)[0] && $(dy)[0].status == 0 && $(dy)[0].data.total != 0) { //有订阅内容才会去执行
-      var dylength = $(dy)[0].data.total;
-      var dyKeys = $(dy)[0].data.wd; //用于存储订阅的关键字
-      var nowYear = getDomainTime().nowYear;
-      var nowMonth = getDomainTime().nowMonth;
-      var nowDay = getDomainTime().nowDay;
-      var ctime = '' + nowYear + (nowMonth < 10 ? '0' + nowMonth : nowMonth) + (nowDay < 10 ? '0' + nowDay : nowDay) + '000000';
-      dyKeys = dyKeys.join(',');
-      diaryList.push({
-        flag: 2,
-        ctime: ctime,
-        keys: dyKeys,
-        length: dylength
-      });
-    }
-    dateSort(diaryList);
-    return diaryList;
-  }
+  
   /*
    *operateDiary用于日期年月操作
    */
@@ -343,7 +285,7 @@ $(function() {
   $(".js").live('click', function() {
     $("#mask_iframe,#show_box").show();
     var pid = $(this).attr('pid');
-    operateDiary.show(pid);
+    operateDiary.show(pid,0);
   });
 
   /*

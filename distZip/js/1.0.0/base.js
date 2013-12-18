@@ -185,10 +185,10 @@ function mCutStr(str, len,str2) {
       str_length++;
     }
     str_cut = str_cut.concat(a);
-    if(str_length <= len && i== (str_len-1)){
+    if(str_length <= len && (i== (str_len-1) || i== (str_len-2))){
         return str;
     }
-    if (str_length >= len && i< (str_len-1)) {
+    if (str_length >= len && i< (str_len-2)) {
        str_cut = str_cut.concat(str3);
        return str_cut;
     }

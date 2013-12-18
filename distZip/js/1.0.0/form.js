@@ -39,7 +39,7 @@ function getClockTime(clock_val) {
  */
 $('.subtitle_edit').live('blur', function(event) {
     var text = $(this).val();
-    $(this).val(mCutStr(text, 50,''));
+    $(this).val(mCutStr(text, 48,''));
     if (text.length > 25) {
         promptFun('标题不可以超过25个字')
     }

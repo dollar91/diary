@@ -28,7 +28,7 @@ h1,h2,h3,h4,h5,h6 {font-size:100%;font-weight:normal}
 .gray-c,.note-th li,.notelist-title,.manage-table th,.sli-bg,.cks-head,.cks-table th,.clock-content{background:url(http://i.thsi.cn/images/blog/diary/repeat.png) repeat-x;}
 .note-bt,.dy-bt,.gray-c,.date-box,.date-pre,.date-next,.notelist-tip,.notelist-text,.note-manage-fl,.subs-head,.subs-return{float:left;display:inline;}
 .set-bt,.today-bt,.note-manage-fr{float:right;display:inline;}
-.box{background-color:#fff;width:890px;height:685px;overflow:hidden;margin:0 auto;position:relative;}
+.box{background-color:#fff;width:890px;height:685px;overflow:hidden;margin:0 auto;position:relative;border-left:9px solid #fff;border-right:8px solid #fff;border-bottom:3px solid #fff;}
 /*top*/
 .top{height:45px;padding:15px 15px 0;z-index:101;}
 .content{padding:0 12px 12px;margin:0 auto;height:613px;overflow:hidden;}

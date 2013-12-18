@@ -51,7 +51,7 @@ $(function() {
                 clock = getFullTime(pageList[page - 1][i].clockDate).timeDate;
                 clock +=' '+getFullTime(pageList[page - 1][i].clockDate).timeHour.slice(0,5)
             }
-            noteBody += '<tr pid=' + pageList[page - 1][i].pid + '>';
+            noteBody += '<tr pid=' + pageList[page - 1][i].pid + ' code="'+pageList[page - 1][i].code+'">';
             noteBody += '<td><input class="delete-input" type="checkbox"></td>';
             noteBody += '<td>' + getFullTime(pageList[page - 1][i].ctime).timeDate + '</td>';
             noteBody += '<td style="text-align:left;padding-left:10px;">' + mCutStr(pageList[page - 1][i].subtitle, 20) + '</td>';
@@ -80,39 +80,6 @@ $(function() {
         }
     }
 
-    //处理数据
-    function treatData(data) {
-        var noteList = []; //用于填充请求的全部数据
-        var clockDate;
-        if ($(data)[0].errorCode == 0) {
-            var jsArr = $(data)[0].data;
-            for (var i = 0; i < jsArr.length; i++) {
-                if (jsArr[i].clock == '0') {
-                    clockDate = 0;
-                } else {
-                    clockDate = getFullDate(jsArr[i].clock * 1000);
-                }
-                var ctime = getFullDate(jsArr[i].ctime * 1000);
-                var subtitle = jsArr[i].subtitle;
-                var subcontent = jsArr[i].content;
-                var pid = jsArr[i].pid;
-                var codename = jsArr[i].codename;
-                var code = jsArr[i].code;
-                    codename = getKHDCodename(code,codename);
-                noteList.push({
-                    flag: 1,
-                    ctime: ctime,
-                    clockDate: clockDate,
-                    subtitle: subtitle,
-                    subcontent: subcontent,
-                    pid: pid,
-                    codename: codename
-                });
-            }
-        }
-        dateSort(noteList);
-        return noteList;
-    }
 
     //翻页
     function turnPage(noteList) {
@@ -217,6 +184,18 @@ $(function() {
     }
 
    //创建动态相关股票列表
+   function setULAtr(val){
+        $("#gpSelect").attr('val',val);
+        $("#gpSelect p").show().text(val);
+        $("#gpSelect ul").hide();
+        var len = $("#gpSelect ul li").length;
+        for(var i=0 ; i<len ; i++){
+            if($("#gpSelect ul li").eq(i).text() == val){
+                $("#gpSelect ul li").eq(i).addClass('cur').siblings('li').removeClass('cur');
+                break;
+            }
+        }
+    }
     function createGpList(noteList) {
         var noteListLen = noteList.length;
         var codeArr = [];
@@ -251,7 +230,7 @@ $(function() {
                 onpicking: function(dp) {
                     var date = dp.cal.getNewDateStr();
                     var newDate = dp.cal.getNewDateStr().replace(/-/g, '');
-                    var codenow = $("#gpSelect").val();
+                    var codenow = $("#gpSelect").attr('val');
                     var clocknow = $("#clockSelect").val();
                     var searchStr = $("#searchStr").val();
                     treatFilter(newDate, codenow, clocknow, searchStr, noteList,1);
@@ -259,7 +238,7 @@ $(function() {
                 },
                 onclearing: function() { //清空的时候
                     var newDate = '';
-                    var codenow = $("#gpSelect").val();
+                    var codenow = $("#gpSelect").attr('val');
                     var clocknow = $("#clockSelect").val();
                     var searchStr = $("#searchStr").val();
                     $("#dateFilter").val('所有日期');
@@ -274,30 +253,27 @@ $(function() {
         });
         $("body").click(function(){
             $("#gpSelect ul").hide();
-            $("#gpSelect p").show();
+            $("#gpSelect p").show()
         })
-        $("#gpSelect ul li a").live('click',function(){
+        $("#gpSelect ul li a").live('click',function(event){
             var newDate = $("#dateFilter").val();
             if (newDate != '所有日期') {
                 newDate = newDate.replace(/-/g, '');
             }
             var codenow = $(this).text();
-            $(this).parents('li').addClass('cur').siblings('li').removeClass('cur');
-            $("#gpSelect").attr('val',codenow);
-            $("#gpSelect p").show().text(codenow);
-            $("#gpSelect ul").hide();
+            setULAtr(codenow);
             var clocknow = $("#clockSelect").val();
             var searchStr = $("#searchStr").val();
             treatFilter(newDate, codenow, clocknow, searchStr, noteList,1);
+            //event.stopPropagation();
         });
-        
         //闹钟
         $("#clockSelect").live('change', function() {
             var newDate = $("#dateFilter").val();
             if (newDate != '所有日期') {
                 newDate = newDate.replace(/-/g, '');
             }
-            var codenow = $("#gpSelect").val();
+            var codenow = $("#gpSelect").attr('val');
             var clocknow = $(this).val();
             var searchStr = $("#searchStr").val();
             treatFilter(newDate, codenow, clocknow, searchStr, noteList,1);
@@ -308,7 +284,7 @@ $(function() {
             if (newDate != '所有日期') {
                 newDate = newDate.replace(/-/g, '');
             }
-            var codenow = $("#gpSelect").val();
+            var codenow = $("#gpSelect").attr('val');
             var clocknow = $("#clockSelect").val();
             var searchStr = $("#searchStr").val();
             treatFilter(newDate, codenow, clocknow, searchStr, noteList,1);
@@ -324,7 +300,7 @@ $(function() {
         //清空
         $("#empty").click(function(){
             $("#dateFilter").val('所有日期');
-            $("#gpSelect").val('全部股票');
+            setULAtr('全部股票');
             $("#clockSelect").val('全部提醒');
             $("#searchStr").val('');
             treatFilter('所有日期', '全部股票', '全部提醒', '', noteList,1);
@@ -374,7 +350,13 @@ $(function() {
     $(".show_note").live('click', function() {
         $("#show_box,#mask_iframe").show();
         var pid = $(this).parents('tr').attr('pid');
-        operateDiary.show(pid);
+        var code = $(this).parents('tr').attr('code');
+        if($('#gpSelect').attr('val') != '全部股票'){
+            alert(code)
+            operateDiary.show(pid,code);
+        }else{
+            operateDiary.show(pid,0);
+        }
     });
 
     /*

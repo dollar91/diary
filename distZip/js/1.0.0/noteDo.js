@@ -1,5 +1,77 @@
 //@charset "utf-8"
 //这里面全部是记事的操作，查看，添加，删除，修改记事。 
+//处理请求到的记事和订阅数据
+
+var tipList = [];//设置全局的变量用于填充tip框。
+function treatData(js, dy) {
+  var diaryList = []; //用于存储所有要填进去列表的数据，包括订阅和记事；
+  var jsList = []; //用于存储记事
+  if ($(js)[0].errorCode == 0) {
+    var jsArr = $(js)[0].data;
+    for (var i = 0; i < jsArr.length; i++) {
+      var ctime = getFullDate(jsArr[i].ctime * 1000);
+      var clockDate;
+      var clock = jsArr[i].clock;
+      var subtitle = jsArr[i].subtitle;
+      var subcontent = jsArr[i].content;
+      var pid = jsArr[i].pid;
+      var codename = jsArr[i].codename;
+      var code = jsArr[i].code;
+      var clockDate; //提醒时间
+      if (clock == 0) { //没有闹钟提醒的时候
+        clockDate = 0;
+        jsList.push({
+          flag: 1,
+          ctime: ctime,
+          clockDate: clockDate,
+          subtitle: subtitle,
+          subcontent: subcontent,
+          pid: pid,
+          codename: codename,
+          code :code
+        });
+      } else {
+        clockDate = getFullDate(clock * 1000);
+        if(dy){
+            ctime=clockDate;
+        }        
+        jsList.push({
+          flag: 3,
+          ctime: ctime,
+          clockDate: clockDate,
+          subtitle: subtitle,
+          subcontent: subcontent,
+          pid: pid,
+          codename: codename,
+          code:code
+        });
+      }
+    }
+  }
+  diaryList = jsList;
+  if (dy && $(dy)[0] && $(dy)[0].status == 0 && $(dy)[0].data.total != 0) {
+    var dylength = $(dy)[0].data.total;
+    var dyKeys = $(dy)[0].data.wd; //用于存储订阅的关键字
+    var nowYear = getDomainTime().nowYear;
+    var nowMonth = getDomainTime().nowMonth;
+    var nowDay = getDomainTime().nowDay;
+    var ctime = '' + nowYear + (nowMonth < 10 ? '0' + nowMonth : nowMonth) + (nowDay < 10 ? '0' + nowDay : nowDay) + '000000';
+    if (dyKeys.length == 3) {
+      dyKeys = dyKeys[0] + ',' + dyKeys[1];
+    } else {
+      dyKeys = dyKeys.join(',');
+    }
+    diaryList.push({
+      flag: 2,
+      ctime: ctime,
+      keys: dyKeys,
+      length: dylength
+    });
+  }
+  dateSort(diaryList);
+  tipList = jsList;
+  return diaryList;
+}
 //查看记事
 window.lastId = 0;
 window.nextId = 0;
@@ -80,8 +152,13 @@ function editData(saveBt) {
         var content = contentbegin;
     }
     var codeVal = boxOuter.find(".codename_edit").val();
-    var stockcode = codeVal.slice(0,codeVal.indexOf(' '));
-        stockcode = setKHDCode(stockcode);
+    var stockcode = (codeVal.indexOf(' ') != -1)?codeVal.slice(0,codeVal.indexOf(' ')):codeVal;
+    var KHDstockcode = setKHDCode(stockcode);
+    if(stockcode.toUpperCase() !== KHDstockcode.toUpperCase()){
+        stockcode = '';
+    }else{
+        stockcode = stockcode.toUpperCase();
+    }
     var ip = 0;
     var pcate = -1;
     var display_date;
@@ -147,8 +224,13 @@ function addData(saveBt) {
         var content = contentbegin;
     }
     var codeVal = boxOuter.find(".codename_edit").val();
-    var stockcode = codeVal.slice(0,codeVal.indexOf(' '));
-        stockcode = setKHDCode(stockcode);
+    var stockcode = (codeVal.indexOf(' ') != -1)?codeVal.slice(0,codeVal.indexOf(' ')):codeVal;
+    var KHDstockcode = setKHDCode(stockcode);
+    if(stockcode.toUpperCase() !== KHDstockcode.toUpperCase()){
+        stockcode = '';
+    }else{
+        stockcode = stockcode.toUpperCase();
+    }
     var ip = 0;
     var pcate = -1;
     var display_date;
@@ -218,11 +300,12 @@ var operateDiary = {
     inita: function(inita) {
         inita();
     },
-    show: function(pid) {
+    show: function(pid,codeShow) {
         var onlyIS = true;
         var currentUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiaryDetail&userid=' + userid + '&pid=' + pid + '&type=jsonp&charset=utf8&callback=?';
         $.ajax({
             url: currentUrl,
+            data:{code:codeShow},
             type: 'get',
             dataType: 'json',
             success: function(data) {
@@ -239,7 +322,7 @@ var operateDiary = {
                     } else {
                         onlyIS = false;
                         var lastUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiaryDetail&userid=' + userid + '&pid=' + lastId + '&type=jsonp&charset=utf8&callback=?';
-                        $.getJSON(lastUrl, function(lastData) {
+                        $.getJSON(lastUrl, {code:codeShow},function(lastData) {
                             showNews(lastData, lastUrl);
                             onlyIS = true;
                         });
@@ -257,7 +340,7 @@ var operateDiary = {
                     } else {
                         onlyIS = false;
                         var nextUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=getStockDiaryDetail&userid=' + userid + '&pid=' + nextId + '&type=jsonp&charset=utf8&callback=?';
-                        $.getJSON(nextUrl, function(nextData) {
+                        $.getJSON(nextUrl, {code:codeShow}, function(nextData) {
                             showNews(nextData, nextUrl);
                             onlyIS = true;
                         });
