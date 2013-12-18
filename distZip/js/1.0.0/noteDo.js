@@ -15,7 +15,11 @@ function treatData(js, dy) {
       var subtitle = jsArr[i].subtitle;
       var subcontent = jsArr[i].content;
       var pid = jsArr[i].pid;
+      var code = jsArr[i].code;
       var codename = jsArr[i].codename;
+      if(!dy){//记事管理的时候把codename全部填充进去
+        codename = getKHDCodename(code,codename);
+      }
       var code = jsArr[i].code;
       var clockDate; //提醒时间
       if (clock == 0) { //没有闹钟提醒的时候
@@ -32,7 +36,7 @@ function treatData(js, dy) {
         });
       } else {
         clockDate = getFullDate(clock * 1000);
-        if(dy){
+        if(dy){//日历首页或者列表的时候优秀闹钟排序
             ctime=clockDate;
         }        
         jsList.push({
@@ -450,7 +454,7 @@ var operateDiary = {
             });
         });
         $("#deleteNo").click(function() {
-            $("#delete_box,#mask_iframe,#show_box").hide();
+            $("#delete_box").hide();
         });
     },
     //记事管理部分
@@ -504,7 +508,11 @@ var operateDiary = {
                 });
             });
             $("#deleteNo").click(function() {
-                $("#delete_box,#mask_iframe").hide();
+                if($("#show_box").is(':visible')){
+                    $("#delete_box").hide();
+                }else{
+                    $("#delete_box,#mask_iframe").hide();
+                }                
             });
     }
 }

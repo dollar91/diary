@@ -55,7 +55,7 @@ $(function() {
             noteBody += '<td><input class="delete-input" type="checkbox"></td>';
             noteBody += '<td>' + getFullTime(pageList[page - 1][i].ctime).timeDate + '</td>';
             noteBody += '<td style="text-align:left;padding-left:10px;">' + mCutStr(pageList[page - 1][i].subtitle, 20) + '</td>';
-            noteBody += '<td>' + pageList[page - 1][i].codename + '</td>';
+            noteBody += '<td>' + mCutStr(pageList[page - 1][i].codename,8)+ '</td>';
             noteBody += '<td style="text-align:left;padding-left:10px;">' + mCutStr(pageList[page - 1][i].subcontent, 40) + '</td>';
             noteBody += '<td>' + clock + '</td>';
             noteBody += '<td><a href="###" class="show_note">查看</a><a href="###" class="edit_note">编辑</a><a href="###" class="delete_note">删除</a></td>';
@@ -147,7 +147,7 @@ $(function() {
             codeList = dateList;
         } else {
             for (var i = 0; i < dateList.length; i++) {
-                if (dateList[i].codename == codenow) {
+                if (mCutStr(dateList[i].codename,14) == codenow) {
                     codeList.push(dateList[i]);
                 }
             }
@@ -212,7 +212,7 @@ $(function() {
             if(klinecode == codeArr[i]){
                 $("#gpSelect ul").append('<li class="cur"><a>' + mCutStr(codeArr[i],16) + '</a></li>');
             }else{
-                $("#gpSelect ul").append('<li><a>' + mCutStr(codeArr[i],16) + '</a></li>');
+                $("#gpSelect ul").append('<li><a>' + mCutStr(codeArr[i],14) + '</a></li>');
             }
         }        
         $("#gpSelect").attr('val',klinecode);

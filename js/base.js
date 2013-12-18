@@ -167,6 +167,9 @@ function fngetday(year, month, date) {
 
 //限制字数
 function mCutStr(str, len,str2) {
+  if(str == ''){
+    return '';
+  }
   if(str2 == ''){
     var str3 = '';
   }else{
