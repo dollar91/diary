@@ -454,7 +454,11 @@ var operateDiary = {
             });
         });
         $("#deleteNo").click(function() {
-            $("#delete_box").hide();
+            if($("#show_box").is(':visible')){
+                $("#delete_box").hide();
+            }else{
+                $("#delete_box,#mask_iframe").hide();
+            } 
         });
     },
     //记事管理部分
