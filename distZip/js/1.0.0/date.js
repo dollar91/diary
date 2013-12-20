@@ -475,7 +475,7 @@
         tipCodename = getKHDCodename(tipCode,tipCodename);
       $("#xqPid").val(tipPid);
       $(".xq-box .tip-title").html(tipTitle);
-      $(".xq-box .tip-content").html(mCutStr(tipContent, 101));
+      $(".xq-box .tip-content").html(mCutStr(tipContent, 95));
       if (tipCodename == '') {
         $(".xq-box .tip-codename").hide();
       } else {

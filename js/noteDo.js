@@ -3,7 +3,7 @@
 //处理请求到的记事和订阅数据
 
 var tipList = [];//设置全局的变量用于填充tip框。
-function treatData(js, dy) {
+function treatData(js, dy ,list) {
   var diaryList = []; //用于存储所有要填进去列表的数据，包括订阅和记事；
   var jsList = []; //用于存储记事
   if ($(js)[0].errorCode == 0) {
@@ -60,11 +60,15 @@ function treatData(js, dy) {
     var nowMonth = getDomainTime().nowMonth;
     var nowDay = getDomainTime().nowDay;
     var ctime = '' + nowYear + (nowMonth < 10 ? '0' + nowMonth : nowMonth) + (nowDay < 10 ? '0' + nowDay : nowDay) + '000000';
-    if (dyKeys.length == 3) {
-      dyKeys = dyKeys[0] + ',' + dyKeys[1];
-    } else {
-      dyKeys = dyKeys.join(',');
-    }
+    if(list){
+       dyKeys = dyKeys.join(','); 
+   }else{
+        if (dyKeys.length == 3) {
+          dyKeys = dyKeys[0] + ',' + dyKeys[1];
+        } else {
+          dyKeys = dyKeys.join(',');
+        }
+   }    
     diaryList.push({
       flag: 2,
       ctime: ctime,
@@ -444,12 +448,20 @@ var operateDiary = {
         var deleteUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=deletepost&userid=' + userid + '&&pid=' + pid + '&type=jsonp&callback=?';
         $("#deleteYes").click(function() {
             $("#delete_box,#show_box").hide();
-            $.getJSON(deleteUrl, function(deletemes) {
-                if (deletemes.errorCode == 0) {
-                    tipBox('删除记事成功');
-                    renderFunc(year, month);
-                } else {
-                    tipBox('删除记事失败');
+            $.ajax({
+                url: deleteUrl,
+                type: 'get',
+                dataType: 'json',
+                success: function(deletemes) {
+                    if (deletemes.errorCode == 0) {
+                        tipBox('删除记事成功');
+                        renderFunc(year, month);
+                    } else {
+                        tipBox('删除记事失败');
+                    }
+                },
+                error: function(x, status) {
+                    tipBox("删除记事失败！");
                 }
             });
         });
@@ -502,12 +514,20 @@ var operateDiary = {
             var deleteUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=deletepost&userid=' + userid + '&&pid=' + pid + '&type=jsonp&callback=?';
             $("#deleteYes").click(function() {
                 $("#delete_box,#show_box").hide();
-                $.getJSON(deleteUrl, function(deletemes) {
-                    if (deletemes.errorCode == 0) {
-                        tipBox('删除记事成功！');
-                        renderFunc(page);
-                    } else {
-                        tipBox('删除记事失败！');
+                $.ajax({
+                    url: deleteUrl,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(deletemes) {
+                        if (deletemes.errorCode == 0) {
+                            tipBox('删除记事成功');
+                            renderFunc(page);
+                        } else {
+                            tipBox('删除记事失败');
+                        }
+                    },
+                    error: function(x, status) {
+                        tipBox("删除记事失败！");
                     }
                 });
             });

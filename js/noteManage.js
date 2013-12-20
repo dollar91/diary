@@ -209,15 +209,15 @@ $(function() {
 
         $("#gpSelect ul").append('<li class="cur"><a>全部股票</a></li>');
         for (var i = 0; i < codeArr.length; i++) {
-            if(klinecode == codeArr[i]){
+            if(klinecodename == codeArr[i]){
                 $("#gpSelect ul").append('<li class="cur"><a>' + mCutStr(codeArr[i],16) + '</a></li>');
             }else{
                 $("#gpSelect ul").append('<li><a>' + mCutStr(codeArr[i],14) + '</a></li>');
             }
         }        
-        $("#gpSelect").attr('val',klinecode);
-        $("#gpSelect p").text(klinecode);
-        if(klinecode != '全部股票'){
+        $("#gpSelect").attr('val',klinecodename);
+        $("#gpSelect p").text(klinecodename);
+        if(klinecodename != '全部股票'){
             $("#gpSelect ul li").eq(0).removeClass('cur');
         }
     }
@@ -312,14 +312,30 @@ $(function() {
 
     /*
      *渲染函数
+     *renderInita 初始化渲染
+     *renderFunc 渲染
      */
-    var renderFunc = function(){
+    var renderInita = function(page){
         $.getJSON(urlMap.jsUrl, {
             order: 'display_date desc'
         }, function(data) {
             var noteList = treatData(data);
             createGpList(noteList);
-            treatFilter('所有日期', klinecode, '全部提醒', '', noteList,1);
+            treatFilter('所有日期', klinecodename, '全部提醒', '', noteList,page);
+            filterDate(noteList);
+        });
+        if(klinepid){
+            $("#show_box,#mask_iframe").show();
+            operateDiary.show(klinepid,klinecode);
+        }
+    }
+    var renderFunc = function(page){
+        $.getJSON(urlMap.jsUrl, {
+            order: 'display_date desc'
+        }, function(data) {
+            var noteList = treatData(data);
+            createGpList(noteList);
+            treatFilter('所有日期', klinecodename, '全部提醒', '', noteList,page);
             filterDate(noteList);
         });
     }
@@ -336,7 +352,7 @@ $(function() {
      *1、初始化
      *2、为各个链接添加自定义codename和code属性
      */
-    operateDiary.initaManage(renderFunc,1);
+    operateDiary.initaManage(renderInita,1);
 
     var autoCode = getUrlParam('code');
     var autoCodeName = getUrlParam('codename');
@@ -352,7 +368,6 @@ $(function() {
         var pid = $(this).parents('tr').attr('pid');
         var code = $(this).parents('tr').attr('code');
         if($('#gpSelect').attr('val') != '全部股票'){
-            alert(code)
             operateDiary.show(pid,code);
         }else{
             operateDiary.show(pid,0);
@@ -427,7 +442,7 @@ $(function() {
             return;
         } else {
             pidStr = pidStr.substring(0, pidStr.length - 1);
-            operateDiaryManage.deleteIf(pidStr,renderFunc,getPage());
+            operateDiary.deleteIfManage(pidStr,renderFunc,getPage());
         }
     });
     

@@ -68,13 +68,13 @@ $(function() {
       if (DayList[i].length == 0) {
         //为空
         noteListInner += '<div class="note-day">';
-        noteListInner += '<div class="notelist-title"><p class="notelist-date-noli">' + timeDate + '' + weekDay + '</p><a class="add-note" href="###">添加记事<s class="add-icon"></s></a></div>';
+        noteListInner += '<div class="notelist-title"><p class="notelist-date-noli notelist-date">' + timeDate + '' + weekDay + '</p><a class="add-note" href="###">添加记事<s class="add-icon"></s></a></div>';
         noteListInner += '</div>';
       } else if (DayList[i].length == 1 && DayList[i][0] == 'isempty') {
         //添加连续的
         if (i - 1 < 0 || !DayList[i - 1] || !(DayList[i - 1].length == 1 && DayList[i - 1][0] == 'isempty')) {
           noteListInner += '<div class="note-day">';
-          noteListInner += '<div class="notelist-title"><p class="notelist-date-noli">' + timeDate + '' + weekDay;
+          noteListInner += '<div class="notelist-title"><p class="notelist-date-noli notelist-date">' + timeDate + '' + weekDay;
           continue;
         };
         if (DayList[i - 1].length == 1 && DayList[i - 1][0] == 'isempty') {
@@ -208,7 +208,7 @@ $(function() {
         complete: function() {
           jsKey = true;
           if (dyKey) {
-            var diaryList = treatData(js, dy);
+            var diaryList = treatData(js, dy ,1);
             genDateList(nowYear, nowMonth, diaryList);
             IS = true;
             operateDate(diaryList);
@@ -228,7 +228,7 @@ $(function() {
           complete: function() {
             dyKey = true;
             if (jsKey) {
-              var diaryList = treatData(js, dy);
+              var diaryList = treatData(js, dy ,1);
               genDateList(nowYear, nowMonth, diaryList);
               IS = true;
               operateDate(diaryList);

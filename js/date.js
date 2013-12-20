@@ -179,7 +179,7 @@
      */
 
     function operateDate(diaryList) {
-      $("#date-pre").live('click', function() {
+      $("#date-pre").die().live('click', function() {
         if (IS == false) {
           return;
         } else {
@@ -192,7 +192,7 @@
         }
       });
 
-      $("#date-next").live('click', function() {
+      $("#date-next").die().live('click', function() {
         if (IS == false) {
           return;
         } else {
@@ -475,7 +475,7 @@
         tipCodename = getKHDCodename(tipCode,tipCodename);
       $("#xqPid").val(tipPid);
       $(".xq-box .tip-title").html(tipTitle);
-      $(".xq-box .tip-content").html(mCutStr(tipContent, 101));
+      $(".xq-box .tip-content").html(mCutStr(tipContent, 95));
       if (tipCodename == '') {
         $(".xq-box .tip-codename").hide();
       } else {

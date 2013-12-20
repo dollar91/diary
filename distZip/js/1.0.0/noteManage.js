@@ -352,7 +352,6 @@ $(function() {
         var pid = $(this).parents('tr').attr('pid');
         var code = $(this).parents('tr').attr('code');
         if($('#gpSelect').attr('val') != '全部股票'){
-            alert(code)
             operateDiary.show(pid,code);
         }else{
             operateDiary.show(pid,0);
@@ -427,7 +426,7 @@ $(function() {
             return;
         } else {
             pidStr = pidStr.substring(0, pidStr.length - 1);
-            operateDiaryManage.deleteIf(pidStr,renderFunc,getPage());
+            operateDiary.deleteIfManage(pidStr,renderFunc,getPage());
         }
     });
     
