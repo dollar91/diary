@@ -446,7 +446,7 @@ var operateDiary = {
         $("#delete_box,#mask_iframe").show();
         var deleteIf1;
         var deleteUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=deletepost&userid=' + userid + '&&pid=' + pid + '&type=jsonp&callback=?';
-        $("#deleteYes").click(function() {
+        $("#deleteYes").die().live('click',function() {
             $("#delete_box,#show_box").hide();
             $.ajax({
                 url: deleteUrl,
@@ -465,7 +465,7 @@ var operateDiary = {
                 }
             });
         });
-        $("#deleteNo").click(function() {
+        $("#deleteNo").die().live('click',function() {
             if($("#show_box").is(':visible')){
                 $("#delete_box").hide();
             }else{
@@ -512,7 +512,7 @@ var operateDiary = {
     deleteIfManage: function(pid,renderFunc,page){
         $("#delete_box,#mask_iframe").show();
             var deleteUrl = 'http://sapi.10jqka.com.cn/index.php?module=blog&controller=api&action=deletepost&userid=' + userid + '&&pid=' + pid + '&type=jsonp&callback=?';
-            $("#deleteYes").click(function() {
+            $("#deleteYes").die().live('click',function() {
                 $("#delete_box,#show_box").hide();
                 $.ajax({
                     url: deleteUrl,
@@ -531,7 +531,7 @@ var operateDiary = {
                     }
                 });
             });
-            $("#deleteNo").click(function() {
+            $("#deleteNo").die().live('click',function() {
                 if($("#show_box").is(':visible')){
                     $("#delete_box").hide();
                 }else{
